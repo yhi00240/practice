@@ -1,0 +1,28 @@
+{% extends 'mnist/base.html' %}
+
+{% block content %}
+        <div class="row">
+            <h1>Input Data</h1>
+            <ul>
+                <li><h3>Use Example Data</h3>
+                    <br>
+                    <h4>Training Image&Lable</h4>
+                    <button>Load</button>
+                </li>
+                <br><br>
+                <li><h3>Use Own Data</h3>
+                    <br><br>
+                    <div class="col-sm-4" id="Image">
+                    <h4>Training Image</h4>
+                    <button>Load</button>
+                    </div>
+                    <div class="col-sm-4" id="Label">
+                    <h4>Training Label</h4>
+                    <button>Load</button>
+                    </div>
+                </li>
+            </ul><br><br>
+            <button>Next</button>
+        </div>
+
+{% endblock content %}
