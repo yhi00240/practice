@@ -7,18 +7,27 @@
                 <li><h3>Use Example Data</h3>
                     <br>
                     <h4>Training Image&Lable</h4>
-                    <button>Load</button>
+                    <form action = "/mnist/upload/" method="post" enctype="multipart/form-data">
+                        <input type="file" enctype="multipart/form-data" name="file"/>
+                        <input type="submit" value="Upload" />
+                    </form>
                 </li>
                 <br><br>
                 <li><h3>Use Own Data</h3>
                     <br><br>
                     <div class="col-sm-4" id="Image">
                     <h4>Training Image</h4>
-                    <button>Load</button>
+                    <form action = "/mnist/upload/" method="post" enctype="multipart/form-data">
+                        <input type="file" enctype="multipart/form-data" name="file"/>
+                        <input type="submit" value="Upload" />
+                    </form>
                     </div>
                     <div class="col-sm-4" id="Label">
                     <h4>Training Label</h4>
-                    <button>Load</button>
+                    <form action = "/mnist/upload/" method="post" enctype="multipart/form-data">
+                        <input type="file" enctype="multipart/form-data" name="file"/>
+                        <input type="submit" value="Upload" />
+                    </form>
                     </div>
                 </li>
             </ul><br><br>
