@@ -1,0 +1,57 @@
+{% extends 'mnist/base.html' %}
+{% block content %}
+<div class="row">
+    <h1>Set MNIST Algorithm</h1>
+    <table border="1">
+        <tr>
+            <td>num of layer : </td>
+            <td>
+                <select name="Layers">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Activation Function : </td>
+            <td>
+                <select name="Activationfunction">
+                    <option value="Sigmoid" selected="selected">Sigmoid</option>
+                    <option value="ReLU">ReLU</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Optimizer : </td>
+            <td>
+                <select name="Optimizer">
+                    <option value="GradientDescentOptimizer" selected="selected">Gradient Descent Optimizer</option>
+                    <option value="AdamOptimizer">Adam Optimizer</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Weight Initialization : </td>
+            <td>
+                <select name="WeightInitialization">
+                    <option value="No" selected="No">No</option>
+                    <option value="Yes">Yes</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Dropout : </td>
+            <td>
+                <select name="Dropout">
+                    <option value="No" selected="No">No</option>
+                    <option value="Yes">Yes</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+    </table>
+    <br><br>
+    <button>Next</button>
+</div>
+{% endblock content %}
