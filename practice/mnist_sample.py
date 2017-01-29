@@ -40,11 +40,11 @@ with tf.name_scope('Accuracy'):
     accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))         # bool을 float로 cast한 뒤 평균냄.
 
 # Tensorboard
-w_hist = tf.summary.histogram('weights', W)
-b_hist = tf.summary.histogram('biases', b)
-y_hist = tf.summary.histogram('inference', inference)
-cost_summ = tf.summary.scalar('cost', cross_entropy)
-accuracy_summ = tf.summary.scalar('accuracy', accuracy_operation)
+tf.summary.histogram('weights', W)
+tf.summary.histogram('biases', b)
+tf.summary.histogram('inference', inference)
+tf.summary.scalar('cost', cross_entropy)
+tf.summary.scalar('accuracy', accuracy_operation)
 summary_operation = tf.summary.merge_all()
 
 sess = tf.Session()

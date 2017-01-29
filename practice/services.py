@@ -69,10 +69,10 @@ class MNIST(BasePractice):
         with tf.name_scope('cross_entropy'):
             self.cost = tf.reduce_mean(-tf.reduce_sum(self.Y * tf.log(self.inference), reduction_indices=1))
         # Tensorboard
-        w_hist = tf.summary.histogram('weights', W)
-        b_hist = tf.summary.histogram('biases', b)
-        y_hist = tf.summary.histogram('inference', self.inference)
-        cost_summ = tf.summary.scalar('cost', self.cost)
+        tf.summary.histogram('weights', W)
+        tf.summary.histogram('biases', b)
+        tf.summary.histogram('inference', self.inference)
+        tf.summary.scalar('cost', self.cost)
 
     def setTraining(self, *params):
         self.learning_rate = tf.constant(0.1)
@@ -84,7 +84,7 @@ class MNIST(BasePractice):
         with tf.name_scope('Accuracy'):
             correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))  # 예측값 vs 실제값
             self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))  # bool을 float로 cast한 뒤 평균냄.
-        accuracy_summ = tf.summary.scalar('accuracy', self.accuracy_operation)
+        tf.summary.scalar('accuracy', self.accuracy_operation)
         self.summary_operation = tf.summary.merge_all()
 
     def run(self):
