@@ -1,10 +1,7 @@
 language: python
-os: osx
 python:
   - "3.5"
 install: "pip install -r requirements.txt"
 # command to run tests
 script:
-  - python manage.py migrate -v 3
-  - python manage.py test -v 3
   - flake8 --config tests/lint-flake8.ini .
