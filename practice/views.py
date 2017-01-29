@@ -18,16 +18,19 @@ class PracticeViewSet(ViewSet):
         return render(self.request, template_name)
 
     @detail_route(methods=['get'])
-    def set_algorithm(self, request, app_name=None):
+    def algorithm(self, request, app_name=None):
+        # TODO for front: 알맞은 html template 개발되면 적용
         template_name = 'practice/data_input.html'
         return render(self.request, template_name)
 
     @detail_route(methods=['get'])
-    def set_training(self, request, app_name=None):
+    def training(self, request, app_name=None):
+        # TODO for front: 알맞은 html template 개발되면 적용
         template_name = 'practice/data_input.html'
         return render(self.request, template_name)
 
     @detail_route(methods=['get'])
-    def run_test(self, request, app_name=None):
+    def test(self, request, app_name=None):
+        # TODO for front: 알맞은 html template 개발되면 적용
         template_name = 'practice/data_input.html'
         return render(self.request, template_name)
