@@ -11,36 +11,37 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Add additional CSS in static file -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
+<body >
+    <nav class="w3-sidenav w3-center w3-small font" id="sidebar">
 
-    <nav class="w3-sidenav w3-center w3-small" id="sidebar">
         <!-- Avatar image in top left corner -->
         {% load static %}
         <img id=logo_EasyTensor src="{% static 'practice/logo_EasyTensor.png' %}" alt="My image" />
-        <a class="w3-padding-large w3-hover-black w3-border-bottom w3-border-top" href="/practice/mnist/input_data">
+        <a class="w3-padding-large w3-hover-red w3-border-bottom w3-border-top w3-leftbar w3-border-red" href="/practice/mnist/input_data">
             <i class="material-icons">folder_open</i>
             <p>Data</p>
         </a>
-        <a class="w3-padding-large w3-hover-black w3-border-bottom" href="/practice/mnist/algorithm">
+        <a class="w3-padding-large w3-hover-yellow w3-border-bottom w3-leftbar w3-border-yellow" href="/practice/mnist/algorithm">
             <i class="material-icons">multiline_chart</i>
             <p>Algorithm</p>
         </a>
-        <a class="w3-padding-large w3-hover-black w3-border-bottom" href="/practice/mnist/training">
+        <a class="w3-padding-large w3-hover-green w3-border-bottom w3-leftbar w3-border-green" href="/practice/mnist/training">
             <i class="material-icons">settings_applications</i>
             <p>Training</p>
         </a>
-        <a class="w3-padding-large w3-hover-black w3-border-bottom" href="#">
+        <a class="w3-padding-large w3-hover-blue w3-border-bottom w3-leftbar w3-border-blue" href="#">
             <i class="material-icons">create</i>
             <p>Test</p>
         </a>
     </nav>
-    <div class="w3-padding-large col-sm-8" id="main">
+    <div class="w3-padding-large col-sm-8 font" id="main">
         {% block content %}{% endblock %}
     </div>
 
