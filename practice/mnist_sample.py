@@ -5,7 +5,6 @@ import tensorflow as tf
 LEARNING_RATE = 0.1     # Gradient Descent algorithm에 적용할 learning rate
 TRAINING_EPOCHS = 10    # 총 Training 횟수
 BATCH_SIZE = 100        # 전체 Training data set에서 몇개의 data를 가져올지
-DISPLAY_STEP = 1        # 진행 상황을 얼마에 한번씩 보여줄지 결정
 LOGS_PATH = './.logs'
 DATA_PATH = './.data'
 
@@ -31,7 +30,7 @@ with tf.name_scope('cross_entropy'):
     cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(inference), reduction_indices=1))
 
 # Optimizer : Gradient Descent Optimizer
-with tf.name_scope('train'):
+with tf.name_scope('training'):
     learning_rate = tf.constant(LEARNING_RATE)
     train_operation = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss=cross_entropy)
 
@@ -46,15 +45,11 @@ b_hist = tf.summary.histogram('biases', b)
 y_hist = tf.summary.histogram('inference', inference)
 cost_summ = tf.summary.scalar('cost', cross_entropy)
 accuracy_summ = tf.summary.scalar('accuracy', accuracy_operation)
-
 summary_operation = tf.summary.merge_all()
-
 
 sess = tf.Session()
 init = tf.global_variables_initializer()
-
 sess.run(init)
-
 writer = tf.summary.FileWriter(LOGS_PATH, tf.get_default_graph())
 
 # Training
@@ -69,8 +64,7 @@ for epoch in range(TRAINING_EPOCHS):
         )
         avg_cost += cost/batch_count
         writer.add_summary(summary, epoch * batch_count + i)
-    if epoch % DISPLAY_STEP == 0:
-        print('Epoch: %04d' % (epoch + 1), 'cost={:.9f}'.format(avg_cost))
+    print('Epoch: %04d' % (epoch + 1), 'cost={:.9f}'.format(avg_cost))
 
 print('------------------Training Finished------------------')
 print('Accuracy:', accuracy_operation.eval(feed_dict={x: mnist.test.images, y: mnist.test.labels}, session=sess))
