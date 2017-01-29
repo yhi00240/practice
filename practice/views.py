@@ -1,6 +1,5 @@
 import os
 
-from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import detail_route
 from rest_framework.viewsets import ViewSet
