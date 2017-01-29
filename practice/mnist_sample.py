@@ -48,8 +48,7 @@ accuracy_summ = tf.summary.scalar('accuracy', accuracy_operation)
 summary_operation = tf.summary.merge_all()
 
 sess = tf.Session()
-init = tf.global_variables_initializer()
-sess.run(init)
+sess.run(tf.global_variables_initializer())
 writer = tf.summary.FileWriter(LOGS_PATH, tf.get_default_graph())
 
 # Training
