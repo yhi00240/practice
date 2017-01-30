@@ -1,26 +1,33 @@
 import os
 
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework.decorators import detail_route
 from rest_framework.viewsets import ViewSet
 
 from practice.services import MNIST
 
-APP_NAME_TO_CLASS = {
+PRACTICE_NAME_TO_CLASS = {
     'mnist': MNIST,
 }
 
 class PracticeViewSet(ViewSet):
 
-    lookup_field = 'app_name'
+    lookup_field = 'practice_name'
 
     @detail_route(methods=['get'])
-    def input_data(self, request, app_name=None):
+    def input_data(self, request, practice_name=None):
         template_name = 'practice/data_input.html'
-        return render(self.request, template_name)
+        return render(request, template_name)
 
     @detail_route(methods=['post'])
-    def upload(self, request, app_name=None):
+    def load_data(self, request, practice_name=None):
+        practice = PRACTICE_NAME_TO_CLASS[practice_name]()
+        practice.load_training_data()
+        return HttpResponse({'data': practice.training_data})
+
+    @detail_route(methods=['post'])
+    def upload(self, request, practice_name=None):
         up_file = request.FILES['file']
         if not os.path.exists('upload/'):
             os.mkdir('upload/')
@@ -32,10 +39,10 @@ class PracticeViewSet(ViewSet):
         return render(self.request, template_name)
 
     @detail_route(methods=['get'])
-    def algorithm(self, request, app_name=None):
-        # TODO for front: 알맞은 html template 개발되면 적용
+    def algorithm(self, request, practice_name=None):
         template_name = 'practice/set_algorithm.html'
-        return render(self.request, template_name)
+        practice = PRACTICE_NAME_TO_CLASS[practice_name]()
+        return render(request, template_name, practice.get_algorithm_settings())
 
     @detail_route(methods=['post'])
     def save_algorithm(self, request, app_name=None):
@@ -47,10 +54,10 @@ class PracticeViewSet(ViewSet):
         return redirect('/practice/mnist/training/')
 
     @detail_route(methods=['get'])
-    def training(self, request, app_name=None):
-        # TODO for front: 알맞은 html template 개발되면 적용
+    def training(self, request, practice_name=None):
         template_name = 'practice/set_training.html'
-        return render(self.request, template_name)
+        practice = PRACTICE_NAME_TO_CLASS[practice_name]()
+        return render(request, template_name, practice.get_training_settings())
 
     @detail_route(methods=['post'])
     def save_training(self, request, app_name=None):
@@ -71,7 +78,7 @@ class PracticeViewSet(ViewSet):
         return render(self.request, template_name, {'user_epoch': mnist.training_epochs})
 
     @detail_route(methods=['get'])
-    def test(self, request, app_name=None):
+    def test(self, request, practice_name=None):
         # TODO for front: 알맞은 html template 개발되면 적용
         template_name = 'practice/data_input.html'
         return render(self.request, template_name)
