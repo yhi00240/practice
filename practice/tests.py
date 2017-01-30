@@ -8,15 +8,15 @@ class MNISTTestCase(TestCase):
     def testWholeOperation(self):
         mnist = MNIST()
 
-        mnist.loadTrainingData()
+        mnist.load_training_data()
         assert mnist.training_data is not None
 
-        mnist.setAlgorithm()
+        mnist.set_algorithm()
         assert mnist.hypothesis is not None
         assert mnist.inference is not None
         assert mnist.cost is not None
 
-        mnist.setTraining()
+        mnist.set_training()
         assert mnist.learning_rate is not None
         assert mnist.optimizer is not None
         assert mnist.training_epochs is not None
@@ -27,7 +27,7 @@ class MNISTTestCase(TestCase):
 
         mnist.run()
 
-        mnist.loadTestingData()
+        mnist.load_testing_data()
         assert mnist.test_data is not None
 
         mnist.test()
