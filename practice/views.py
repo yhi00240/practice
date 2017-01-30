@@ -36,7 +36,7 @@ class PracticeViewSet(ViewSet):
             destination.write(chunk)
         destination.close()
         template_name = 'practice/data_input.html'
-        return render(self.request, template_name)
+        return render(request, template_name)
 
     @detail_route(methods=['get'])
     def algorithm(self, request, practice_name=None):
@@ -81,4 +81,4 @@ class PracticeViewSet(ViewSet):
     def test(self, request, practice_name=None):
         # TODO for front: 알맞은 html template 개발되면 적용
         template_name = 'practice/data_input.html'
-        return render(self.request, template_name)
+        return render(request, template_name)
