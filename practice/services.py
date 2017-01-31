@@ -79,7 +79,7 @@ class MNIST(BasePractice):
         with tf.name_scope('training'):
             self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate)
             self.train_operation = self.optimizer.minimize(loss=self.cost)
-        self.training_epochs = 10
+        self.training_epochs = params[0]  # 사용자가 넣어준 부분
         self.batch_size = 100
         with tf.name_scope('Accuracy'):
             correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))  # 예측값 vs 실제값
