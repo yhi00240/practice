@@ -42,7 +42,7 @@ class PracticeViewSet(ViewSet):
     def algorithm(self, request, practice_name=None):
         template_name = 'practice/set_algorithm.html'
         practice = PRACTICE_NAME_TO_CLASS[practice_name]()
-        return render(request, template_name, practice.get_algorithm_settings(), {'practice_name':practice_name})
+        return render(request, template_name, {'list': practice.get_algorithm_settings(),'practice_name':practice_name})
 
     @detail_route(methods=['post'])
     def save_algorithm(self, request, practice_name=None):
@@ -57,7 +57,7 @@ class PracticeViewSet(ViewSet):
     def training(self, request, practice_name=None):
         template_name = 'practice/set_training.html'
         practice = PRACTICE_NAME_TO_CLASS[practice_name]()
-        return render(request, template_name, practice.get_training_settings())
+        return render(request, template_name, {'list': practice.get_training_settings(), 'practice_name':practice_name})
 
     @detail_route(methods=['post'])
     def save_training(self, request, practice_name=None):
