@@ -24,7 +24,7 @@ class PracticeViewSet(ViewSet):
     def load_data(self, request, practice_name=None):
         practice = PRACTICE_NAME_TO_CLASS[practice_name]()
         practice.load_training_data()
-        return HttpResponse({'data': practice.training_data})
+        return HttpResponse({'success': True, 'data': practice.training_data}, content_type='application/json')
 
     @detail_route(methods=['post'])
     def upload(self, request, practice_name=None):
