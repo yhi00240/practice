@@ -5,9 +5,10 @@
     <br>
     <form action = "/practice/{{practice_name}}/save_training/" accept-charset="utf-8" name = "save_training" method = "post">
         {%for key,value in list.items%}
-        {{key}} : <input type = "text" name = "rate" value = {{value}}>
+        {{key}} : <input type = "text" name = "{{key}}" value = {{value}}>
         <br><br>
         {%endfor%}
+        <input type="submit" value="Next">
     </form>
     <br><br>
 </div>

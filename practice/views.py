@@ -46,12 +46,12 @@ class PracticeViewSet(ViewSet):
 
     @detail_route(methods=['post'])
     def save_algorithm(self, request, practice_name=None):
-        request.session['Layers'] = request.data['Layers']
-        request.session['Activationfunction'] = request.data['Activationfunction']
+        request.session['Layers'] = request.data['Num of layers']
+        request.session['Activationfunction'] = request.data['Activation Function']
         request.session['Optimizer'] = request.data['Optimizer']
-        request.session['WeightInitialization'] = request.data['WeightInitialization']
+        request.session['WeightInitialization'] = request.data['Weight Initialization']
         request.session['Dropout'] = request.data['Dropout']
-        return redirect('/practice/' + practice_name + 'training/')
+        return redirect('/practice/' + practice_name + '/training/')
 
     @detail_route(methods=['get'])
     def training(self, request, practice_name=None):
@@ -61,8 +61,8 @@ class PracticeViewSet(ViewSet):
 
     @detail_route(methods=['post'])
     def save_training(self, request, practice_name=None):
-        request.session['rate'] = float(request.data['rate'])
-        request.session['epoch'] = int(request.data['epoch'])
+        request.session['rate'] = float(request.data['Training Rate'])
+        request.session['epoch'] = int(request.data['Optimization Epoch'])
         return redirect('/practice/' + practice_name + '/training_mnist/')
 
     @detail_route(methods=['get'])
