@@ -1,12 +1,13 @@
 {% extends 'practice/base.html' %}
 {% block content %}
 <div class="row">
-    <h1>Set MNIST Training Set</h1>
+    <h1>Set {{practice_name}} Training Set</h1>
     <br>
-    <form action = "/practice/mnist/save_training/" accept-charset="utf-8" name = "save_training" method = "post">
-        Training Rate : <input type = "text" name = "rate"/><br>
-        Optimization Epoch : <input type = "text" name = "epoch"/><br>
-        <input type="submit" value="Next">
+    <form action = "/practice/{{practice_name}}/save_training/" accept-charset="utf-8" name = "save_training" method = "post">
+        {%for key,value in list.items%}
+        {{key}} : <input type = "text" name = "rate" value = {{value}}>
+        <br><br>
+        {%endfor%}
     </form>
     <br><br>
 </div>
