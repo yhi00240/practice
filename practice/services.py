@@ -5,26 +5,33 @@ class BasePractice(object):
     LOGS_PATH = './.logs'
     DATA_PATH = './.data'
 
-    def loadTrainingData(self, *params):
+    def load_training_data(self, *params):
         raise NotImplementedError()
 
-    def setAlgorithm(self, *params):
+    def get_algorithm_settings(self):
         raise NotImplementedError()
 
-    def setTraining(self, *params):
+    def set_algorithm(self, *params):
+        raise NotImplementedError()
+
+    def get_training_settings(self):
+        raise NotImplementedError()
+
+    def set_training(self, *params):
         raise NotImplementedError()
 
     def run(self, *params):
         raise NotImplementedError()
 
-    def getStatus(self, *params):
+    def get_status(self, *params):
         raise NotImplementedError()
 
-    def loadTestingData(self, *params):
+    def load_testing_data(self, *params):
         raise NotImplementedError()
 
     def test(self, *params):
         raise NotImplementedError()
+
 
 class MNIST(BasePractice):
     # Data
@@ -49,14 +56,33 @@ class MNIST(BasePractice):
     accuracy_operation = None
     summary_operation = None
 
-    def loadTrainingData(self, *params):
+    def load_training_data(self, *params):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
         self.training_data = dataset.train
         with tf.name_scope('input'):
             self.X = tf.placeholder(tf.float32, [None, 784], name='x-input')  # [total_data_set_size, 28*28 pixels]
             self.Y = tf.placeholder(tf.float32, [None, 10], name='y-input')  # [total_data_set_size, numbers between 0 and 9]
 
-    def setAlgorithm(self, *params):
+    def get_algorithm_settings(self):
+        return {
+            'Num of layers': [
+                1, 2, 3
+            ],
+            'Activation Function': [
+                'Sigmoid', 'ReLU'
+            ],
+            'Optimizer': [
+                'GradientDescentOptimizer', 'AdamOptimizer'
+            ],
+            'Weight Initialization': [
+                'No', 'Yes'
+            ],
+            'Dropout': [
+                'No', 'Yes'
+            ]
+        }
+
+    def set_algorithm(self, *params):
         with tf.name_scope("weights"):
             W = tf.Variable(tf.zeros([784, 10]))
         with tf.name_scope("biases"):
@@ -74,20 +100,26 @@ class MNIST(BasePractice):
         tf.summary.histogram('inference', self.inference)
         tf.summary.scalar('cost', self.cost)
 
-    def setTraining(self, *params):
-        self.learning_rate = tf.constant(0.1)
+    def get_training_settings(self):
+        return {
+            'Training Rate': 0.1,
+            'Optimization Epoch': 10,
+        }
+
+    def set_training(self, *params):
+        self.learning_rate = tf.constant(params[0])
         with tf.name_scope('training'):
             self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate)
             self.train_operation = self.optimizer.minimize(loss=self.cost)
-        self.training_epochs = params[0]  # 사용자가 넣어준 부분
+        self.training_epochs = params[1]
         self.batch_size = 100
         with tf.name_scope('Accuracy'):
-            correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))  # 예측값 vs 실제값
-            self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))  # bool을 float로 cast한 뒤 평균냄.
+            correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))
+            self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         tf.summary.scalar('accuracy', self.accuracy_operation)
         self.summary_operation = tf.summary.merge_all()
 
-    def run(self):
+    def run(self, *params):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
@@ -104,11 +136,11 @@ class MNIST(BasePractice):
                 writer.add_summary(summary, epoch * batch_count + i)
             print('Epoch: %04d' % (epoch + 1), 'cost={:.9f}'.format(avg_cost))
 
-    def getStatus(self):
+    def get_status(self, *params):
         # TODO : training status 어떻게 리턴시킬지
         pass
 
-    def loadTestingData(self, *params):
+    def load_testing_data(self, *params):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
         self.test_data = dataset.test
 
