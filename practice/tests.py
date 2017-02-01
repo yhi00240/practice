@@ -16,7 +16,7 @@ class MNISTTestCase(TestCase):
         assert mnist.inference is not None
         assert mnist.cost is not None
 
-        mnist.set_training()
+        mnist.set_training(0.1, 10)
         assert mnist.learning_rate is not None
         assert mnist.optimizer is not None
         assert mnist.training_epochs is not None

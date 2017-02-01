@@ -45,12 +45,12 @@ class PracticeViewSet(ViewSet):
         return render(request, template_name, practice.get_algorithm_settings())
 
     @detail_route(methods=['post'])
-    def save_algorithm(self, request, app_name=None):
-        self.request.session['Layers'] = self.request.data['Layers']
-        self.request.session['Activationfunction'] = self.request.data['Activationfunction']
-        self.request.session['Optimizer'] = self.request.data['Optimizer']
-        self.request.session['WeightInitialization'] = self.request.data['WeightInitialization']
-        self.request.session['Dropout'] = self.request.data['Dropout']
+    def save_algorithm(self, request, practice_name=None):
+        request.session['Layers'] = request.data['Layers']
+        request.session['Activationfunction'] = request.data['Activationfunction']
+        request.session['Optimizer'] = request.data['Optimizer']
+        request.session['WeightInitialization'] = request.data['WeightInitialization']
+        request.session['Dropout'] = request.data['Dropout']
         return redirect('/practice/mnist/training/')
 
     @detail_route(methods=['get'])
@@ -60,22 +60,20 @@ class PracticeViewSet(ViewSet):
         return render(request, template_name, practice.get_training_settings())
 
     @detail_route(methods=['post'])
-    def save_training(self, request, app_name=None):
-        self.request.session['rate'] = int(self.request.data['rate'])
-        self.request.session['epoch'] = int(self.request.data['epoch'])
+    def save_training(self, request, practice_name=None):
+        request.session['rate'] = float(request.data['rate'])
+        request.session['epoch'] = int(request.data['epoch'])
         return redirect('/practice/mnist/training_mnist/')
 
     @detail_route(methods=['get'])
-    def training_mnist(self, request, app_name=None):
-        # TODO for front: 알맞은 html template 개발되면 적용
+    def training_mnist(self, request, practice_name=None):
         template_name = 'practice/training_mnist.html'
         mnist = MNIST()
-        mnist.loadTrainingData()
-        mnist.setAlgorithm()
-        mnist.setTraining(self.request.session['epoch'])
+        mnist.load_training_data()
+        mnist.set_algorithm()
+        mnist.set_training(request.session['rate'], request.session['epoch'])
         mnist.run()
-
-        return render(self.request, template_name, {'user_epoch': mnist.training_epochs})
+        return render(request, template_name, {'user_epoch': mnist.training_epochs})
 
     @detail_route(methods=['get'])
     def test(self, request, practice_name=None):
