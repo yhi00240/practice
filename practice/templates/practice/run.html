@@ -1,0 +1,52 @@
+{% extends 'practice/base.html' %}
+{% block content %}
+
+<div class="row" >
+    <h1>Run {{ practice_name }} training</h1>
+    <br>
+    <h3>Check settings </h3>
+    <table border="1" class="w3-table-all">
+        {% for key, value in request.session.items %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <button id="runButton" onclick="runService()">Run Training</button>
+    <br><br>
+    <div id="result">Results will be shown here</div>
+</div>
+<script>
+    function runService() {
+        document.getElementById("runButton").disabled = true;
+        document.getElementById("runButton").innerHTML = "Running";
+        document.getElementById("result").innerHTML = "Processing...";
+        $.post("/practice/{{practice_name}}/run_service/",
+            function(data) {
+                alert("Training Finished!");
+                document.getElementById("runButton").disabled = false;
+                document.getElementById("result").innerHTML = data.messages.join("<br>");
+            },
+            "json"
+        );
+    }
+</script>
+<style>
+    #result {
+        text-align:center;
+        border: 2px dotted black;
+        align-items: center;
+        width: 100%;
+        height: auto;
+    }
+    #runButton {
+        text-align:center;
+        align-items: center;
+        width: 100px;
+        height: auto;
+    }
+</style>
+
+{% endblock content %}

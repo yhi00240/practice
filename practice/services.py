@@ -1,5 +1,9 @@
+from django.dispatch import Signal
+from django.dispatch import receiver
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
+
+LogSignal = Signal(providing_args=["message"])
 
 class BasePractice(object):
     LOGS_PATH = './.logs'
@@ -8,13 +12,15 @@ class BasePractice(object):
     def load_training_data(self, *params):
         raise NotImplementedError()
 
-    def get_algorithm_settings(self):
+    @staticmethod
+    def get_algorithm_settings():
         raise NotImplementedError()
 
     def set_algorithm(self, *params):
         raise NotImplementedError()
 
-    def get_training_settings(self):
+    @staticmethod
+    def get_training_settings():
         raise NotImplementedError()
 
     def set_training(self, *params):
@@ -63,7 +69,8 @@ class MNIST(BasePractice):
             self.X = tf.placeholder(tf.float32, [None, 784], name='x-input')  # [total_data_set_size, 28*28 pixels]
             self.Y = tf.placeholder(tf.float32, [None, 10], name='y-input')  # [total_data_set_size, numbers between 0 and 9]
 
-    def get_algorithm_settings(self):
+    @staticmethod
+    def get_algorithm_settings():
         return {
             'Num of layers': [
                 1, 2, 3
@@ -100,9 +107,10 @@ class MNIST(BasePractice):
         tf.summary.histogram('inference', self.inference)
         tf.summary.scalar('cost', self.cost)
 
-    def get_training_settings(self):
+    @staticmethod
+    def get_training_settings():
         return {
-            'Training Rate': 0.1,
+            'Learning Rate': 0.1,
             'Optimization Epoch': 10,
         }
 
@@ -123,6 +131,7 @@ class MNIST(BasePractice):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
+        message_list = []
         for epoch in range(self.training_epochs):
             avg_cost = 0.
             batch_count = int(self.training_data.num_examples / self.batch_size)
@@ -134,10 +143,15 @@ class MNIST(BasePractice):
                 )
                 avg_cost += cost / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
-            print('Epoch: %04d' % (epoch + 1), 'cost={:.9f}'.format(avg_cost))
+            message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
+            message_list.append(message)
+            print(message)
+            LogSignal.send_robust(self.__class__, message=message)
+        return message_list
 
-    def get_status(self, *params):
-        # TODO : training status 어떻게 리턴시킬지
+    @receiver(LogSignal, dispatch_uid='log_signal')
+    def get_status(self, **kwargs):
+        print('get_status')
         pass
 
     def load_testing_data(self, *params):

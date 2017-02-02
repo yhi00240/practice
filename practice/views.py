@@ -1,3 +1,4 @@
+import json
 import os
 
 from django.http import HttpResponse
@@ -18,13 +19,36 @@ class PracticeViewSet(ViewSet):
     @detail_route(methods=['get'])
     def input_data(self, request, practice_name=None):
         template_name = 'practice/data_input.html'
-        return render(request, template_name, {'practice_name':practice_name})
+        return render(request, template_name, {'practice_name': practice_name})
+
+    @detail_route(methods=['get'])
+    def algorithm(self, request, practice_name=None):
+        template_name = 'practice/set_algorithm.html'
+        setting_list = PRACTICE_NAME_TO_CLASS[practice_name].get_algorithm_settings()
+        return render(request, template_name, {'list': setting_list, 'practice_name': practice_name})
+
+    @detail_route(methods=['get'])
+    def training(self, request, practice_name=None):
+        template_name = 'practice/set_training.html'
+        setting_list = PRACTICE_NAME_TO_CLASS[practice_name].get_training_settings()
+        return render(request, template_name, {'list': setting_list, 'practice_name': practice_name})
+
+    @detail_route(methods=['get'])
+    def run(self, request, practice_name=None):
+        template_name = 'practice/run.html'
+        return render(request, template_name, {'practice_name': practice_name})
+
+    @detail_route(methods=['get'])
+    def test(self, request, practice_name=None):
+        template_name = 'practice/input_data.html'# Temporary
+        return render(request, template_name, {'practice_name': practice_name})
 
     @detail_route(methods=['post'])
     def load_data(self, request, practice_name=None):
         practice = PRACTICE_NAME_TO_CLASS[practice_name]()
         practice.load_training_data()
-        return HttpResponse({'success': True, 'data': practice.training_data, 'practice_name':practice_name}, content_type='application/json')
+        # TODO : unable to save training data in session
+        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
     @detail_route(methods=['post'])
     def upload(self, request, practice_name=None):
@@ -35,48 +59,28 @@ class PracticeViewSet(ViewSet):
         for chunk in up_file.chunks():
             destination.write(chunk)
         destination.close()
-        template_name = 'practice/data_input.html'
-        return render(request, template_name, {'practice_name':practice_name})
-
-    @detail_route(methods=['get'])
-    def algorithm(self, request, practice_name=None):
-        template_name = 'practice/set_algorithm.html'
-        practice = PRACTICE_NAME_TO_CLASS[practice_name]()
-        return render(request, template_name, {'list': practice.get_algorithm_settings(),'practice_name':practice_name})
+        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
     @detail_route(methods=['post'])
     def save_algorithm(self, request, practice_name=None):
-        request.session['Layers'] = request.data['Num of layers']
-        request.session['Activationfunction'] = request.data['Activation Function']
-        request.session['Optimizer'] = request.data['Optimizer']
-        request.session['WeightInitialization'] = request.data['Weight Initialization']
-        request.session['Dropout'] = request.data['Dropout']
+        request.session['layers'] = request.data['Num of layers']
+        request.session['activation_function'] = request.data['Activation Function']
+        request.session['optimizer'] = request.data['Optimizer']
+        request.session['weight_initialization'] = request.data['Weight Initialization']
+        request.session['dropout'] = request.data['Dropout']
         return redirect('/practice/' + practice_name + '/training/')
-
-    @detail_route(methods=['get'])
-    def training(self, request, practice_name=None):
-        template_name = 'practice/set_training.html'
-        practice = PRACTICE_NAME_TO_CLASS[practice_name]()
-        return render(request, template_name, {'list': practice.get_training_settings(), 'practice_name':practice_name})
 
     @detail_route(methods=['post'])
     def save_training(self, request, practice_name=None):
-        request.session['rate'] = float(request.data['Training Rate'])
-        request.session['epoch'] = int(request.data['Optimization Epoch'])
-        return redirect('/practice/' + practice_name + '/training_mnist/')
+        request.session['learning_rate'] = float(request.data['Learning Rate'])
+        request.session['optimization_epoch'] = int(request.data['Optimization Epoch'])
+        return redirect('/practice/' + practice_name + '/run/')
 
-    @detail_route(methods=['get'])
-    def training_mnist(self, request, practice_name=None):
-        template_name = 'practice/training_mnist.html'
+    @detail_route(methods=['post'])
+    def run_service(self, request, practice_name=None):
         mnist = MNIST()
         mnist.load_training_data()
         mnist.set_algorithm()
-        mnist.set_training(request.session['rate'], request.session['epoch'])
-        mnist.run()
-        return render(request, template_name, {'user_epoch': mnist.training_epochs, 'practice_name':practice_name})
-
-    @detail_route(methods=['get'])
-    def test(self, request, practice_name=None):
-        # TODO for front: 알맞은 html template 개발되면 적용
-        template_name = 'practice/data_input.html'
-        return render(request, template_name, {'practice_name':practice_name})
+        mnist.set_training(request.session['learning_rate'], request.session['optimization_epoch'])
+        message_list = mnist.run()
+        return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
