@@ -6,8 +6,8 @@ import tensorflow as tf
 LogSignal = Signal(providing_args=["message"])
 
 class BasePractice(object):
-    LOGS_PATH = './.logs'
-    DATA_PATH = './.data'
+    LOGS_PATH = 'practice/.logs'
+    DATA_PATH = 'practice/.data'
 
     def load_training_data(self, *params):
         raise NotImplementedError()
