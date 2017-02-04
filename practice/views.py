@@ -36,7 +36,7 @@ class PracticeViewSet(ViewSet):
     @detail_route(methods=['get'])
     def run(self, request, practice_name=None):
         template_name = 'practice/run.html'
-        return render(request, template_name, {'practice_name': practice_name, 'cookie_list': request.COOKIES})
+        return render(request, template_name, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
 
     @detail_route(methods=['get'])
     def test(self, request, practice_name=None):
