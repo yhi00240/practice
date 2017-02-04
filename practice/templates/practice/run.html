@@ -18,21 +18,6 @@
     <br><br>
     <div id="result">Results will be shown here</div>
 </div>
-<script>
-    function runService() {
-        document.getElementById("runButton").disabled = true;
-        document.getElementById("runButton").innerHTML = "Running";
-        document.getElementById("result").innerHTML = "Processing...";
-        $.post("/practice/{{practice_name}}/run_service/",
-            function(data) {
-                alert("Training Finished!");
-                document.getElementById("runButton").disabled = false;
-                document.getElementById("result").innerHTML = data.messages.join("<br>");
-            },
-            "json"
-        );
-    }
-</script>
 <style>
     #result {
         text-align:center;
@@ -48,5 +33,20 @@
         height: auto;
     }
 </style>
+<script>
+    function runService() {
+        $('#runButton').attr("disabled", true);
+        $('#runButton').html("Running");
+        $('#result').html("Processing...");
+        $.post("/practice/{{practice_name}}/run_service/",
+            function(data) {
+                alert("Training Finished!");
+                $('#runButton').removeAttr('disabled');
+                $('#result').html(data.messages.join("<br>"));
+            },
+            "json"
+        );
+    }
+</script>
 
 {% endblock content %}
