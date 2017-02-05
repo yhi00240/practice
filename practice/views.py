@@ -36,7 +36,7 @@ class PracticeViewSet(ViewSet):
     @detail_route(methods=['get'])
     def run(self, request, practice_name=None):
         template_name = 'practice/run.html'
-        return render(request, template_name, {'practice_name': practice_name})
+        return render(request, template_name, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
 
     @detail_route(methods=['get'])
     def test(self, request, practice_name=None):
@@ -63,24 +63,31 @@ class PracticeViewSet(ViewSet):
 
     @detail_route(methods=['post'])
     def save_algorithm(self, request, practice_name=None):
-        request.session['layers'] = request.data['Num of layers']
-        request.session['activation_function'] = request.data['Activation Function']
-        request.session['optimizer'] = request.data['Optimizer']
-        request.session['weight_initialization'] = request.data['Weight Initialization']
-        request.session['dropout'] = request.data['Dropout']
-        return redirect('/practice/' + practice_name + '/training/')
+        # 확인하면 주석 지워도 됩니당.
+        # redirect하면서 저장된 쿠키값을 다시 사용자에게 보내주어야 하기 때문에 HttpResponse에 따로 저장한다.
+        # 쿠키의 value는 string형으로 저장되므로 여기서는 int형이나 float형으로 변환하지 않는다.
+        HttpResponse = redirect('/practice/' + practice_name + '/training/')
+        HttpResponse.set_cookie('layers', request.data['Num of layers'])
+        HttpResponse.set_cookie('activation_function', request.data['Activation Function'])
+        HttpResponse.set_cookie('optimizer', request.data['Optimizer'])
+        HttpResponse.set_cookie('weight_initialization', request.data['Weight Initialization'])
+        HttpResponse.set_cookie('dropout', request.data['Dropout'])
+
+        return HttpResponse
 
     @detail_route(methods=['post'])
     def save_training(self, request, practice_name=None):
-        request.session['learning_rate'] = float(request.data['Learning Rate'])
-        request.session['optimization_epoch'] = int(request.data['Optimization Epoch'])
-        return redirect('/practice/' + practice_name + '/run/')
+        HttpResponse = redirect('/practice/' + practice_name + '/run/')
+        HttpResponse.set_cookie('learning_rate', request.data['Learning Rate'])
+        HttpResponse.set_cookie('optimization_epoch', request.data['Optimization Epoch'])
+
+        return HttpResponse
 
     @detail_route(methods=['post'])
     def run_service(self, request, practice_name=None):
         mnist = MNIST()
         mnist.load_training_data()
         mnist.set_algorithm()
-        mnist.set_training(request.session['learning_rate'], request.session['optimization_epoch'])
+        mnist.set_training(float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         message_list = mnist.run()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')

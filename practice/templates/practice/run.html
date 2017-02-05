@@ -6,7 +6,7 @@
     <br>
     <h3>Check settings </h3>
     <table border="1" class="w3-table-all">
-        {% for key, value in request.session.items %}
+        {% for key, value in cookies_list.items %}
         <tr>
             <td>{{ key }}</td>
             <td>{{ value }}</td>
