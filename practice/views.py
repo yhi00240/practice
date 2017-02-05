@@ -39,6 +39,11 @@ class PracticeViewSet(ViewSet):
         return render(request, template_name, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
 
     @detail_route(methods=['get'])
+    def training_result(self, request, practice_name=None):
+        template_name = 'practice/training_result.html'
+        return render(request, template_name, {'practice_name': practice_name})
+
+    @detail_route(methods=['get'])
     def test(self, request, practice_name=None):
         template_name = 'practice/input_data.html'# Temporary
         return render(request, template_name, {'practice_name': practice_name})
@@ -90,4 +95,5 @@ class PracticeViewSet(ViewSet):
         mnist.set_algorithm()
         mnist.set_training(float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         message_list = mnist.run()
+        mnist.tensorboard()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')

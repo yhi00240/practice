@@ -2,6 +2,7 @@ from django.dispatch import Signal
 from django.dispatch import receiver
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
+import os
 
 LogSignal = Signal(providing_args=["message"])
 
@@ -37,6 +38,9 @@ class BasePractice(object):
 
     def test(self, *params):
         raise NotImplementedError()
+
+    def tensorboard(self):
+        raise  NotImplementedError()
 
 
 class MNIST(BasePractice):
@@ -163,3 +167,8 @@ class MNIST(BasePractice):
             feed_dict={self.X: self.test_data.images, self.Y: self.test_data.labels},
             session=self.sess
         ))
+
+    def tensorboard(self):
+        path = "tensorboard --logdir =" + os.path.abspath('.log')
+        os.system(path)
+

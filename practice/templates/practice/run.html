@@ -3,6 +3,7 @@
 
 <div class="row" >
     <h1>Run {{ practice_name }} training</h1>
+    <form action = "/practice/{{practice_name}}/training_result/" accept-charset="utf-8" name = "save_algorithm" method = "get">
     <br>
     <h3>Check settings </h3>
     <table border="1" class="w3-table-all">
@@ -17,6 +18,8 @@
     <button id="runButton" onclick="runService()">Run Training</button>
     <br><br>
     <div id="result">Results will be shown here</div>
+    <input type="submit" value="Next">
+    </form>
 </div>
 <style>
     #result {
