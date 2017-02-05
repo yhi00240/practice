@@ -1,9 +1,5 @@
-from django.dispatch import Signal
-from django.dispatch import receiver
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
-
-LogSignal = Signal(providing_args=["message"])
 
 class BasePractice(object):
     LOGS_PATH = 'practice/.logs'
@@ -27,9 +23,6 @@ class BasePractice(object):
         raise NotImplementedError()
 
     def run(self, *params):
-        raise NotImplementedError()
-
-    def get_status(self, *params):
         raise NotImplementedError()
 
     def load_testing_data(self, *params):
@@ -146,13 +139,7 @@ class MNIST(BasePractice):
             message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
             message_list.append(message)
             print(message)
-            LogSignal.send_robust(self.__class__, message=message)
         return message_list
-
-    @receiver(LogSignal, dispatch_uid='log_signal')
-    def get_status(self, **kwargs):
-        print('get_status')
-        pass
 
     def load_testing_data(self, *params):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
