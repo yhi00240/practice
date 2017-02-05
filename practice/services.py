@@ -40,7 +40,7 @@ class BasePractice(object):
         raise NotImplementedError()
 
     def tensorboard(self):
-        raise  NotImplementedError()
+        raise NotImplementedError()
 
 
 class MNIST(BasePractice):
@@ -171,4 +171,3 @@ class MNIST(BasePractice):
     def tensorboard(self):
         path = "tensorboard --logdir =" + os.path.abspath('.log')
         os.system(path)
-
