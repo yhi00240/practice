@@ -93,7 +93,7 @@ class PracticeViewSet(ViewSet):
         mnist = MNIST()
         mnist.load_training_data()
         mnist.set_algorithm()
-        mnist.set_training(float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
+        mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         message_list = mnist.run()
         mnist.tensorboard()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
