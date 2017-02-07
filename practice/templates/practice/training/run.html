@@ -3,7 +3,8 @@
     {% csrf_token %}
     <h3>3. Run {{ practice_name }} training</h3>
     <br>
-    <button id="runButton">Run Training</button>
+    <button id="runButton">Run</button>
+    <button id="nextButton" disabled>Next</button>
     <div id="result">Results will be shown here</div>
 
     <style>
@@ -50,15 +51,16 @@
 
         var interval_id;
         function runService() {
-            $('#runButton').attr("disabled", true);
-            $('#runButton').html("Running");
-            $('#result').html("Processing...");
+            var runButton = $("#runButton");
+            runButton.attr("disabled", true);
+            runButton.html("Running");
             $.post("/{{practice_name}}/training/run_service/",
                 function(data) {
                     clearInterval(interval_id);
+                    runButton.html("Run");
+                    runButton.removeAttr('disabled');
+                    $("#nextButton").removeAttr('disabled');
                     alert("Training Finished!");
-                    $('#runButton').removeAttr('disabled');
-                    $('#result').html(data.messages.join("<br>"));
                 },
                 "json"
             );

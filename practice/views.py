@@ -87,7 +87,6 @@ class Training(APIView):
 
     @staticmethod
     def get_progress(request, practice_name):
-        print('get_progress')
         return HttpResponse(json.dumps({'success': True, 'messages': 'progress..'}), content_type='application/json')
 
     @staticmethod
