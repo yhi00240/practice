@@ -21,19 +21,19 @@
         <!-- Avatar image in top left corner -->
         {% load static %}
         <img id=logo_EasyTensor src="{% static 'practice/logo_EasyTensor.png' %}" alt="My image" />
-        <a class="w3-padding-large w3-hover-red w3-border-bottom w3-border-top w3-leftbar w3-border-red" href="/practice/{{ practice_name }}/input_data">
+        <a class="w3-padding-large w3-hover-red w3-border-bottom w3-border-top w3-leftbar w3-border-red" href="/{{ practice_name }}/data">
             <i class="material-icons">folder_open</i>
             <p>Data</p>
         </a>
-        <a class="w3-padding-large w3-hover-yellow w3-border-bottom w3-leftbar w3-border-yellow" href="/practice/{{ practice_name }}/algorithm">
+        <a class="w3-padding-large w3-hover-yellow w3-border-bottom w3-leftbar w3-border-yellow" href="/{{ practice_name }}/algorithm">
             <i class="material-icons">multiline_chart</i>
             <p>Algorithm</p>
         </a>
-        <a class="w3-padding-large w3-hover-green w3-border-bottom w3-leftbar w3-border-green" href="/practice/{{ practice_name }}/training">
+        <a class="w3-padding-large w3-hover-green w3-border-bottom w3-leftbar w3-border-green" href="/{{ practice_name }}/training">
             <i class="material-icons">settings_applications</i>
             <p>Training</p>
         </a>
-        <a class="w3-padding-large w3-hover-blue w3-border-bottom w3-leftbar w3-border-blue" href="/practice/{{ practice_name }}/run">
+        <a class="w3-padding-large w3-hover-blue w3-border-bottom w3-leftbar w3-border-blue" href="/{{ practice_name }}/test">
             <i class="material-icons">create</i>
             <p>Run</p>
         </a>

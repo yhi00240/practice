@@ -1,0 +1,54 @@
+{% extends 'practice/base_training.html' %}
+{% block frame %}
+
+    <h3>3. Run {{ practice_name }} training</h3>
+    <br>
+    <button id="runButton">Run Training</button>
+    <div id="result">Results will be shown here</div>
+
+    <style>
+        #result {
+            text-align:center;
+            border: 2px solid black;
+            align-items: center;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <script>
+        $('#runButton').click(
+            runService()
+        );
+
+        var interval_id;
+        function runService() {
+            $('#runButton').attr("disabled", true);
+            $('#runButton').html("Running");
+            $('#result').html("Processing...");
+            $.post("/{{practice_name}}/training/run_service/",
+                function(data) {
+                    clearInterval(interval_id);
+                    alert("Training Finished!");
+                    $('#runButton').removeAttr('disabled');
+                    $('#result').html(data.messages.join("<br>"));
+                },
+                "json"
+            );
+            interval_id = setInterval(worker, 1000);
+        }
+
+        var first = true;
+        function worker() {
+            $.post("/{{practice_name}}/training/get_progress/", function(data) {
+                if(first) {
+                    $('#result').html(data.messages + "<br>");
+                    first = false;
+                } else {
+                    $('#result').append(data.messages + "<br>");
+                }
+            });
+        }
+    </script>
+
+{% endblock frame %}
