@@ -2,6 +2,7 @@ from django.dispatch import Signal
 from django.dispatch import receiver
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
+import os
 
 LogSignal = Signal(providing_args=["message"])
 
@@ -36,6 +37,9 @@ class BasePractice(object):
         raise NotImplementedError()
 
     def test(self, *params):
+        raise NotImplementedError()
+
+    def tensorboard(self):
         raise NotImplementedError()
 
 
@@ -100,12 +104,12 @@ class MNIST(BasePractice):
             self.inference = tf.nn.softmax(self.hypothesis)
         # Define cost function : using cross entropy
         with tf.name_scope('cross_entropy'):
-            self.cost = tf.reduce_mean(-tf.reduce_sum(self.Y * tf.log(self.inference), reduction_indices=1))
+            self.cost = tf.reduce_mean(-tf.reduce_sum(self.Y * tf.log(tf.clip_by_value(self.inference, 1e-10, 1.0)), reduction_indices=1))
         # Tensorboard
-        tf.summary.histogram('weights', W)
-        tf.summary.histogram('biases', b)
-        tf.summary.histogram('inference', self.inference)
-        tf.summary.scalar('cost', self.cost)
+        tf.summary.histogram("weights", W)
+        tf.summary.histogram("biases", b)
+        tf.summary.histogram("inference", self.inference)
+        tf.summary.scalar("cost", self.cost)
 
     @staticmethod
     def get_training_settings():
@@ -115,11 +119,16 @@ class MNIST(BasePractice):
         }
 
     def set_training(self, *params):
-        self.learning_rate = tf.constant(params[0])
+        def select_optimizer(optimizer, rate):
+            if optimizer == 'GradientDescentOptimizer':
+                return tf.train.GradientDescentOptimizer(learning_rate=rate)
+            elif optimizer == 'AdamOptimizer':
+                return tf.train.AdamOptimizer(learning_rate=rate)
+        self.learning_rate = tf.constant(params[1])
         with tf.name_scope('training'):
-            self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate)
+            self.optimizer = select_optimizer(params[0], self.learning_rate)
             self.train_operation = self.optimizer.minimize(loss=self.cost)
-        self.training_epochs = params[1]
+        self.training_epochs = params[2]
         self.batch_size = 100
         with tf.name_scope('Accuracy'):
             correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))
@@ -163,3 +172,7 @@ class MNIST(BasePractice):
             feed_dict={self.X: self.test_data.images, self.Y: self.test_data.labels},
             session=self.sess
         ))
+
+    def tensorboard(self):
+        path = "tensorboard --logdir =" + os.path.abspath('.log') + " &"
+        os.system(path)

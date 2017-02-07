@@ -17,6 +17,7 @@
     <button id="runButton" onclick="runService()">Run Training</button>
     <br><br>
     <div id="result">Results will be shown here</div>
+    <button id="nextButton">Next</button>
 </div>
 <style>
     #result {
@@ -35,7 +36,7 @@
 </style>
 <script>
     function runService() {
-        $('#runButton').attr("disabled", true);
+        $('#runButton').attr('disabled', true);
         $('#runButton').html("Running");
         $('#result').html("Processing...");
         $.post("/practice/{{practice_name}}/run_service/",
@@ -46,7 +47,13 @@
             },
             "json"
         );
+        $('#')
     }
+    $(document).ready(function(){
+        $('#nextButton').click(function(){
+            location.replace("/practice/{{practice_name}}/training_result");
+        });
+    });
 </script>
 
 {% endblock content %}
