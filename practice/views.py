@@ -74,7 +74,7 @@ class Training(APIView):
     @staticmethod
     def run(request, practice_name):
         template = 'practice/training/run.html'
-        return render(request, template, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
+        return render(request, template, {'practice_name': practice_name})
 
     @staticmethod
     def run_service(request, practice_name):
