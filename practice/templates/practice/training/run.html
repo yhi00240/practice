@@ -29,6 +29,7 @@
             var runButton = $('#runButton');
             runButton.attr('disabled', true);
             runButton.html('Running');
+            $('#result').html('Processing...');
             $.post("/{{practice_name}}/training/run_service/",
                 function(data) {
                     clearInterval(interval_id);
