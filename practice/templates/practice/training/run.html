@@ -39,8 +39,8 @@
             function(data) {
                 clearInterval(interval_id);
                 runButton.html('Run');
-                runButton.removeAttr('disabled');
-                $("#nextButton").removeAttr('disabled');
+                runButton.attr('disabled', false);
+                $("#nextButton").attr('disabled', false);
                 alert("Training Finished!");
             },
             "json"

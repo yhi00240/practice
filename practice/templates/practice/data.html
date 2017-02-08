@@ -41,7 +41,7 @@
         $.post("/{{ practice_name }}/data/",
             function(data) {
                 alert("Data Loaded");
-                $('#nextButton').removeAttr('disabled');
+                $('#nextButton').attr('disabled', false);
             },
             "json"
         );
