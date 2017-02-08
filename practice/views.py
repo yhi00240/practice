@@ -78,23 +78,24 @@ class Training(APIView):
         return render(request, template, {'practice_name': practice_name})
 
     @staticmethod
+    @csrf_exempt
     def run_service(request, practice_name):
         mnist = MNIST()
         mnist.load_training_data()
         mnist.set_algorithm()
         mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         message_list = mnist.run()
-        mnist.tensorboard()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
 
-    @csrf_exempt
     @staticmethod
+    @csrf_exempt
     def get_progress(request, practice_name):
         return HttpResponse(json.dumps({'success': True, 'messages': 'progress..'}), content_type='application/json')
 
     @staticmethod
     def result(request, practice_name):
         template = 'practice/training/result.html'
+        MNIST.tensorboard()
         return render(request, template, {'practice_name': practice_name})
 
 

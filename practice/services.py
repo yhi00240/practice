@@ -32,9 +32,10 @@ class BasePractice(object):
     def test(self, *params):
         raise NotImplementedError()
 
-    def tensorboard(self):
-        raise NotImplementedError()
-
+    @staticmethod
+    def tensorboard():
+        path = "tensorboard --logdir=" + os.path.abspath('./' + BasePractice.LOGS_PATH) + " &"
+        os.system(path)
 
 class MNIST(BasePractice):
     # Data
@@ -159,7 +160,3 @@ class MNIST(BasePractice):
             feed_dict={self.X: self.test_data.images, self.Y: self.test_data.labels},
             session=self.sess
         ))
-
-    def tensorboard(self):
-        path = "tensorboard --logdir =" + os.path.abspath('./practice/.logs') + " &"
-        os.system(path)
