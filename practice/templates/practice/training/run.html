@@ -43,13 +43,17 @@
         }
 
         var first = true;
+        var last_message = "";
         function worker() {
             $.post("/{{practice_name}}/training/get_progress/", function(data) {
-                if(first) {
-                    $('#result').html(data.messages + "<br>");
-                    first = false;
-                } else {
-                    $('#result').append(data.messages + "<br>");
+                if (data.success && data.messages != last_message) {
+                    if (first) {
+                        $('#result').html(data.messages + "<br>");
+                        first = false;
+                    } else {
+                        $('#result').append(data.messages + "<br>");
+                    }
+                    last_message = data.messages;
                 }
             });
         }

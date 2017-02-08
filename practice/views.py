@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 
+from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
 
 
@@ -90,7 +91,11 @@ class Training(APIView):
     @staticmethod
     @csrf_exempt
     def get_progress(request, practice_name):
-        return HttpResponse(json.dumps({'success': True, 'messages': 'progress..'}), content_type='application/json')
+        message = RedisManager.get_message(practice_name)
+        if not message:
+            return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({'success': True, 'messages': str(message, 'utf-8')}), content_type='application/json')
 
     @staticmethod
     def result(request, practice_name):
