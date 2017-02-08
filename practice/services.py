@@ -174,5 +174,5 @@ class MNIST(BasePractice):
         ))
 
     def tensorboard(self):
-        path = "tensorboard --logdir =" + os.path.abspath('.log') + " &"
+        path = "tensorboard --logdir =" + os.path.abspath('./practice/.logs') + " &"
         os.system(path)
