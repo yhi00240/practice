@@ -90,7 +90,6 @@ class Training(APIView):
         MNIST.tensorboard()
         return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
-    @csrf_exempt
     @staticmethod
     @csrf_exempt
     def get_progress(request, practice_name):
