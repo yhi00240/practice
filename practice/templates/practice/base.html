@@ -2,45 +2,61 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'practice/css/base.css' %}">
     {% block title %}
-    <title>Local Library</title>
+    <title>Step Menu</title>
     {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-    <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="{% static 'practice/css/base.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body >
-    <nav class="w3-sidenav w3-center w3-small font" id="sidebar">
-
-        <!-- Avatar image in top left corner -->
-        {% load static %}
-        <img id=logo_EasyTensor src="{% static 'practice/logo_EasyTensor.png' %}" alt="My image" />
-        <a class="w3-padding-large w3-hover-red w3-border-bottom w3-border-top w3-leftbar w3-border-red" href="/{{ practice_name }}/data">
-            <i class="material-icons">folder_open</i>
-            <p>Data</p>
-        </a>
-        <a class="w3-padding-large w3-hover-yellow w3-border-bottom w3-leftbar w3-border-yellow" href="/{{ practice_name }}/algorithm">
-            <i class="material-icons">multiline_chart</i>
-            <p>Algorithm</p>
-        </a>
-        <a class="w3-padding-large w3-hover-green w3-border-bottom w3-leftbar w3-border-green" href="/{{ practice_name }}/training">
-            <i class="material-icons">settings_applications</i>
-            <p>Training</p>
-        </a>
-        <a class="w3-padding-large w3-hover-blue w3-border-bottom w3-leftbar w3-border-blue" href="/{{ practice_name }}/test">
-            <i class="material-icons">create</i>
-            <p>Test</p>
-        </a>
-    </nav>
-    <div class="w3-padding-large col-sm-8 font" id="main">
+<body>
+<header>
+   <div id="branding">
+       <li><img src="{% static 'practice/images/logo.png' %}" id="logo"></li>
+   </div>
+   <nav id="main_nav">
+   </nav>
+</header>
+    <div class=" w3-sidenav w3-center" id="menu">
+        <ul class="step">STEP</ul>
+        <ul class="mainmenu">
+            <li><i class="material-icons icon">folder_open</i><p>Data</p></a></li>
+            <ul class="submenu">
+                <div class="expand-triangle"><img src="{% static 'practice/images/expand.png' %}"></div>
+                <li><span>Data</span></li>
+                <li><span>Pre-processing</span></li>
+            </ul>
+            <li><i class="material-icons icon">multiline_chart</i><p>Algorithm</p></a></li>
+            <ul class="submenu">
+                <div class="expand-triangle"><img src="{% static 'practice/images/expand.png' %}"></div>
+                <li><span>Setting</span></li>
+            </ul>
+            <li><i class="material-icons icon">settings_applications</i><p>Training</p></a></li>
+            <ul class="submenu">
+                <div class="expand-triangle"><img src="{% static 'practice/images/expand.png' %}"></div>
+                <li><span>Setting </span></li>
+                <li><span>Confirm</span></li>
+                <li><span>Run</span></li>
+                <li><span>Result</span></li>
+            </ul>
+            <li><i class="material-icons icon">create</i><p>Test</p></a></li>
+            <ul class="submenu">
+                <div class="expand-triangle"><img src="{% static 'practice/images/expand.png' %}"></div>
+                <li><span>Data</span></li>
+                <li><span>Run</span></li>
+                <li><span>Result</span></li>
+            </ul>
+        </ul>
+    </div>
+    <div class="col-sm-8" id="main">
         {% block content %}{% endblock %}
     </div>
 
 </body>
+<script src="{% static 'practice/js/script.js' %}"></script>
+<script src="{% static 'practice/js/retina.min.js' %}"></script>
 </html>
