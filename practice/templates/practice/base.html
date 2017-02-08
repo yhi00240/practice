@@ -14,13 +14,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-<header>
-   <div id="branding">
-       <li><img src="{% static 'practice/images/logo.png' %}" id="logo"></li>
-   </div>
-   <nav id="main_nav">
-   </nav>
-</header>
+
+    <header>
+        <div id="branding">
+            <li><img src="{% static 'practice/images/logo.png' %}" id="logo"></li>
+        </div>
+    </header>
     <div class=" w3-sidenav w3-center" id="menu">
         <ul class="step">STEP</ul>
         <ul class="mainmenu">
@@ -78,7 +77,8 @@
         </ul>
     </div>
     <div class="col-sm-8" id="main">
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
 
 </body>
