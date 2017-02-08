@@ -1,0 +1,14 @@
+{% extends 'practice/base_training.html' %}
+{% block frame %}
+
+<h3>1. Set {{ practice_name }} training settings</h3>
+<br>
+<form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
+    {% for key,value in list.items %}
+        {{ key }} : <input type="text" name="{{ key }}" value="{{ value }}">
+        <br><br>
+    {% endfor %}
+    <input type="submit" value="Next">
+</form>
+
+{% endblock frame %}

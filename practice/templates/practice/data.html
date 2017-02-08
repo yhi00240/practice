@@ -17,14 +17,14 @@
             <br>
             <div class="col-sm-4" id="Image">
                 <h4>Training Image</h4>
-                <form action = "/practice/{{practice_name}}/upload/" method="post" enctype="multipart/form-data">
+                <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
                     <input type="file" enctype="multipart/form-data" name="file"/>
                     <input type="submit" value="Upload" />
                 </form>
             </div>
             <div class="col-sm-4" id="Label">
                 <h4>Training Label</h4>
-                <form action = "/practice/{{practice_name}}/upload/" method="post" enctype="multipart/form-data">
+                <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
                     <input type="file" enctype="multipart/form-data" name="file"/>
                     <input type="submit" value="Upload" />
                 </form>
@@ -38,19 +38,18 @@
     </div>
 <script>
     function loadData() {
-        $.post("/practice/{{practice_name}}/load_data/",
+        $.post("/{{ practice_name }}/data/",
             function(data) {
                 alert("Data Loaded");
-                $('#nextButton').removeAttr('disabled');
+                $('#nextButton').attr('disabled', false);
             },
             "json"
         );
     }
-    $('#nextButton').click(
-        function() {
-            location.href='/practice/{{practice_name}}/algorithm'
-        }
-    );
+
+    $('#nextButton').click(function() {
+        location.href='/{{ practice_name }}/algorithm'
+    });
 </script>
 
 {% endblock content %}

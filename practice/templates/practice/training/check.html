@@ -1,0 +1,25 @@
+{% extends 'practice/base_training.html' %}
+{% block frame %}
+
+<h3>2. Check all settings</h3>
+<br>
+<table border="1" class="w3-table-all">
+    {% for key, value in cookies_list.items %}
+    <tr>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<button id="nextButton">Next</button>
+
+<script>
+    $('#nextButton').click(
+        function() {
+            location.href='/{{ practice_name }}/training/run'
+        }
+    );
+</script>
+
+{% endblock frame %}

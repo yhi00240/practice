@@ -1,14 +1,14 @@
-from django.dispatch import Signal
-from django.dispatch import receiver
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import os
 
-LogSignal = Signal(providing_args=["message"])
+from EasyTensor.redis_utils import RedisManager
+
 
 class BasePractice(object):
-    LOGS_PATH = 'practice/.logs'
-    DATA_PATH = 'practice/.data'
+    # Path는 각 practice 별로 정의한다.
+    LOGS_PATH = None
+    DATA_PATH = None
 
     def load_training_data(self, *params):
         raise NotImplementedError()
@@ -30,20 +30,21 @@ class BasePractice(object):
     def run(self, *params):
         raise NotImplementedError()
 
-    def get_status(self, *params):
-        raise NotImplementedError()
-
     def load_testing_data(self, *params):
         raise NotImplementedError()
 
     def test(self, *params):
         raise NotImplementedError()
 
-    def tensorboard(self):
+    @staticmethod
+    def tensorboard():
         raise NotImplementedError()
 
-
 class MNIST(BasePractice):
+
+    LOGS_PATH = 'practice/.logs'
+    DATA_PATH = 'practice/.data'
+
     # Data
     training_data = None
     test_data = None
@@ -140,7 +141,6 @@ class MNIST(BasePractice):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
-        message_list = []
         for epoch in range(self.training_epochs):
             avg_cost = 0.
             batch_count = int(self.training_data.num_examples / self.batch_size)
@@ -153,15 +153,8 @@ class MNIST(BasePractice):
                 avg_cost += cost / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
             message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
-            message_list.append(message)
+            RedisManager.set_message('mnist', message)
             print(message)
-            LogSignal.send_robust(self.__class__, message=message)
-        return message_list
-
-    @receiver(LogSignal, dispatch_uid='log_signal')
-    def get_status(self, **kwargs):
-        print('get_status')
-        pass
 
     def load_testing_data(self, *params):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
@@ -173,6 +166,7 @@ class MNIST(BasePractice):
             session=self.sess
         ))
 
-    def tensorboard(self):
-        path = "tensorboard --logdir =" + os.path.abspath('./practice/.logs') + " &"
+    @staticmethod
+    def tensorboard():
+        path = "tensorboard --logdir=" + os.path.abspath('./' + MNIST.LOGS_PATH) + " &"
         os.system(path)
