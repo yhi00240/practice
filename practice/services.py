@@ -3,8 +3,9 @@ import tensorflow as tf
 import os
 
 class BasePractice(object):
-    LOGS_PATH = 'practice/.logs'
-    DATA_PATH = 'practice/.data'
+    # Path는 각 practice 별로 정의한다.
+    LOGS_PATH = None
+    DATA_PATH = None
 
     def load_training_data(self, *params):
         raise NotImplementedError()
@@ -34,10 +35,13 @@ class BasePractice(object):
 
     @staticmethod
     def tensorboard():
-        path = "tensorboard --logdir=" + os.path.abspath('./' + BasePractice.LOGS_PATH) + " &"
-        os.system(path)
+        raise NotImplementedError()
 
 class MNIST(BasePractice):
+
+    LOGS_PATH = 'practice/.logs'
+    DATA_PATH = 'practice/.data'
+
     # Data
     training_data = None
     test_data = None
@@ -160,3 +164,8 @@ class MNIST(BasePractice):
             feed_dict={self.X: self.test_data.images, self.Y: self.test_data.labels},
             session=self.sess
         ))
+
+    @staticmethod
+    def tensorboard():
+        path = "tensorboard --logdir=" + os.path.abspath('./' + MNIST.LOGS_PATH) + " &"
+        os.system(path)
