@@ -86,8 +86,9 @@ class Training(APIView):
         mnist.set_algorithm()
         mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         RedisManager.delete(practice_name)
-        message_list = mnist.run()
-        return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
+        mnist.run() # TODO : make async
+        MNIST.tensorboard()
+        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
     @staticmethod
     @csrf_exempt
@@ -101,7 +102,6 @@ class Training(APIView):
     @staticmethod
     def result(request, practice_name):
         template = 'practice/training/result.html'
-        MNIST.tensorboard()
         return render(request, template, {'practice_name': practice_name})
 
 
