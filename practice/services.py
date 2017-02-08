@@ -2,6 +2,9 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import os
 
+from EasyTensor.redis_utils import RedisManager
+
+
 class BasePractice(object):
     # Path는 각 practice 별로 정의한다.
     LOGS_PATH = None
@@ -138,7 +141,6 @@ class MNIST(BasePractice):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
-        message_list = []
         for epoch in range(self.training_epochs):
             avg_cost = 0.
             batch_count = int(self.training_data.num_examples / self.batch_size)
@@ -151,9 +153,8 @@ class MNIST(BasePractice):
                 avg_cost += cost / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
             message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
-            message_list.append(message)
+            RedisManager.set_message('mnist', message)
             print(message)
-        return message_list
 
     def load_testing_data(self, *params):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
