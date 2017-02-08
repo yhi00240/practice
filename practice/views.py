@@ -4,6 +4,7 @@ import os
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 
 from practice.services import MNIST
@@ -86,6 +87,7 @@ class Training(APIView):
         mnist.tensorboard()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
 
+    @csrf_exempt
     @staticmethod
     def get_progress(request, practice_name):
         return HttpResponse(json.dumps({'success': True, 'messages': 'progress..'}), content_type='application/json')
