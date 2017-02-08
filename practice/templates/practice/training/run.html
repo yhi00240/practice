@@ -48,16 +48,21 @@
         $('#runButton').click(
             runService()
         );
+        $('#nextButton').click(
+            function() {
+                location.href='/{{practice_name}}/training/result'
+            }
+        );
 
         var interval_id;
         function runService() {
-            var runButton = $("#runButton");
-            runButton.attr("disabled", true);
-            runButton.html("Running");
+            var runButton = $('#runButton');
+            runButton.attr('disabled', true);
+            runButton.html('Running');
             $.post("/{{practice_name}}/training/run_service/",
                 function(data) {
                     clearInterval(interval_id);
-                    runButton.html("Run");
+                    runButton.html('Run');
                     runButton.removeAttr('disabled');
                     $("#nextButton").removeAttr('disabled');
                     alert("Training Finished!");
@@ -65,6 +70,7 @@
                 "json"
             );
             interval_id = setInterval(worker, 1000);
+            $('#')
         }
 
         var first = true;

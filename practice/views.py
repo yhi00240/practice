@@ -81,8 +81,9 @@ class Training(APIView):
         mnist = MNIST()
         mnist.load_training_data()
         mnist.set_algorithm()
-        mnist.set_training(float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
+        mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         message_list = mnist.run()
+        mnist.tensorboard()
         return HttpResponse(json.dumps({'success': True, 'messages': message_list}), content_type='application/json')
 
     @staticmethod
@@ -91,8 +92,8 @@ class Training(APIView):
 
     @staticmethod
     def result(request, practice_name):
-        template = 'practice/training/run.html'
-        return render(request, template, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
+        template = 'practice/training/result.html'
+        return render(request, template, {'practice_name': practice_name})
 
 
 class Test(APIView):
