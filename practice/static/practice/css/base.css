@@ -43,7 +43,7 @@ display: inline-block;
 }
 
 header {
-border-bottom: 1px solid #d05942;
+border-bottom: 1px solid #222a34;
 }
 
 ul {
@@ -61,10 +61,9 @@ li {
     font-size: 16px;
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #d05942
+    border-bottom: 1px solid #222a35
     margin-top: 20px;
     margin: 20px;
-    background:
 }
 
 .mainmenu {
@@ -77,9 +76,8 @@ li {
 .mainmenu > li {
     box-sizing: border-box;
     height: 48px;
-    /*color: #f7f1e3; text color*/
-    border-bottom: 1px solid #d05942;/*border color*/
-
+    color: #222a35;
+    border-bottom: 1px solid #222a35
 }
 
 .mainmenu > li p {
@@ -97,47 +95,39 @@ li {
     padding: 14px 20px 0 20px;
 }
 
-.expand-triangle {
-    width: 276px;
-    height: 10px;
-    content: " ";
-}
-
-.expand-triangle img {
-    width: inherit;
-    height: inherit;
-    margin-left: -100px;
-    vertical-align: top;
-}
-
 /*------------ Sub Menu ------------*/
+.step-image{
+    width: 20px;
+    height: auto;
+}
+
 .submenu {
     font-size: 13px;
     box-sizing: border-box;
-    content: " ";
-    /* color: #ae9f9f; color*/
+    color: #222a35;
 }
 
-.submenu li {
+.submenu > li {
     line-height: 20px;
     height: 35px;
-    margin-left: -140px;
-    padding-top: 11px;
-    transition: border-left 220ms ease-in;
-    border-left: solid 6px
-    text-align: left;
+    margin-left: -20px;
 }
 
-.submenu .chosen,
-.submenu .chosen:hover {
-    border-left: solid 6px #96d145;
+.submenu > .chosen,
+.submenu > .chosen:hover {
 }
 
-.submenu li:hover {
-    border-left: solid 6px #d05942;
+.submenu > li:hover {
 }
 
-.submenu li span {
-    margin-left: 50px;
-    margin-right: 10px;
+.submenu .submenu_name {
+    width:50%;
+    float:left;
+    margin-top:7px;
 }
+
+.submenu .submenu_image {
+    width:10%;
+    float:left;
+}
+
