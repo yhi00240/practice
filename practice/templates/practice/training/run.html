@@ -1,65 +1,66 @@
 {% extends 'practice/base_training.html' %}
 {% block frame %}
-    <h3>3. Run {{ practice_name }} training</h3>
-    <br>
-    <button id="runButton">Run</button>
-    <button id="nextButton" disabled>Next</button>
-    <div id="result">Results will be shown here</div>
 
-    <style>
-        #result {
-            text-align:center;
-            border: 2px solid black;
-            align-items: center;
-            width: 100%;
-            height: auto;
-        }
-    </style>
+<h3>3. Run {{ practice_name }} training</h3>
+<br>
+<button id="runButton">Run</button>
+<button id="nextButton" disabled>Next</button>
+<div id="result">Results will be shown here</div>
 
-    <script>
-        $('#runButton').click(function () {
-            runService()
-        });
-        $('#nextButton').click(function() {
-            location.href='/{{practice_name}}/training/result'
-        });
+<style>
+    #result {
+        text-align:center;
+        border: 2px solid black;
+        align-items: center;
+        width: 100%;
+        height: auto;
+    }
+</style>
 
-        var interval_id;
-        var first;
-        var last_message;
-        function runService() {
-            var runButton = $('#runButton');
-            runButton.attr('disabled', true);
-            runButton.html('Running');
-            $('#result').html('Processing...');
-            first = true;
-            last_message = "";
-            $.post("/{{practice_name}}/training/run_service/",
-                function(data) {
-                    clearInterval(interval_id);
-                    runButton.html('Run');
-                    runButton.removeAttr('disabled');
-                    $("#nextButton").removeAttr('disabled');
-                    alert("Training Finished!");
-                },
-                "json"
-            );
-            interval_id = setInterval(worker, 1000);
-        }
+<script>
+    $('#runButton').click(function () {
+        runService()
+    });
+    $('#nextButton').click(function() {
+        location.href='/{{ practice_name }}/training/result'
+    });
 
-        function worker() {
-            $.post("/{{practice_name}}/training/get_progress/", function(data) {
-                if (data.success && data.messages != last_message) {
-                    if (first) {
-                        $('#result').html(data.messages + "<br>");
-                        first = false;
-                    } else {
-                        $('#result').append(data.messages + "<br>");
-                    }
-                    last_message = data.messages;
+    var interval_id;
+    var first;
+    var last_message;
+    function runService() {
+        var runButton = $('#runButton');
+        runButton.attr('disabled', true);
+        runButton.html('Running');
+        $('#result').html('Processing...');
+        first = true;
+        last_message = "";
+        $.post("/{{ practice_name }}/training/run_service/",
+            function(data) {
+                clearInterval(interval_id);
+                runButton.html('Run');
+                runButton.removeAttr('disabled');
+                $("#nextButton").removeAttr('disabled');
+                alert("Training Finished!");
+            },
+            "json"
+        );
+        interval_id = setInterval(worker, 1000);
+    }
+
+    function worker() {
+        $.post("/{{ practice_name }}/training/get_progress/", function(data) {
+            if (data.success && data.messages != last_message) {
+                if (first) {
+                    $('#result').html(data.messages + "<br>");
+                    first = false;
+                } else {
+                    $('#result').append(data.messages + "<br>");
                 }
-            });
-        }
-    </script>
+                last_message = data.messages;
+            }
+        });
+    }
+</script>
 
 {% endblock frame %}
