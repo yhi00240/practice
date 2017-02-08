@@ -6,6 +6,7 @@ Django==1.10.5
 django-celery==3.2.1
 django-redis==4.7.0
 djangorestframework==3.5.3
+fakeredis==0.8.2
 flake8==3.2.1
 kombu==3.0.37
 mccabe==0.5.3

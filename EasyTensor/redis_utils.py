@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-from django_redis import get_redis_connection
+import fakeredis as fakeredis
 
 def get_redis():
-    return get_redis_connection('default')
+    return fakeredis.FakeStrictRedis()
 
 class RedisManager():
 
