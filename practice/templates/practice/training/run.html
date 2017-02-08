@@ -25,11 +25,15 @@
         });
 
         var interval_id;
+        var first;
+        var last_message;
         function runService() {
             var runButton = $('#runButton');
             runButton.attr('disabled', true);
             runButton.html('Running');
             $('#result').html('Processing...');
+            first = true;
+            last_message = "";
             $.post("/{{practice_name}}/training/run_service/",
                 function(data) {
                     clearInterval(interval_id);
@@ -43,8 +47,6 @@
             interval_id = setInterval(worker, 2000);
         }
 
-        var first = true;
-        var last_message = "";
         function worker() {
             $.post("/{{practice_name}}/training/get_progress/", function(data) {
                 if (data.success && data.messages != last_message) {
