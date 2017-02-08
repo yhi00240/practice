@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import fakeredis as fakeredis
+import fakeredis
 
 def get_redis():
     return fakeredis.FakeStrictRedis()
