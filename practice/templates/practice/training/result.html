@@ -1,4 +1,5 @@
 {% extends 'practice/base_training.html' %}
+{% load staticfiles %}
 {% block frame %}
 
 <h3>4. {{ practice_name }} training result</h3>
@@ -8,3 +9,11 @@
 <input type="submit" value="Next">
 
 {% endblock frame %}
+
+{% block scripts %}
+  <script>
+    $('#training-3').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#training-4').attr('src','{% static 'practice/images/middle_exec.png' %}');
+  </script>
+
+{% endblock %}

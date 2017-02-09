@@ -1,4 +1,5 @@
 {% extends 'practice/base_training.html' %}
+{% load staticfiles %}
 {% block frame %}
 
 <h3>3. Run {{ practice_name }} training</h3>
@@ -64,3 +65,15 @@
 </script>
 
 {% endblock frame %}
+
+{% block scripts %}
+
+  <script>
+    $('.data-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('#training-2').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#training-3').attr('src','{% static 'practice/images/middle_exec.png' %}');
+  </script>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'practice/base.html' %}
+{% load staticfiles %}
 {% block content %}
 
 <div class="row" >
@@ -25,3 +26,14 @@
 </div>
 
 {% endblock content %}
+
+{% block scripts %}
+
+  <script>
+    $('.data-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+
+  </script>
+
+{% endblock %}
