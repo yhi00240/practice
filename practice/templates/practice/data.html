@@ -1,6 +1,7 @@
 {% extends 'practice/base.html' %}
-{% block content %}
+{% load staticfiles %}
 
+{% block content %}
 <div class="row">
   <h1>Input Data</h1>
   <br>
@@ -12,24 +13,6 @@
       <button onclick="loadData()">Load data</button>
     </li>
     <br><br>
-    <li>
-      <h3>Use Own Data</h3>
-      <br>
-      <div class="col-sm-4" id="Image">
-        <h4>Training Image</h4>
-        <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
-          <input type="file" enctype="multipart/form-data" name="file"/>
-          <input type="submit" value="Upload" />
-        </form>
-      </div>
-      <div class="col-sm-4" id="Label">
-        <h4>Training Label</h4>
-        <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
-          <input type="file" enctype="multipart/form-data" name="file"/>
-          <input type="submit" value="Upload" />
-        </form>
-      </div>
-    </li>
   </ul>
 </div>
 <br><br>
@@ -52,5 +35,10 @@
     location.href='/{{ practice_name }}/algorithm'
   });
 </script>
-
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'practice/base_training.html' %}
 {% load staticfiles %}
-{% block frame %}
 
+{% block frame %}
 <h3>2. Check all settings</h3>
 <br>
 <table border="1" class="w3-table-all">
@@ -22,17 +22,13 @@
     }
   );
 </script>
-
 {% endblock frame %}
 
 {% block scripts %}
-
-  <script>
-    $('.data-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
-    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
-    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
-    $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
-    $('#training-2').attr('src','{% static 'practice/images/middle_exec.png' %}');
-  </script>
-
+<script>
+  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+  $('#training-2').attr('src','{% static 'practice/images/middle_exec.png' %}');
+</script>
 {% endblock %}

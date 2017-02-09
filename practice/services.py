@@ -115,7 +115,7 @@ class MNIST(BasePractice):
     @staticmethod
     def get_training_settings():
         return {
-            'Learning Rate': 0.1,
+            'Learning Rate': 0.01,
             'Optimization Epoch': 10,
         }
 

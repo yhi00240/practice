@@ -1,19 +1,21 @@
 {% extends 'practice/base_training.html' %}
 {% load staticfiles %}
-{% block frame %}
 
+{% block frame %}
 <h3>4. {{ practice_name }} training result</h3>
 <br>
   <iframe src="http://localhost:6006" scrolling=yes width=1000 height=500 frameborder=1></iframe>
 <br><br>
 <input type="submit" value="Next">
-
 {% endblock frame %}
 
 {% block scripts %}
-  <script>
-    $('#training-3').attr('src','{% static 'practice/images/middle_check.png' %}');
-    $('#training-4').attr('src','{% static 'practice/images/middle_exec.png' %}');
-  </script>
-
+<script>
+  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+  $('#training-2').attr('src','{% static 'practice/images/middle_check.png' %}');
+  $('#training-3').attr('src','{% static 'practice/images/middle_check.png' %}');
+  $('#training-4').attr('src','{% static 'practice/images/end_exec.png' %}');
+</script>
 {% endblock %}

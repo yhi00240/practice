@@ -1,7 +1,7 @@
 {% extends 'practice/base_training.html' %}
 {% load staticfiles %}
-{% block frame %}
 
+{% block frame %}
 <h3>1. Set {{ practice_name }} training settings</h3>
 <br>
 <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
@@ -11,16 +11,12 @@
   {% endfor %}
   <input type="submit" value="Next">
 </form>
-
 {% endblock frame %}
 
 {% block scripts %}
-
-  <script>
-    $('.data-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
-    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
-    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
-    $('#training-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
-  </script>
-
+<script>
+  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('#training-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
+</script>
 {% endblock %}
