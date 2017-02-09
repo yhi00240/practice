@@ -11,6 +11,7 @@
     </tr>
     {% endfor %}
 </table>
+
 <br>
 <button id="nextButton">Next</button>
 
@@ -18,6 +19,8 @@
     $('#nextButton').click(
         function() {
             location.href='/{{ practice_name }}/training/run'
+            $('#training-')
+
         }
     );
 </script>

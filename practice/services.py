@@ -105,7 +105,7 @@ class MNIST(BasePractice):
             self.inference = tf.nn.softmax(self.hypothesis)
         # Define cost function : using cross entropy
         with tf.name_scope('cross_entropy'):
-            self.cost = tf.reduce_mean(-tf.reduce_sum(self.Y * tf.log(tf.clip_by_value(self.inference, 1e-10, 1.0)), reduction_indices=1))
+            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.hypothesis, self.Y))
         # Tensorboard
         tf.summary.histogram("weights", W)
         tf.summary.histogram("biases", b)
@@ -123,7 +123,7 @@ class MNIST(BasePractice):
         def select_optimizer(optimizer, rate):
             if optimizer == 'GradientDescentOptimizer':
                 return tf.train.GradientDescentOptimizer(learning_rate=rate)
-            elif optimizer == 'AdamOptimizer':
+            else:
                 return tf.train.AdamOptimizer(learning_rate=rate)
         self.learning_rate = tf.constant(params[1])
         with tf.name_scope('training'):
@@ -132,7 +132,7 @@ class MNIST(BasePractice):
         self.training_epochs = params[2]
         self.batch_size = 100
         with tf.name_scope('Accuracy'):
-            correct_prediction = tf.equal(tf.argmax(self.inference, 1), tf.argmax(self.Y, 1))
+            correct_prediction = tf.equal(tf.argmax(self.hypothesis, 1), tf.argmax(self.Y, 1))
             self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         tf.summary.scalar('accuracy', self.accuracy_operation)
         self.summary_operation = tf.summary.merge_all()
