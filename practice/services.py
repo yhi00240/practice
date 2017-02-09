@@ -42,6 +42,17 @@ class BasePractice(object):
 
 class MNIST(BasePractice):
 
+    # The MNIST dataset has 10 classes, representing the digits 0 through 9.
+    NUM_CLASSES = 10
+
+    # The MNIST images are always 28x28 pixels.
+    IMAGE_SIZE = 28
+    IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE
+
+    # Hidden layers' sizes
+    HIDDEN_1_SIZE = 256
+    HIDDEN_2_SIZE = 256
+
     LOGS_PATH = 'practice/.logs'
     DATA_PATH = 'practice/.data'
 
@@ -71,8 +82,8 @@ class MNIST(BasePractice):
         dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
         self.training_data = dataset.train
         with tf.name_scope('input'):
-            self.X = tf.placeholder(tf.float32, [None, 784], name='x-input')  # [total_data_set_size, 28*28 pixels]
-            self.Y = tf.placeholder(tf.float32, [None, 10], name='y-input')  # [total_data_set_size, numbers between 0 and 9]
+            self.X = tf.placeholder(tf.float32, [None, self.IMAGE_PIXELS], name='x-input')  # [total_data_set_size, 28*28 pixels]
+            self.Y = tf.placeholder(tf.float32, [None, self.NUM_CLASSES], name='y-input')  # [total_data_set_size, numbers between 0 and 9]
 
     @staticmethod
     def get_algorithm_settings():
@@ -96,9 +107,9 @@ class MNIST(BasePractice):
 
     def set_algorithm(self, *params):
         with tf.name_scope("weights"):
-            W = tf.Variable(tf.zeros([784, 10]))
+            W = tf.Variable(tf.zeros([self.IMAGE_PIXELS, self.NUM_CLASSES]))
         with tf.name_scope("biases"):
-            b = tf.Variable(tf.zeros([10]))
+            b = tf.Variable(tf.zeros([self.NUM_CLASSES]))
         # Construct inference model
         with tf.name_scope('softmax'):
             self.hypothesis = tf.matmul(self.X, W) + b
