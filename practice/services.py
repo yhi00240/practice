@@ -123,8 +123,10 @@ class MNIST(BasePractice):
         def select_optimizer(optimizer, rate):
             if optimizer == 'GradientDescentOptimizer':
                 return tf.train.GradientDescentOptimizer(learning_rate=rate)
-            else:
+            elif optimizer == 'AdamOptimizer':
                 return tf.train.AdamOptimizer(learning_rate=rate)
+            # else
+            # TODO else일경우 오류처리
         self.learning_rate = tf.constant(params[1])
         with tf.name_scope('training'):
             self.optimizer = select_optimizer(params[0], self.learning_rate)
