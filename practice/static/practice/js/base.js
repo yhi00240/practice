@@ -10,8 +10,6 @@ $(document).ready( function() {
   // At first, submenus doesn't show
   $submenu.hide();
 
-  // $submenu.first().delay(400).slideDown(700);
-
   // if you click a mainmenu item, make this item's attr to chosen
   $submenu.on('click','li', function() {
     $submenu.siblings().find('li').removeClass('chosen');
