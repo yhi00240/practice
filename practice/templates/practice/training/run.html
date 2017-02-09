@@ -8,59 +8,59 @@
 <div id="result">Results will be shown here</div>
 
 <style>
-    #result {
-        text-align:center;
-        border: 2px solid black;
-        align-items: center;
-        width: 100%;
-        height: auto;
-    }
+  #result {
+    text-align:center;
+    border: 2px solid black;
+    align-items: center;
+    width: 100%;
+    height: auto;
+   }
 </style>
 
 <script>
-    $('#runButton').click(function () {
-        runService()
-    });
-    $('#nextButton').click(function() {
-        location.href='/{{ practice_name }}/training/result'
-    });
+  $('#runButton').click(function () {
+    runService()
+  });
+  $('#nextButton').click(function() {
+    location.href='/{{ practice_name }}/training/result'
+  });
 
-    var interval_id;
-    var first;
-    var last_message;
-    function runService() {
-        var runButton = $('#runButton');
-        runButton.attr('disabled', true);
-        runButton.html('Running');
-        $('#result').html('Processing...');
-        first = true;
-        last_message = "";
-        $.post("/{{ practice_name }}/training/run_service/",
-            function(data) {
-                clearInterval(interval_id);
-                runButton.html('Run');
-                runButton.attr('disabled', false);
-                $("#nextButton").attr('disabled', false);
-                alert("Training Finished!");
-            },
-            "json"
-        );
-        interval_id = setInterval(worker, 1000);
-    }
+  var interval_id;
+  var first;
+  var last_message;
+  function runService() {
+    var runButton = $('#runButton');
+    runButton.attr('disabled', true);
+    runButton.html('Running');
+    $('#result').html('Processing...');
+    first = true;
+    last_message = "";
+    $.post("/{{ practice_name }}/training/run_service/",
+      function(data) {
+        clearInterval(interval_id);
+        runButton.html('Run');
+        runButton.attr('disabled', false);
+        $("#nextButton").attr('disabled', false);
+        alert("Training Finished!");
+      },
+      "json"
+    );
+    interval_id = setInterval(worker, 1000);
+  }
 
-    function worker() {
-        $.post("/{{ practice_name }}/training/get_progress/", function(data) {
-            if (data.success && data.messages != last_message) {
-                if (first) {
-                    $('#result').html(data.messages + "<br>");
-                    first = false;
-                } else {
-                    $('#result').append(data.messages + "<br>");
-                }
-                last_message = data.messages;
-            }
-        });
-    }
+  function worker() {
+    $.post("/{{ practice_name }}/training/get_progress/", function(data) {
+      if (data.success && data.messages != last_message) {
+        if (first) {
+          $('#result').html(data.messages + "<br>");
+          first = false;
+        } else {
+          $('#result').append(data.messages + "<br>");
+        }
+        last_message = data.messages;
+      }
+    });
+  }
 </script>
 
 {% endblock frame %}
