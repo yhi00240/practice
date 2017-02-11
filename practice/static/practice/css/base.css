@@ -26,14 +26,9 @@ body div,body div ul li div form,body div ul li form{
     font-family:'Roboto',sans-serif;
     font-size:14px;
 }
-
-
 .slideshow {
     position: relative;
-    /* necessary to absolutely position the images inside */
-
     width: 700px;
-    /* same as the images inside */
     height: 200px;
     background-color: #eee;
     overflow: auto;
@@ -46,9 +41,7 @@ body div,body div ul li div form,body div ul li form{
     right: 0;
     bottom: 0;
     display: none;
-
 }
 .slideshow img:first-child {
     display: block;
-    /* overrides the previous style */
 }
