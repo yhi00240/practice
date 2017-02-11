@@ -1,5 +1,6 @@
 import json
 import os
+import copy
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -71,7 +72,13 @@ class Training(APIView):
     @staticmethod
     def check(request, practice_name):
         template = 'practice/training/check.html'
-        return render(request, template, {'practice_name': practice_name, 'cookies_list': request.COOKIES})
+        print_list = ['layers', 'activation_function', 'optimizer', 'weight_initialization', 'dropout', 'learning_rate', 'optimization_epoch']
+        cookies_list = {}
+
+        for i in range(len(print_list)) :
+            cookies_list[print_list[i]]=request.COOKIES.get(print_list[i])
+
+        return render(request, template, {'practice_name': practice_name, 'cookies_list': cookies_list})
 
     @staticmethod
     def run(request, practice_name):
