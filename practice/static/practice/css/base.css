@@ -6,7 +6,7 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  letter-spacing: 2px;
+  letter-spacing: .2px;
 }
 
 #main {
@@ -54,6 +54,7 @@ li {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #222a35;
+  margin-top: 20px;
   margin: 20px;
 }
 
