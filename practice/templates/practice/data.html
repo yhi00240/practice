@@ -1,18 +1,18 @@
 {% extends 'practice/base.html' %}
-{% block content %}
+{% load staticfiles %}
 
+{% block content %}
 <div class="row">
-    <h1>Input Data</h1>
-    <br>
-    <ul>
-        <li>
-            <h3>Use Example Data</h3>
-            <br>
-            <h4>Training Image&Lable</h4>
-            <button onclick="loadData()">Load data</button>
-        </li>
-        <br><br>
-        <li>
+  <h1>Input Data</h1>
+  <br>
+  <ul>
+    <li>
+      <h3>Use Example Data</h3>
+      <br>
+      <h4>Training Image&Lable</h4>
+      <button onclick="loadData()">Load data</button>
+    </li>
+      <li>
             <h3>Detail</h3>
             <div class="slideshow">
                 <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image">
@@ -25,29 +25,29 @@
                 </p>
             </div>
         </li>
-    </ul>
+  </ul>
 </div>
 <br><br>
 <div>
-    <button id="nextButton" disabled>Next</button>
+  <button id="nextButton" disabled>Next</button>
 </div>
 
 <script>
-    function loadData() {
-        $.post("/{{ practice_name }}/data/",
-            function (data) {
-                alert("Data Loaded");
-                $('#nextButton').attr('disabled', false);
-            },
-            "json"
-        );
-    }
+  function loadData() {
+    $.post("/{{ practice_name }}/data/",
+      function(data) {
+        alert("Data Loaded");
+        $('#nextButton').attr('disabled', false);
+      },
+      "json"
+    );
+  }
 
-    $('#nextButton').click(function () {
-        location.href = '/{{ practice_name }}/algorithm'
-    });
+  $('#nextButton').click(function() {
+    location.href='/{{ practice_name }}/algorithm'
+  });
 
-    var interval = undefined;
+  var interval = undefined;
     $(document).ready(function () {
         interval = setInterval(getFirst, 2000); // milliseconds
         $('#nextSlide').on('click', getNext);
@@ -79,5 +79,11 @@
         });
     }
 </script>
-
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  $('.data-end').attr('src','{% static \'practice/images/end_exec.png\' %}');
+</script>
+{% endblock %}
+

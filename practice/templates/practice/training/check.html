@@ -1,25 +1,34 @@
 {% extends 'practice/base_training.html' %}
-{% block frame %}
+{% load staticfiles %}
 
+{% block frame %}
 <h3>2. Check all settings</h3>
 <br>
 <table border="1" class="w3-table-all">
-    {% for key, value in cookies_list.items %}
-    <tr>
-        <td>{{ key }}</td>
-        <td>{{ value }}</td>
-    </tr>
-    {% endfor %}
+  {% for key, value in cookies_list.items %}
+  <tr>
+    <td>{{ key }}</td>
+    <td>{{ value }}</td>
+  </tr>
+  {% endfor %}
 </table>
 <br>
 <button id="nextButton">Next</button>
 
 <script>
-    $('#nextButton').click(
-        function() {
-            location.href='/{{ practice_name }}/training/run'
-        }
-    );
+  $('#nextButton').click(
+    function() {
+      location.href='/{{ practice_name }}/training/run'
+    }
+  );
 </script>
-
 {% endblock frame %}
+
+{% block scripts %}
+<script>
+  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+  $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+  $('#training-2').attr('src','{% static 'practice/images/middle_exec.png' %}');
+</script>
+{% endblock %}

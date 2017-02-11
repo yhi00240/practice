@@ -1,31 +1,121 @@
-#logo_EasyTensor {
-    width:120px;
-    height:60px;
-    margin:10px;
+/*------------ General Settings ------------*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body {
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 2px;
 }
-#main{
-    margin-left:250px;
-    margin-top:25px;
+
+#main {
+  margin-left:250px;
+  margin-top:25px;
 }
-.font{
-    font-family: 'Roboto', sans-serif;
+
+#logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 5px;
+  margin-top : 5px;
 }
-body div ul li div h4,body div ul li h4{
-    font-family:'Roboto',sans-serif;
-    font-size:17px;
+
+#main_nav {
+  overflow: hidden;
+  margin: 0 auto;
+  float: right;
+  display: inline-block;
 }
-body div ul li h3{
-    font-family:'Roboto',sans-serif;
-    font-size:20px;
+
+#site_header #branding {
+  text-align: center;
+  padding: 3px 10px 20px;
+  display: inline-block;
 }
-body div h1{
-    font-family:'Roboto',sans-serif;
-    font-size:30px;
+
+header {
+  border-bottom: 1px solid #222a34;
 }
-body div,body div ul li div form,body div ul li form{
-    font-family:'Roboto',sans-serif;
-    font-size:14px;
+
+ul {
+  width: 276px;
+  list-style: none;
 }
+
+li {
+  cursor: pointer;
+  list-style-type:none;
+}
+
+/*------------ Main Menu ------------*/
+.step {
+  font-size: 16px;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #222a35;
+  margin: 20px;
+}
+
+.mainmenu {
+  font-size: 16px;
+  padding: 0;
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.mainmenu > li {
+  box-sizing: border-box;
+  height: 48px;
+  color: #222a35;
+  border-bottom: 1px solid #222a35;
+}
+
+.mainmenu > li p {
+  line-height: 48px;
+  display: block;
+  text-align: left;
+  margin-left: 50px;
+}
+
+.mainmenu > li .icon {
+  display: block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  padding: 14px 20px 0 20px;
+}
+
+/*------------ Sub Menu ------------*/
+.step-image{
+  width: 20px;
+  height: auto;
+}
+
+.submenu {
+  font-size: 13px;
+  box-sizing: border-box;
+  color: #222a35;
+}
+
+.submenu > li {
+  line-height: 20px;
+  height: 35px;
+  margin-left: -20px;
+}
+
+.submenu .submenu_name {
+  width:50%;
+  float:left;
+  margin-top:7px;
+}
+
+.submenu .submenu_image {
+  width:10%;
+  float:left;
+}
+
+/*------------ Slide show ------------*/
 .slideshow {
     position: relative;
     width: 700px;
