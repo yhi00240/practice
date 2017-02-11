@@ -25,10 +25,6 @@
                 </p>
             </div>
         </li>
-        <li>
-            <h3>Loaded data</h3>
-            <img id="loadedData" src="/{{ practice_name }}/.data/train-images-idx3-ubyte.gz" style="display: none;">
-        </li>
     </ul>
 </div>
 <br><br>
@@ -88,11 +84,7 @@
 
 {% block scripts %}
 <script>
-    $('.data-end').attr('src', '{% static '
-    practice / images / end_exec.png
-    ' %}'
-    )
-    ;
+    $('.data-end').attr('src', '{% static 'practice / images / end_exec.png' %}');
 </script>
 {% endblock %}
 
