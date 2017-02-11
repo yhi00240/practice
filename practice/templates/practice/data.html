@@ -13,22 +13,18 @@
         </li>
         <br><br>
         <li>
-            <h3>Use Own Data</h3>
-            <br>
-            <div class="col-sm-4" id="Image">
-                <h4>Training Image</h4>
-                <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
-                    <input type="file" enctype="multipart/form-data" name="file"/>
-                    <input type="submit" value="Upload" />
-                </form>
-            </div>
-            <div class="col-sm-4" id="Label">
-                <h4>Training Label</h4>
-                <form action = "/{{ practice_name }}/upload/" method="post" enctype="multipart/form-data">
-                    <input type="file" enctype="multipart/form-data" name="file"/>
-                    <input type="submit" value="Upload" />
-                </form>
-            </div>
+            <h3>Detail</h3>
+
+<div class="slideshow">
+    <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image" align="center">
+    <img src="http://placehold.it/500x100/008000&text=2" width="500" height="100" alt="second image">
+    <img src="http://placehold.it/500x100/B22222&text=3" width="500" height="100" alt="third image">
+    <img src="http://placehold.it/500x100/F4A460&text=4" width="500" height="100" alt="fourth image">
+</div>
+<button id="prevSlide">Prev</button>
+<button id="nextSlide">Next</button>
+
+
         </li>
     </ul>
 </div>
@@ -36,6 +32,7 @@
     <div>
         <button id="nextButton" disabled>Next</button>
     </div>
+
 <script>
     function loadData() {
         $.post("/{{ practice_name }}/data/",
@@ -50,6 +47,44 @@
     $('#nextButton').click(function() {
         location.href='/{{ practice_name }}/algorithm'
     });
+
+
+
+    var interval = undefined;
+$(document).ready(function () {
+    interval = setInterval(getFirst, 2000); // milliseconds
+    $('#nextSlide').on('click', getNext);
+    $('#prevSlide').on('click', getPrev);
+});
+
+function getFirst() {
+    var $curr = $('.slideshow img').first();
+    $curr.css('z-index', 1);
+}
+
+function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next().length) ? $curr.next() : $('.slideshow img').first();
+
+    transition($curr, $next);
+}
+
+function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev().length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+}
+
+function transition($curr, $next) {
+    clearInterval(interval);
+
+    $next.css('z-index', 2).fadeIn('slow', function () {
+        $curr.hide().css('z-index', 0);
+        $next.css('z-index', 1);
+    });
+
+}
 </script>
+
 
 {% endblock content %}
