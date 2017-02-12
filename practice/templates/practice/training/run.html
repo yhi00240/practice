@@ -67,10 +67,15 @@
 
 {% block scripts %}
 <script>
+$(document).ready(function() {
   $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
   $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
   $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
   $('#training-2').attr('src','{% static 'practice/images/middle_check.png' %}');
   $('#training-3').attr('src','{% static 'practice/images/middle_exec.png' %}');
+  $('#training-3').parent().next().children().css('font-weight','Bold');
+  $('#training-3').parent().next().children().css('font-size','17px');
+});
+
 </script>
 {% endblock scripts %}
