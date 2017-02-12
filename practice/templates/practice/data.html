@@ -33,6 +33,11 @@
 
 {% block scripts %}
 <script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('data')){
+    $('.submenu').hide();
+    $('#data.submenu').show();
+  }
   $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
 </script>
-{% endblock %}
+{% endblock scripts%}

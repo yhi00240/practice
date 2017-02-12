@@ -30,7 +30,12 @@
 
 {% block scripts %}
 <script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('algorithm')){
+    $('.submenu').hide();
+    $('#algorithm.submenu').show();
+  }
   $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
   $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
 </script>
-{% endblock %}
+{% endblock scripts %}

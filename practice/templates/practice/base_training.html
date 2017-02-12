@@ -5,7 +5,14 @@
 <div class="row">
   <br>
   {% block frame %}
-  {% endblock %}
+  {% endblock frame %}
 </div>
+<script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('training')){
+    $('.submenu').hide();
+    $('#training.submenu').show();
+  }
+</script>
 {% endblock content %}
 

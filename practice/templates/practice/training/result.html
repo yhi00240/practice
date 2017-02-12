@@ -17,5 +17,9 @@
   $('#training-2').attr('src','{% static 'practice/images/middle_check.png' %}');
   $('#training-3').attr('src','{% static 'practice/images/middle_check.png' %}');
   $('#training-4').attr('src','{% static 'practice/images/end_exec.png' %}');
+  var cur= window.location.pathname;
+  if(cur === "mnist/training/"){
+    $('.mainmenu li').next('.submenu').slideToggle().siblings('.submenu').slideUp();
+  }
 </script>
-{% endblock %}
+{% endblock scrpits %}
