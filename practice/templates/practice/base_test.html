@@ -1,0 +1,11 @@
+{% extends 'practice/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+  <h1>Test {{ practice_name }}</h1>
+  <br>
+  {% block frame %}
+  {% endblock %}
+</div>
+{% endblock %}
