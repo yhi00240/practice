@@ -13,6 +13,11 @@ body {
   margin-top : 25px;
 }
 
+#main h3, h4{
+  font-family : "Montserrat", sans-serif;
+  text-color : #222a34;
+}
+
 #logo {
   width : 200px;
   height : auto;
@@ -48,7 +53,7 @@ li {
 }
 
 .step {
-  font-size : 16px;
+  font-size : 25px;
   padding : 10px;
   text-align : left;
   border-bottom : 1px solid #222a35;

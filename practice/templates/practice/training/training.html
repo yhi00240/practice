@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block frame %}
-<h3>1. Set {{ practice_name }} training settings</h3>
+<h3>Set {{ practice_name }} training settings</h3>
 <br>
 <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
   {% for key,value in list.items %}
