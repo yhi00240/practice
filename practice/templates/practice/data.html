@@ -33,16 +33,16 @@
 
 {% block scripts %}
 <script>
-$(document).ready(function() {
-  var cur= window.location.pathname;
-  if(cur.indexOf('data')){
-    $('.submenu').hide();
-    $('#data.submenu').show();
-  }
-  $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
-  $('#data-1').parent().next().children().css('font-weight','Bold');
-  $('#data-1').parent().next().children().css('font-size','17px');
-  $('#data').prev().children().css('color','#d50f25');
-});
+  $(document).ready(function() {
+    var cur= window.location.pathname;
+    if(cur.indexOf('data')){
+      $('.submenu').hide();
+      $('#data.submenu').show();
+    }
+    $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#data-1').parent().next().children().css('font-weight','Bold');
+    $('#data-1').parent().next().children().css('font-size','17px');
+    $('#data').prev().children().css('color','#d50f25');
+  });
 </script>
 {% endblock scripts%}

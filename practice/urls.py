@@ -3,8 +3,6 @@ from django.conf.urls import url
 from practice import views
 
 urlpatterns = [
-    url(r'^(?P<practice_name>.+)/upload/$', views.upload, name='upload'),
-
     url(r'^(?P<practice_name>.+)/data/$', views.Data.as_view(), name='data'),
 
     url(r'^(?P<practice_name>.+)/algorithm/$', views.Algorithm.as_view(), name='algorithm'),
@@ -17,4 +15,6 @@ urlpatterns = [
     url(r'^(?P<practice_name>.+)/training/result$', views.Training.result, name='training_result'),
 
     url(r'^(?P<practice_name>.+)/test/$', views.Test.as_view(), name='test'),
+    url(r'^(?P<practice_name>.+)/test/draw$', views.Test.draw, name='test_draw'),
+    url(r'^(?P<practice_name>.+)/test/draw_result$', views.Test.draw_result, name='test_draw_result'),
 ]

@@ -1,0 +1,21 @@
+{% extends 'practice/base_test.html' %}
+{% load staticfiles %}
+
+{% block frame %}
+<h3>Using Test Data</h3>
+{% endblock frame %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.training-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.training-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.test-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#test-2').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#test-2').parent().next().children().css('font-weight','Bold');
+    $('#test-2').parent().next().children().css('font-size','17px');
+  });
+</script>
+{% endblock scripts %}

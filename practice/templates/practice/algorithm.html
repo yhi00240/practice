@@ -30,17 +30,17 @@
 
 {% block scripts %}
 <script>
-$(document).ready(function() {
-  var cur= window.location.pathname;
-  if(cur.indexOf('algorithm')){
-    $('.submenu').hide();
-    $('#algorithm.submenu').show();
-  }
-  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
-  $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
-  $('#algorithm-1').parent().next().children().css('font-weight','Bold');
-  $('#algorithm-1').parent().next().children().css('font-size','17px');
-  $('#algorithm').prev().children().css('color','#eeb211');
-});
+  $(document).ready(function() {
+    var cur= window.location.pathname;
+    if(cur.indexOf('algorithm')){
+      $('.submenu').hide();
+      $('#algorithm.submenu').show();
+    }
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#algorithm-1').parent().next().children().css('font-weight','Bold');
+    $('#algorithm-1').parent().next().children().css('font-size','17px');
+    $('#algorithm').prev().children().css('color','#eeb211');
+  });
 </script>
 {% endblock scripts %}

@@ -1,0 +1,131 @@
+{% extends 'practice/base_test.html' %}
+{% load staticfiles %}
+
+{% block frame %}
+<h3>Using your own data</h3>
+<div class="col-md-5">
+  <p>Draw a number</p>
+  <p>
+    <canvas id="input" width="280" height="280" style="border:solid 2px"></canvas>
+  </p>
+  <p>
+    <button id="clear" class="btn btn-default">clear</button>
+    <button id="set" class="btn btn-default">set</button>
+  </p>
+</div>
+<div class="col-md-7">
+  <table id="result" class="table">
+    {% for key in keys %}
+      <tr>
+        <th>{{ key }}</th>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+<script>
+  var eventObject = {
+    drawing: false,
+    x: 0,
+    y: 0
+  };
+  var canvas = document.getElementById('input');
+  var context = canvas.getContext("2d");
+  (function initialize() {
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    canvas.addEventListener('mousedown', initDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseout', endDraw);
+  })();
+  $('#clear').click(function () {
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < 10; i++) {
+      $('#result').find('tr').eq(i).find('td').text("");
+    }
+  });
+  $('#set').click(function () {
+    getTestImage();
+  });
+  function getPosition(event) {
+    var bounding = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - bounding.left,
+      y: event.clientY - bounding.top
+    };
+  }
+  function initDraw(event) {
+    eventObject.drawing = true;
+    var curr = getPosition(event);
+    eventObject.x = curr.x;
+    eventObject.y = curr.y;
+    canvas.style.cursor = 'default';
+    context.fillStyle = '#000000';
+    context.lineWidth = 8;
+    context.lineCap = 'round';
+  }
+  function draw(event) {
+    if (eventObject.drawing) {
+      var curr = getPosition(event);
+      context.beginPath();
+      context.moveTo(eventObject.x, eventObject.y);
+      context.lineTo(curr.x, curr.y);
+      context.stroke();
+      context.closePath();
+      eventObject.x = curr.x;
+      eventObject.y = curr.y;
+    }
+  }
+  function endDraw(event) {
+    eventObject.drawing = false;
+    eventObject.x = 0;
+    eventObject.y = 0;
+  }
+  function getTestImage() {
+    var img = new Image();
+    var inputs = [];
+    img.onload = function () {
+      var actualContext = document.createElement('canvas').getContext('2d');
+      actualContext.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
+      var data = actualContext.getImageData(0, 0, 28, 28).data;
+      for (var i = 0; i < 28; i++) {
+        for (var j = 0; j < 28; j++) {
+          var n = 4 * (i * 28 + j);
+          inputs[i * 28 + j] = (data[n] + data[n + 1] + data[n + 2]) / 3;
+        }
+      }
+      var input = JSON.stringify(inputs);
+      console.log('input: ' + input);
+      $.post(
+        "/{{ practice_name }}/test/draw_result",
+        {
+          image_data: input
+        },
+        function (data) {
+          console.log('result: ' + data.results);
+          for (var i = 0; i < 10; i++) {
+            $('#result').find('tr').eq(i).find('td').text(data.results[i]);
+          }
+        }
+      );
+    };
+    img.src = canvas.toDataURL();
+  }
+</script>
+{% endblock frame%}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.training-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.training-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('#test-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
+    $('#test-1').parent().next().children().css('font-weight','Bold');
+    $('#test-1').parent().next().children().css('font-size','17px');
+  });
+</script>
+{% endblock scripts %}
