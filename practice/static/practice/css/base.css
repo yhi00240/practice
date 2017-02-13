@@ -50,6 +50,7 @@ ul {
 li {
   cursor : pointer;
   list-style-type : none;
+
 }
 
 .step {
@@ -93,6 +94,7 @@ li {
 .step-image {
   width : 20px;
   height : auto;
+
 }
 
 .submenu {
@@ -110,10 +112,33 @@ li {
 .submenu .submenu_name {
   width : 50%;
   float : left;
-  margin-top : 7px;
+  margin-top : 7px; 
 }
 
 .submenu .submenu_image {
   width : 10%;
   float : left;
+}
+
+/*------------ Slide show ------------*/
+.slideshow {
+  position : relative;
+  width : 700px;
+  height : 200px;
+  background-color : #eee;
+  overflow : auto;
+}
+
+.slideshow img {
+  position : absolute;
+  margin : auto;
+  top : 0;
+  left : 0;
+  right : 0;
+  bottom : 0;
+  display : none;
+}
+
+.slideshow img:first-child {
+  display : block;
 }
