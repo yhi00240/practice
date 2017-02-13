@@ -50,7 +50,6 @@ ul {
 li {
   cursor : pointer;
   list-style-type : none;
-
 }
 
 .step {
@@ -94,7 +93,6 @@ li {
 .step-image {
   width : 20px;
   height : auto;
-
 }
 
 .submenu {
