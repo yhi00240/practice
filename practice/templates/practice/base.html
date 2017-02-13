@@ -3,6 +3,8 @@
 <html lang="en">
 <head>
   <title>Step Menu</title>
+  <META HTTP-EQUIV="page-exit" content="BlendTrans(Duration=0.1)">
+  <META HTTP-EQUIV="page-enter" content="BlendTrans(Duration=0.1)">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -10,7 +12,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="{% static 'practice/css/base.css' %}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -19,66 +20,62 @@
       <li><img src="{% static 'practice/images/logo.png' %}" id="logo"></li>
     </div>
   </header>
-    <div class=" w3-sidenav w3-center" id="menu">
-      <ul class="step">STEP</ul>
-      <ul class="mainmenu">
-        <li><i class="material-icons icon">folder_open</i><p>Data</p></li>
-        <ul class="submenu">
-          <li>
-            <div class="submenu_image"><img id="data-1" src="{% static 'practice/images/end.png' %}" class="step-image data-end"></div>
-            <div class="submenu_name"><span>Load</span></div>
-          </li>
-        </ul>
-          <li><i class="material-icons icon">multiline_chart</i><p>Algorithm</p></li>
-          <ul class="submenu">
-          <li>
-            <div class="submenu_image"><img id="algiruthm-1" src="{% static 'practice/images/end.png' %}" class="step-image algorithm-end"></div>
-            <div class="submenu_name"><span>Setting</span></div>
-          </li>
-        </ul>
-        <li><i class="material-icons icon">settings_applications</i><p>Training</p></li>
-        <ul class="submenu">
-          <li>
-            <div class="submenu_image"><img id="training-1" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
-            <div class="submenu_name"><span>Setting</span></div>
-          </li>
-          <li>
-            <div class="submenu_image"><img id="training-2" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
-            <div class="submenu_name"><span>Check</span></div>
-          </li>
-          <li>
-            <div class="submenu_image"><img id="training-3" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
-            <div class="submenu_name"><span>Run</span></div>
-          </li>
-          <li>
-            <div class="submenu_image"><img id="training-4" src="{% static 'practice/images/end.png' %}" class="step-image training-end"></div>
-            <div class="submenu_name"><span>Result</span></div>
-          </li>
-        </ul>
-          <li><i class="material-icons icon">create</i><p>Test</p></li>
-          <ul class="submenu">
-            <li>
-              <div class="submenu_image"><img id="test-1" src="{% static 'practice/images/middle.png' %}" class="step-image result-middle"></div>
-              <div class="submenu_name"><span>Load</span></div>
-            </li>
-            <li>
-              <div class="submenu_image"><img id="test-2" src="{% static 'practice/images/middle.png' %}" class="step-image result-middle"></div>
-              <div class="submenu_name"><span>Run</span></div>
-            </li>
-            <li>
-              <div class="submenu_image"><img id="test-3" src="{% static 'practice/images/end.png' %}" class="step-image result-end"></div>
-              <div class="submenu_name"><span>Result</span></div>
-            </li>
-          </ul>
+  <div class=" w3-sidenav w3-center" id="menu">
+    <ul class="step">{{ practice_name }}</ul>
+    <ul class="mainmenu">
+      <li><i class="material-icons icon">folder_open</i><p>Data</p></li>
+      <ul id="data" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="data-1" src="{% static 'practice/images/end.png' %}" class="step-image data-end"></div>
+          <div class="submenu_name"><span>Load</span></div>
+        </li>
       </ul>
-    </div>
-    <div class="col-sm-8" id="main">
-      {% block content %}
-      {% endblock %}
-    </div>
+      <li><i class="material-icons icon">multiline_chart</i><p>Algorithm</p></li>
+      <ul id="algorithm" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="algorithm-1" src="{% static 'practice/images/end.png' %}" class="step-image algorithm-end"></div>
+          <div class="submenu_name"><span>Setting</span></div>
+        </li>
+      </ul>
+      <li ><i class="material-icons icon">settings_applications</i><p>Training</p></li>
+      <ul id="training" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="training-1" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Setting</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-2" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Check</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-3" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Run</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-4" src="{% static 'practice/images/end.png' %}" class="step-image training-end"></div>
+          <div class="submenu_name"><span>Result</span></div>
+        </li>
+      </ul>
+      <li><i class="material-icons icon">create</i><p>Test</p></li>
+      <ul id="test" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="test-1" src="{% static 'practice/images/middle.png' %}" class="step-image test-middle"></div>
+          <div class="submenu_name"><span>Data</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="test-2" src="{% static 'practice/images/end.png' %}" class="step-image test-end"></div>
+          <div class="submenu_name"><span>Result</span></div>
+        </li>
+      </ul>
+    </ul>
+  </div>
+  <div class="col-sm-8" id="main">
+    {% block content %}
+    {% endblock content %}
+  </div>
 
 </body>
 {% block scripts %}
-{% endblock %}
+{% endblock scripts %}
 <script src="{% static 'practice/js/base.js' %}"></script>
 </html>

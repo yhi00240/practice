@@ -3,7 +3,9 @@
 
 {% block content %}
 <div class="row" >
-  <h1>Set {{ practice_name }} algorithm</h1>
+  <br>
+  <h3>Set {{ practice_name }} algorithm</h3>
+  <br>
   <form action = "/{{ practice_name }}/algorithm/" accept-charset="utf-8" name="save_algorithm" method="post">
     <br>
     <table border="1" class="w3-table-all">
@@ -28,7 +30,17 @@
 
 {% block scripts %}
 <script>
-  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
-  $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+  $(document).ready(function() {
+    var cur= window.location.pathname;
+    if(cur.indexOf('algorithm')){
+      $('.submenu').hide();
+      $('#algorithm.submenu').show();
+    }
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#algorithm-1').parent().next().children().css('font-weight','Bold');
+    $('#algorithm-1').parent().next().children().css('font-size','17px');
+    $('#algorithm').prev().children().css('color','#eeb211');
+  });
 </script>
-{% endblock %}
+{% endblock scripts %}

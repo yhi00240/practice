@@ -3,9 +3,16 @@
 
 {% block content %}
 <div class="row">
-  <h1>Test {{ practice_name }}</h1>
   <br>
   {% block frame %}
-  {% endblock %}
+  {% endblock frame %}
 </div>
-{% endblock %}
+<script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('training')){
+    $('.submenu').hide();
+    $('#test.submenu').show();
+  }
+   $('#test').prev().children().css('color','#3369e8');
+</script>
+{% endblock content %}

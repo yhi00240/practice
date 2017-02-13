@@ -1,139 +1,142 @@
-/*------------ General Settings ------------*/
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body {
-  font-family: "Montserrat", sans-serif;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  letter-spacing: .2px;
+  font-family : "Montserrat", sans-serif;
+  overflow : hidden;
+  margin : 0;
+  padding : 0;
+  letter-spacing : 0.2px;
 }
 
 #main {
-  margin-left: 250px;
-  margin-top: 25px;
+  margin-left : 250px;
+  margin-top : 25px;
+}
+
+#main h3, h4{
+  font-family : "Montserrat", sans-serif;
+  text-color : #222a34;
 }
 
 #logo {
-  width: 200px;
-  height: auto;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  width : 200px;
+  height : auto;
+  margin-bottom : 5px;
+  margin-top : 5px;
 }
 
 #main_nav {
-  overflow: hidden;
-  margin: 0 auto;
-  float: right;
-  display: inline-block;
+  overflow : hidden;
+  margin : 0 auto;
+  float : right;
+  display : inline-block;
 }
 
 #site_header #branding {
-  text-align: center;
-  padding: 3px 10px 20px;
-  display: inline-block;
+  text-align : center;
+  padding : 3px 10px 20px;
+  display : inline-block;
 }
 
 header {
-  border-bottom: 1px solid #222a34;
+  border-bottom : 1px solid #222a34;
 }
 
 ul {
-  width: 276px;
-  list-style: none;
+  width : 276px;
+  list-style : none;
 }
 
 li {
-  cursor: pointer;
-  list-style-type: none;
+  cursor : pointer;
+  list-style-type : none;
 }
 
-/*------------ Main Menu ------------*/
 .step {
-  font-size: 16px;
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #222a35;
-  margin: 20px;
+  font-size : 25px;
+  padding : 10px;
+  text-align : left;
+  border-bottom : 1px solid #222a35;
+  margin-top : 20px;
+  margin : 20px;
 }
 
 .mainmenu {
-  font-size: 16px;
-  padding: 0;
-  margin-left: 30px;
-  margin-right: 10px;
+  font-size : 16px;
+  padding : 0;
+  margin-left : 30px;
+  margin-right : 10px;
 }
 
 .mainmenu > li {
-  box-sizing: border-box;
-  height: 48px;
-  color: #222a35;
-  border-bottom: 1px solid #222a35;
+  box-sizing : border-box;
+  height : 48px;
+  color : #222a35;
+  border-bottom : 1px solid #222a35;
 }
 
 .mainmenu > li p {
-  line-height: 48px;
-  display: block;
-  text-align: left;
-  margin-left: 50px;
+  line-height : 48px;
+  display : block;
+  text-align : left;
+  margin-left : 50px;
 }
 
 .mainmenu > li .icon {
-  display: block;
-  float: left;
-  width: 20px;
-  height: 20px;
-  padding: 14px 20px 0 20px;
+  display : block;
+  float : left;
+  width : 20px;
+  height : 20px;
+  padding : 14px 20px 0 20px;
 }
 
-/*------------ Sub Menu ------------*/
 .step-image {
-  width: 20px;
-  height: auto;
+  width : 20px;
+  height : auto;
 }
 
 .submenu {
-  font-size: 13px;
-  box-sizing: border-box;
-  color: #222a35;
+  font-size : 13px;
+  box-sizing : border-box;
+  color : #222a35;
 }
 
 .submenu > li {
-  line-height: 20px;
-  height: 35px;
-  margin-left: -20px;
+  line-height : 20px;
+  height : 35px;
+  margin-left : -20px;
 }
 
 .submenu .submenu_name {
-  width: 50%;
-  float: left;
-  margin-top: 7px;
+  width : 50%;
+  float : left;
+  margin-top : 7px; 
 }
 
 .submenu .submenu_image {
-  width: 10%;
-  float: left;
+  width : 10%;
+  float : left;
 }
 
 /*------------ Slide show ------------*/
 .slideshow {
-  position: relative;
-  width: 700px;
-  height: 200px;
-  background-color: #eee;
-  overflow: auto;
+  position : relative;
+  width : 700px;
+  height : 200px;
+  background-color : #eee;
+  overflow : auto;
 }
 
 .slideshow img {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
+  position : absolute;
+  margin : auto;
+  top : 0;
+  left : 0;
+  right : 0;
+  bottom : 0;
+  display : none;
 }
 
 .slideshow img:first-child {
-  display: block;
+  display : block;
 }

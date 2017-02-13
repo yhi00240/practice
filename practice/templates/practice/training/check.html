@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block frame %}
-<h3>2. Check all settings</h3>
+<h3>Check all settings</h3>
 <br>
 <table border="1" class="w3-table-all">
   {% for key, value in cookies_list.items %}
@@ -26,9 +26,13 @@
 
 {% block scripts %}
 <script>
-  $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
-  $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
-  $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
-  $('#training-2').attr('src','{% static 'practice/images/middle_exec.png' %}');
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('#training-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#training-2').attr('src','{% static 'practice/images/middle_exec.png' %}');
+    $('#training-2').parent().next().children().css('font-weight','Bold');
+    $('#training-2').parent().next().children().css('font-size','17px');
+  });
 </script>
-{% endblock %}
+{% endblock scripts %}
