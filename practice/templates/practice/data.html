@@ -7,22 +7,20 @@
   <h3>Load Example Data</h3>
   <br>
   <h4>Training Image&Lable</h4>
-        <button onclick="loadData()">Load data</button>
-    </li>
-    <li>
-      <h3>Detail</h3>
-      <div class="slideshow">
-        <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image">
-        <img src="http://placehold.it/500x100/008000&text=2" width="500" height="100" alt="second image">
-        <img src="http://placehold.it/500x100/B22222&text=3" width="500" height="100" alt="third image">
-        <img src="http://placehold.it/500x100/F4A460&text=4" width="500" height="100" alt="fourth image">
-        <p style="position:absolute;bottom:0;right:0;">
-          <button id="prevSlide">Prev</button>
-          <button id="nextSlide">Next</button>
-        </p>
-      </div>
-    </li>
-  </ul>
+  <button onclick="loadData()">Load data</button>
+  <li>
+    <h3>Detail</h3>
+    <div class="slideshow">
+      <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image">
+      <img src="http://placehold.it/500x100/008000&text=2" width="500" height="100" alt="second image">
+      <img src="http://placehold.it/500x100/B22222&text=3" width="500" height="100" alt="third image">
+      <img src="http://placehold.it/500x100/F4A460&text=4" width="500" height="100" alt="fourth image">
+      <p style="position:absolute;bottom:0;right:0;">
+        <button id="prevSlide">Prev</button>
+        <button id="nextSlide">Next</button>
+      </p>
+    </div>
+  </li>
 </div>
 <br><br>
 <div>
@@ -75,7 +73,6 @@
       $next.css('z-index', 1);
     });
   }
-
 </script>
 {% endblock content %}
 
