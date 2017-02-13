@@ -1,8 +1,10 @@
+from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import os
 
 from EasyTensor.redis_utils import RedisManager
+from practice.utils import image_to_mnist
 
 
 class BasePractice(object):
@@ -10,18 +12,10 @@ class BasePractice(object):
     LOGS_PATH = None
     DATA_PATH = None
 
-    def load_training_data(self, *params):
-        raise NotImplementedError()
-
-    @staticmethod
-    def get_algorithm_settings():
+    def load_data(self, *params):
         raise NotImplementedError()
 
     def set_algorithm(self, *params):
-        raise NotImplementedError()
-
-    @staticmethod
-    def get_training_settings():
         raise NotImplementedError()
 
     def set_training(self, *params):
@@ -30,10 +24,10 @@ class BasePractice(object):
     def run(self, *params):
         raise NotImplementedError()
 
-    def load_testing_data(self, *params):
+    def test_all(self, *params):
         raise NotImplementedError()
 
-    def test(self, *params):
+    def test_single(self, *params):
         raise NotImplementedError()
 
     @staticmethod
@@ -42,131 +36,154 @@ class BasePractice(object):
 
 class MNIST(BasePractice):
 
+    # Static Variables
     LOGS_PATH = 'practice/.logs'
     DATA_PATH = 'practice/.data'
-
-    # Data
-    training_data = None
-    test_data = None
+    MODEL_PATH = 'practice/.models/mnist'
+    BATCH_SIZE = 100
+    IMAGE_SIZE = 28
+    IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE
+    NUM_CLASSES = 10
+    ONE_BYTE = 255
     X = None
     Y = None
 
-    # Algorithm
-    hypothesis = None
-    inference = None
-    cost = None
+    def __init__(self):
+        self.sess = tf.Session()
+        self.data = None
+        self.hypothesis = None
+        self.cost = None
+        self.optimizer = None
+        self.training_epochs = None
+        self.train_operation = None
+        self.accuracy_operation = None
+        self.summary_operation = None
+        self.save_path = None
+        with tf.name_scope('Input'):
+            MNIST.X = tf.placeholder(tf.float32, [None, MNIST.IMAGE_PIXELS], name='images')  # [total_data_set_size, 28*28 pixels]
+            MNIST.Y = tf.placeholder(tf.float32, [None, MNIST.NUM_CLASSES], name='labels')  # [total_data_set_size, numbers between 0 and 9]
 
-    # Training
-    learning_rate = None
-    optimizer = None
-    training_epochs = None
-    batch_size = None
-
-    # Operation
-    train_operation = None
-    accuracy_operation = None
-    summary_operation = None
-
-    def load_training_data(self, *params):
-        dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
-        self.training_data = dataset.train
-        with tf.name_scope('input'):
-            self.X = tf.placeholder(tf.float32, [None, 784], name='x-input')  # [total_data_set_size, 28*28 pixels]
-            self.Y = tf.placeholder(tf.float32, [None, 10], name='y-input')  # [total_data_set_size, numbers between 0 and 9]
-
-    @staticmethod
-    def get_algorithm_settings():
-        return {
-            'Num of layers': [
-                1, 2, 3
-            ],
-            'Activation Function': [
-                'Sigmoid', 'ReLU'
-            ],
-            'Optimizer': [
-                'GradientDescentOptimizer', 'AdamOptimizer'
-            ],
-            'Weight Initialization': [
-                'No', 'Yes'
-            ],
-            'Dropout': [
-                'No', 'Yes'
-            ]
-        }
-
-    def set_algorithm(self, *params):
-        with tf.name_scope("weights"):
-            W = tf.Variable(tf.zeros([784, 10]))
-        with tf.name_scope("biases"):
-            b = tf.Variable(tf.zeros([10]))
-        # Construct inference model
-        with tf.name_scope('softmax'):
-            self.hypothesis = tf.matmul(self.X, W) + b
-            self.inference = tf.nn.softmax(self.hypothesis)
-        # Define cost function : using cross entropy
-        with tf.name_scope('cross_entropy'):
-            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.hypothesis, self.Y))
-        # Tensorboard
-        tf.summary.histogram("weights", W)
-        tf.summary.histogram("biases", b)
-        tf.summary.histogram("inference", self.inference)
-        tf.summary.scalar("cost", self.cost)
+    def load_data(self, test=False, *params):
+        data_set = input_data.read_data_sets(MNIST.DATA_PATH, one_hot=True)
+        if test:
+            self.data = data_set.test
+        else:
+            self.data = data_set.train
 
     @staticmethod
-    def get_training_settings():
-        return {
-            'Learning Rate': 0.01,
-            'Optimization Epoch': 10,
-        }
+    def single_layer(weight_initialize=False):
+        if weight_initialize:
+            W = tf.get_variable('weights', shape=[MNIST.IMAGE_PIXELS, MNIST.NUM_CLASSES], initializer=xavier_initializer())
+            b = tf.Variable(tf.zeros([MNIST.NUM_CLASSES]), name='biases')
+        else:
+            W = tf.Variable(tf.random_normal([MNIST.IMAGE_PIXELS, MNIST.NUM_CLASSES]), name='weights')
+            b = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='biases')
+        hypothesis = tf.add(tf.matmul(MNIST.X, W), b)
+        return hypothesis, [W, b]
 
-    def set_training(self, *params):
-        def select_optimizer(optimizer, rate):
+    @staticmethod
+    def multi_layer(weight_initialize=False):
+        with tf.name_scope('Model'):
+            if weight_initialize:
+                W1 = tf.get_variable('W1', shape=[MNIST.IMAGE_PIXELS, 256], initializer=xavier_initializer())
+                W2 = tf.get_variable('W2', shape=[256, 256], initializer=xavier_initializer())
+                W3 = tf.get_variable('W3', shape=[256, MNIST.NUM_CLASSES], initializer=xavier_initializer())
+                B1 = tf.Variable(tf.zeros([256]), name='B1')
+                B2 = tf.Variable(tf.zeros([256]), name='B2')
+                B3 = tf.Variable(tf.zeros([MNIST.NUM_CLASSES]), name='B3')
+            else:
+                W1 = tf.Variable(tf.random_normal([MNIST.IMAGE_PIXELS, 256]), name='W1')
+                W2 = tf.Variable(tf.random_normal([256, 256]), name='W2')
+                W3 = tf.Variable(tf.random_normal([256, MNIST.NUM_CLASSES]), name='W3')
+                B1 = tf.Variable(tf.random_normal([256]), name='B1')
+                B2 = tf.Variable(tf.random_normal([256]), name='B2')
+                B3 = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='B3')
+            L1 = tf.nn.relu(tf.add(tf.matmul(MNIST.X, W1), B1), name='Hidden_layer1')
+            L2 = tf.nn.relu(tf.add(tf.matmul(L1, W2), B2), name='Hidden_layer2')
+            hypothesis = tf.add(tf.matmul(L2, W3), B3)
+            return hypothesis, [W1, W2, W3, B1, B2, B3]
+
+    def get_model(self, model_type, weight_initialize):
+        single_layer = (model_type == 'Single layer')
+        initialize = (weight_initialize == 'Yes')
+        print('[model type] single_layer:{0}, initialize:{1}'.format(single_layer, initialize))
+        # Define model saving path
+        save_path = MNIST.MODEL_PATH
+        save_path += '_single' if single_layer else '_multi'
+        save_path += '_w-init' if initialize else '_w-random'
+        if single_layer:
+            hypothesis, variable = MNIST.single_layer(initialize)
+        else:
+            hypothesis, variable = MNIST.multi_layer(initialize)
+        return save_path, hypothesis, variable
+
+    def set_algorithm(self, model_type, weight_initialize):
+        self.save_path, self.hypothesis, variables = self.get_model(model_type, weight_initialize)
+        with tf.name_scope('Cost'):
+            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.hypothesis, MNIST.Y))
+        tf.summary.scalar('cost', self.cost)
+
+    def set_training(self, optimizer, learning_rate, epochs):
+        def select_optimizer(optimizer, learning_rate):
             if optimizer == 'GradientDescentOptimizer':
-                return tf.train.GradientDescentOptimizer(learning_rate=rate)
+                return tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
             elif optimizer == 'AdamOptimizer':
-                return tf.train.AdamOptimizer(learning_rate=rate)
+                return tf.train.AdamOptimizer(learning_rate=learning_rate)
             # else
             # TODO else일경우 오류처리
-        self.learning_rate = tf.constant(params[1])
-        with tf.name_scope('training'):
-            self.optimizer = select_optimizer(params[0], self.learning_rate)
-            self.train_operation = self.optimizer.minimize(loss=self.cost)
-        self.training_epochs = params[2]
-        self.batch_size = 100
-        with tf.name_scope('Accuracy'):
-            correct_prediction = tf.equal(tf.argmax(self.hypothesis, 1), tf.argmax(self.Y, 1))
+        with tf.name_scope('Training'):
+            self.optimizer = select_optimizer(optimizer, learning_rate)
+            self.train_operation = self.optimizer.minimize(loss=self.cost, name='optimizer')
+        self.training_epochs = epochs
+        with tf.name_scope('Test'):
+            correct_prediction = tf.equal(tf.argmax(self.hypothesis, 1), tf.argmax(MNIST.Y, 1))
             self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         tf.summary.scalar('accuracy', self.accuracy_operation)
         self.summary_operation = tf.summary.merge_all()
 
     def run(self, *params):
-        self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
         for epoch in range(self.training_epochs):
             avg_cost = 0.
-            batch_count = int(self.training_data.num_examples / self.batch_size)
+            batch_count = int(self.data.num_examples / MNIST.BATCH_SIZE)
             for i in range(batch_count):
-                batch_xs, batch_ys = self.training_data.next_batch(self.batch_size)
+                batch_xs, batch_ys = self.data.next_batch(MNIST.BATCH_SIZE)
                 _, cost, summary = self.sess.run(
                     [self.train_operation, self.cost, self.summary_operation],
-                    feed_dict={self.X: batch_xs, self.Y: batch_ys}
+                    feed_dict={MNIST.X: batch_xs, MNIST.Y: batch_ys}
                 )
                 avg_cost += cost / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
             message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
             RedisManager.set_message('mnist', message)
             print(message)
+        saver = tf.train.Saver()
+        saver.save(self.sess, self.save_path)
+        print('Model saved in file: {0}'.format(self.save_path))
 
-    def load_testing_data(self, *params):
-        dataset = input_data.read_data_sets(self.DATA_PATH, one_hot=True)
-        self.test_data = dataset.test
-
-    def test(self, *params):
-        print('Accuracy:', self.accuracy_operation.eval(
-            feed_dict={self.X: self.test_data.images, self.Y: self.test_data.labels},
+    def test_all(self, model_type, weight_initialize):
+        save_path, hypothesis, variables = self.get_model(model_type, weight_initialize)
+        saver = tf.train.Saver(variables)
+        saver.restore(self.sess, save_path)
+        print('Model restored from file: {0}'.format(save_path))
+        correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(MNIST.Y, 1))
+        accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        accuracy = accuracy_operation.eval(
+            feed_dict={MNIST.X: self.data.images, MNIST.Y: self.data.labels},
             session=self.sess
-        ))
+        )
+        print('Accuracy', accuracy)
+        return accuracy
+
+    def test_single(self, image_data, model_type, weight_initialize):
+        save_path, hypothesis, variables = self.get_model(model_type, weight_initialize)
+        y = tf.nn.softmax(hypothesis)
+        saver = tf.train.Saver(variables)
+        saver.restore(self.sess, save_path)
+        print('Model restored from file: {0}'.format(save_path))
+        mnist_data = image_to_mnist(image_data)
+        return self.sess.run(y, feed_dict={MNIST.X: mnist_data}).flatten().tolist()
 
     @staticmethod
     def tensorboard():

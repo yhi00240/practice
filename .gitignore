@@ -93,6 +93,7 @@ ENV/
 
 .data
 .logs
+.models
 
 /static
 db.sqlite3
