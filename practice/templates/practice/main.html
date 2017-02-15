@@ -13,7 +13,13 @@
   <br>
   <button id="nextButton">Let's start</button>
 </div>
+{% endblock content %}
 
+{% block help %}
+
+{% endblock help %}
+
+{% block scripts %}
 <script>
   $('#nextButton').click(
     function() {
@@ -27,13 +33,6 @@
       location.href='/'+ checked_value +'/data'
       }
   );
-
-</script>
-</script>
-{% endblock content %}
-
-{% block scripts %}
-<script>
   $(document).ready(function() {
     var cur= window.location.pathname;
     if(cur.indexOf('main')){

@@ -172,3 +172,6 @@ li {
      border-bottom : 1px solid #222a35;
 }
 
+.row {
+    height : 500px;
+}
