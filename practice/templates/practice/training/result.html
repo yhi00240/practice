@@ -6,11 +6,14 @@
 <br>
   <iframe src="http://localhost:6006" scrolling=yes width=1000 height=500 frameborder=1></iframe>
 <br><br>
-<input type="submit" value="Next">
+<button id="nextButton" class="nextButton w3-btn w3-dark-gray"" >Next</button>
 {% endblock frame %}
 
 {% block scripts %}
 <script>
+ $('#nextButton').click(function() {
+    location.href='/{{ practice_name }}/test/draw'
+  });
   $(document).ready(function() {
     $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
     $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');

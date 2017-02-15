@@ -165,13 +165,21 @@ li {
 }
 
 #help {
-    padding-top : 100px;
+  padding-top : 100px;
 }
 
 #divide {
-     border-bottom : 1px solid #222a35;
+  border-bottom : 1px solid #222a35;
 }
 
 .row {
-    height : 500px;
+  height : 500px;
+}
+
+body .nextButton {
+  margin-left : 900px;
+}
+
+#result {
+    margin : 20px;
 }
