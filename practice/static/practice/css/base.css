@@ -183,3 +183,8 @@ body .nextButton {
 #result {
     margin : 20px;
 }
+
+.icon {
+    width : auto;
+    height : 40px;
+}
