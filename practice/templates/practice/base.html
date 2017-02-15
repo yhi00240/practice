@@ -14,10 +14,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-
-  <header>
+  <div id = "header">
     <div id="branding">
-      <li><img src="{% static 'practice/images/logo.png' %}" id="logo"></li>
+      <li><img src="{% static 'practice/images/logo3.png' %}" id="logo"></li>
     </div>
     <div id="main_nav">
       <ul>
@@ -25,7 +24,7 @@
         <li><a href="https://github.com/Tenice/EasyTensor"><p>GitHub</p></a></li>
       </ul>
     </div>
-  </header>
+  </div>
   <div class=" w3-sidenav w3-center" id="menu">
     {% if practice_name %}
       <ul class="step">{{ practice_name }}</ul>
@@ -82,8 +81,13 @@
   <div class="col-sm-8" id="main">
     {% block content %}
     {% endblock content %}
+    <br><br>
+    <div id="divide">
+    </div>
+    <div id="easy">
+      <li>what is the easytensor?</li>
+    </div>
   </div>
-
 </body>
 {% block scripts %}
 {% endblock scripts %}

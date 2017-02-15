@@ -30,6 +30,38 @@
 
 {% block scripts %}
 <script>
+
+  var interval = undefined;
+  $(document).ready(function () {
+    interval = setInterval(getFirst, 2000); // milliseconds
+    $('#nextSlide').on('click', getNext);
+    $('#prevSlide').on('click', getPrev);
+  });
+
+  function getFirst() {
+    var $curr = $('.slideshow img:visible').first();
+    $curr.css('z-index', 1);
+  }
+
+  function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+    transition($curr, $next);
+  }
+
+  function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+  }
+
+  function transition($curr, $next) {
+    clearInterval(interval);
+    $next.css('z-index', 2).fadeIn('slow', function () {
+      $curr.hide().css('z-index', 0);
+      $next.css('z-index', 1);
+    });
+  }
   $(document).ready(function() {
     var cur= window.location.pathname;
     if(cur.indexOf('algorithm')){

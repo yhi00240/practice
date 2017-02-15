@@ -10,7 +10,7 @@ body {
 
 #main {
   margin-left : 250px;
-  margin-top : 25px;
+  margin-top : 80px;
 }
 
 #main h1, h3, h4{
@@ -40,6 +40,7 @@ body {
 #main_nav ul li{
   display:table-cell;
   padding-right : 20px;
+  color : #ffffff
 }
 
 #branding {
@@ -48,8 +49,15 @@ body {
   display : inline-block;
 }
 
-header {
-  border-bottom : 1px solid #c1c7c9;
+#header {
+  border-bottom : 1px solid #222a35;
+  background-color : #222a35;
+  height:70px;
+  width:100%;
+  position:fixed;
+  z-index:999;
+  top:0px;
+  left:0px;
 }
 
 ul {
@@ -60,6 +68,11 @@ ul {
 li {
   cursor : pointer;
   list-style-type : none;
+}
+
+#menu {
+    position : fixed;
+    margin-top : 70px;
 }
 
 .step {
@@ -150,3 +163,12 @@ li {
 .slideshow img:first-child {
   display : block;
 }
+
+#help {
+    padding-top : 100px;
+}
+
+#divide {
+     border-bottom : 1px solid #222a35;
+}
+
