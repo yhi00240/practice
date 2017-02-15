@@ -9,6 +9,13 @@ from rest_framework.views import APIView
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
 
+class Main(APIView):
+
+    template_name = 'practice/main.html'
+
+    def get(self,request):
+        return render(request, self.template_name, {})
+
 
 class Data(APIView):
 
