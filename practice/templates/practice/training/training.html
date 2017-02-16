@@ -6,18 +6,25 @@
 <br>
 <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
   {% for key,value_list in list.items %}
-    {% if "Optimizer" in key %}
-      <br><br>
-      {{ key }} :
-      <select name="{{ key }}">
-        {% for value in value_list %}
-          <option value="{{ value }}">{{ value }}</option>
-        {% endfor %}
-      </select>
-    {% else %}
-      <br><br>
-      {{ key }} : <input type="text" name="{{ key }}" value="{{ value_list }}">
-    {% endif %}
+    <div class="w3-card-2 w3-round w3-white w3-hide-small">
+      <div class="w3-container">
+        <div class="table_name col-sm-4">{{ key }}</div>
+        <div class="table_value col-sm-8">
+          {% if "Optimizer" in key %}
+            <div class="cc-selector">
+              {% for value in value_list %}
+                <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="w3-container">
+              <label class="w3-label w3-text-teal"></label>
+              <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   {% endfor %}
   <input type="submit" class="nextButton w3-btn w3-dark-gray" value="Next">
 </form>
