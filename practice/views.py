@@ -75,11 +75,11 @@ class Training(APIView):
     @staticmethod
     def check(request, practice_name):
         template = 'practice/training/check.html'
-        print_list = ['model_type', 'activation_function', 'optimizer', 'weight_initialization', 'dropout', 'learning_rate', 'optimization_epoch']
+        print_list = ['Model type', 'Activation Function', 'Optimizer', 'Weight Initialization', 'Dropout', 'Learning Rate', 'Optimization Epoch']
         cookies_list = {}
 
-        for i in range(len(print_list)) :
-            cookies_list[print_list[i]]=request.COOKIES.get(print_list[i])
+        for item in print_list :
+            cookies_list[item]=request.COOKIES.get(item.replace(' ','_').lower())
 
         return render(request, template, {'practice_name': practice_name, 'cookies_list': cookies_list})
 
