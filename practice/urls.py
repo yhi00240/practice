@@ -4,6 +4,7 @@ from practice import views
 
 urlpatterns = [
     url(r'^(?P<practice_name>.+)/data/$', views.Data.as_view(), name='data'),
+    url(r'^(?P<practice_name>.+)/data/show_loaded_data/$', views.Data.show_loaded_data, name='data_show_loaded_data'),
 
     url(r'^(?P<practice_name>.+)/algorithm/$', views.Algorithm.as_view(), name='algorithm'),
 
