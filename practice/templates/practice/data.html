@@ -7,15 +7,14 @@
       border: 1px solid black;
       width: 5px;
       height: 5px;
-{#      background-color: #000;#}
       text-align: center;
     }
-  table{
-    vertical-align: top;
-      display:inline-table;
-    margin-right: 5px;
-    margin-top: 10px;
-  }
+    table {
+      vertical-align: top;
+      display: inline-table;
+      margin-right: 5px;
+      margin-top: 10px;
+    }
   </style>
   <div class="row">
     <br>
@@ -63,12 +62,14 @@
       var showDataButton = $('#showDataButton');
       showDataButton.html('Show more');
 
+      {# create 5 tables to show 5 images and labels #}
       for (var i = 0; i < 5; i++) {
-        document.getElementById("dataTableDiv").appendChild(document.createElement("TABLE"));
+        document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
       }
 
       var tables = document.getElementsByTagName("table");
       for (var i = tables.length - 5, table; table = tables[i]; i++) {
+        {# head of table#}
         var tr = document.createElement("tr");
         table.appendChild(tr);
         var head_image = document.createElement("th");
@@ -79,21 +80,22 @@
         head_label.appendChild(document.createTextNode("Label"));
         tr.appendChild(head_label);
 
+        {# hight of image#}
         for (var j = 0; j < 28; j++) {
-          var y = document.createElement("TR");
-          table.appendChild(y);
+          var row = document.createElement("tr");
+          table.appendChild(row);
+
+          {# width of image #}
           for (var k = 0; k < 28; k++) {
-            var z = document.createElement("TD");
-{#            var t = document.createTextNode("1");#}
-{#            z.appendChild(t);#}
-            y.appendChild(z);
+            var col = document.createElement("td");
+            row.appendChild(col);
           }
+
+          {# label column #}
           if (j == 0) {
-            var z = document.createElement("TD");
-            z.rowSpan = "28";
-            var t = document.createTextNode("0");
-            z.appendChild(t);
-            y.appendChild(z);
+            var label = document.createElement("td");
+            label.rowSpan = "28";
+            row.appendChild(label);
           }
         }
       }
