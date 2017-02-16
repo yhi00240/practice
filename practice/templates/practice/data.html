@@ -22,7 +22,6 @@
     </div>
   </li>
   <br><br>
-  <button id="nextButton" class="nextButton w3-btn w3-dark-gray" disabled>Next</button>
 </div>
 
 
@@ -30,16 +29,12 @@
   function loadData() {
     $.post("/{{ practice_name }}/data/",
         function (data) {
-          alert("Data Loaded");
-          $('#nextButton').attr('disabled', false);
+          if(confirm("Data Loaded"))
+            document.location = '/{{ practice_name }}/algorithm';
         },
         "json"
     );
   }
-
-  $('#nextButton').click(function () {
-    location.href = '/{{ practice_name }}/algorithm'
-  });
 
   var interval = undefined;
   $(document).ready(function () {
