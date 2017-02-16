@@ -1,10 +1,12 @@
 from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
+from tensorflow.contrib.learn.python.learn.datasets import mnist
 import tensorflow as tf
 import os
 
 from EasyTensor.redis_utils import RedisManager
 from practice.utils import image_to_mnist
+from practice.models import *
 
 
 class BasePractice(object):
@@ -65,6 +67,17 @@ class MNIST(BasePractice):
 
     def load_data(self, test=False, *params):
         data_set = input_data.read_data_sets(MNIST.DATA_PATH, one_hot=True)
+
+        TRAIN_IMAGES = 'train-images-idx3-ubyte.gz'
+        TRAIN_LABELS = 'train-labels-idx1-ubyte.gz'
+        TEST_IMAGES = 't10k-images-idx3-ubyte.gz'
+        TEST_LABELS = 't10k-labels-idx1-ubyte.gz'
+        id = InputData(name='mnist',trainImages=mnist.extract_images(open(os.path.join(MNIST.DATA_PATH, TRAIN_IMAGES), 'rb')),
+                  trainLabels=mnist.extract_labels(open(os.path.join(MNIST.DATA_PATH, TRAIN_LABELS), 'rb'), one_hot=True),
+                  testImages=mnist.extract_images(open(os.path.join(MNIST.DATA_PATH, TEST_IMAGES), 'rb')),
+                  testLabels=mnist.extract_labels(open(os.path.join(MNIST.DATA_PATH, TEST_LABELS), 'rb'), one_hot=True))
+        id.save()
+
         if test:
             self.data = data_set.test
         else:
