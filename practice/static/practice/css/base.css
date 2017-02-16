@@ -52,12 +52,12 @@ body {
 #header {
   border-bottom : 1px solid #222a35;
   background-color : #222a35;
-  height:70px;
-  width:100%;
-  position:fixed;
-  z-index:999;
-  top:0px;
-  left:0px;
+  height : 70px;
+  width : 100%;
+  position : fixed;
+  z-index : 999;
+  top : 0px;
+  left : 0px;
 }
 
 ul {
@@ -160,7 +160,7 @@ li {
   display : none;
 }
 
-.slideshow img:first-child {
+.slideshow img : first-child {
   display : block;
 }
 
@@ -187,13 +187,13 @@ body .nextButton {
 label > .radio-icon {
   width : auto;
   height : 40px;
-  cursor:pointer;
-  border:2px solid transparent;
+  cursor : pointer;
+  border : 2px solid transparent;
   margin-right : 20px;
 }
 
 label > input:checked + img{
-  border:2px solid #222a35;
+  border : 2px solid #222a35;
 }
 
 body .radio {
