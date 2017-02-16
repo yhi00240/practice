@@ -63,7 +63,7 @@
     eventObject.y = curr.y;
     canvas.style.cursor = 'default';
     context.fillStyle = '#000000';
-    context.lineWidth = 8;
+    context.lineWidth = 20;
     context.lineCap = 'round';
   }
   function draw(event) {
@@ -84,34 +84,38 @@
     eventObject.y = 0;
   }
   function getTestImage() {
-    var img = new Image();
-    var inputs = [];
-    img.onload = function () {
-      var actualContext = document.createElement('canvas').getContext('2d');
-      actualContext.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
-      var data = actualContext.getImageData(0, 0, 28, 28).data;
-      for (var i = 0; i < 28; i++) {
-        for (var j = 0; j < 28; j++) {
-          var n = 4 * (i * 28 + j);
-          inputs[i * 28 + j] = (data[n] + data[n + 1] + data[n + 2]) / 3;
+    var inputs = new Array(784).fill(0);
+    var data = context.getImageData(0, 0, 280, 280).data;
+    var stride = 280 * 4;
+    var i, j;
+    for (i = 0; i < 280; i++) {
+      var y = Math.floor(i / 10);
+      var n = i * stride;
+      for (j = 0; j < 280; j++) {
+        var x = Math.floor(j / 10);
+        inputs[y * 28 + x] += (data[n] + data[n + 1] + data[n + 2]) / 3;
+        n += 4;
+      }
+    }
+    for (i = 0; i < 28; i++) {
+      for (j = 0; j < 28; j++) {
+        inputs[i * 28 + j] /= 100;
+      }
+    }
+    input = JSON.stringify(inputs);
+    console.log('input: ' + input);
+    $.post(
+      "/{{ practice_name }}/test/draw_result",
+      {
+        image_data: input
+      },
+      function (data) {
+        console.log('result: ' + data.results);
+        for (var i = 0; i < 10; i++) {
+          $('#result').find('tr').eq(i).find('td').text(data.results[i]);
         }
       }
-      var input = JSON.stringify(inputs);
-      console.log('input: ' + input);
-      $.post(
-        "/{{ practice_name }}/test/draw_result",
-        {
-          image_data: input
-        },
-        function (data) {
-          console.log('result: ' + data.results);
-          for (var i = 0; i < 10; i++) {
-            $('#result').find('tr').eq(i).find('td').text(data.results[i]);
-          }
-        }
-      );
-    };
-    img.src = canvas.toDataURL();
+    );
   }
 </script>
 {% endblock frame %}
