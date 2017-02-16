@@ -9,6 +9,7 @@
       height: 5px;
       text-align: center;
     }
+
     table {
       vertical-align: top;
       display: inline-table;
@@ -57,48 +58,58 @@
           "json"
       );
     }
-
+    next_data = 1;
     $('#showDataButton').click(function () {
       var showDataButton = $('#showDataButton');
       showDataButton.html('Show more');
 
-      {# create 5 tables to show 5 images and labels #}
-      for (var i = 0; i < 5; i++) {
-        document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
-      }
+      $.post("/{{ practice_name }}/data/show_loaded_data/", {next: next_data},
+          function (data) {
 
-      var tables = document.getElementsByTagName("table");
-      for (var i = tables.length - 5, table; table = tables[i]; i++) {
-        {# head of table#}
-        var tr = document.createElement("tr");
-        table.appendChild(tr);
-        var head_image = document.createElement("th");
-        head_image.colSpan = "28";
-        head_image.appendChild(document.createTextNode("Image"));
-        tr.appendChild(head_image);
-        var head_label = document.createElement("th");
-        head_label.appendChild(document.createTextNode("Label"));
-        tr.appendChild(head_label);
+            {# create 5 tables to show 5 images and labels #}
+            for (var i = 0; i < 5; i++) {
+              document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
+            }
 
-        {# hight of image#}
-        for (var j = 0; j < 28; j++) {
-          var row = document.createElement("tr");
-          table.appendChild(row);
+            var tables = document.getElementsByTagName("table");
+            for (var i = next_data*5 - 5, table; table = tables[i]; i++) {
+              {# head of table#}
+              var tr = document.createElement("tr");
+              table.appendChild(tr);
+              var head_image = document.createElement("th");
+              head_image.colSpan = "28";
+              head_image.appendChild(document.createTextNode("Image"));
+              tr.appendChild(head_image);
+              var head_label = document.createElement("th");
+              head_label.appendChild(document.createTextNode("Label"));
+              tr.appendChild(head_label);
 
-          {# width of image #}
-          for (var k = 0; k < 28; k++) {
-            var col = document.createElement("td");
-            row.appendChild(col);
-          }
+              {# hight of image#}
+              for (var j = 0; j < 28; j++) {
+                var row = document.createElement("tr");
+                table.appendChild(row);
 
-          {# label column #}
-          if (j == 0) {
-            var label = document.createElement("td");
-            label.rowSpan = "28";
-            row.appendChild(label);
-          }
-        }
-      }
+                {# width of image #}
+                for (var k = 0; k < 28; k++) {
+                  var col = document.createElement("td");
+                  var color = 255 - data.images[i - 5*next_data + 5][j*28+k];
+                  col.style.backgroundColor='#'+color+color+color;
+                  row.appendChild(col);
+                }
+
+                {# label column #}
+                if (j == 0) {
+                  var label = document.createElement("td");
+                  label.rowSpan = "28";
+                  label.textContent = data.labels[i - 5*next_data + 5];
+                  row.appendChild(label);
+                }
+              }
+            }
+            next_data++;
+          },
+          "json"
+      );
     });
 
     {#formatter:off#}
