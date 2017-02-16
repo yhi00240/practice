@@ -7,6 +7,7 @@
 <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
   {% for key,value_list in list.items %}
     {% if "Optimizer" in key %}
+      <br><br>
       {{ key }} :
       <select name="{{ key }}">
         {% for value in value_list %}
@@ -14,8 +15,8 @@
         {% endfor %}
       </select>
     {% else %}
-      {{ key }} : <input type="text" name="{{ key }}" value="{{ value_list }}">
       <br><br>
+      {{ key }} : <input type="text" name="{{ key }}" value="{{ value_list }}">
     {% endif %}
   {% endfor %}
   <input type="submit" class="nextButton w3-btn w3-dark-gray" value="Next">

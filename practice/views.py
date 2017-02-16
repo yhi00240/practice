@@ -1,3 +1,5 @@
+import collections
+
 import json
 
 from django.http import HttpResponse
@@ -34,20 +36,11 @@ class Algorithm(APIView):
     template_name = 'practice/algorithm.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Model Type': [
-                'Single layer', 'Multiple layers'
-            ],
-            'Activation Function': [
-                'Sigmoid', 'ReLU'
-            ],
-            'Weight Initialization': [
-                'No', 'Yes'
-            ],
-            'Dropout': [
-                'No', 'Yes'
-            ]
-        }
+        setting_list = collections.OrderedDict();
+        setting_list['Model Type']={'Single layer', 'Multiple layers'}
+        setting_list['Activation Function']={'Sigmoid', 'ReLU'}
+        setting_list['Dropout']={'No', 'Yes'}
+        setting_list['Weight Initialization']={'No', 'Yes'}
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
@@ -66,14 +59,10 @@ class Training(APIView):
     template_name = 'practice/training/training.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Optimizer': [
-                'GradientDescentOptimizer', 'AdamOptimizer'
-            ],
-            'Learning Rate': 0.01,
-            'Optimization Epoch': 10,
-
-        }
+        setting_list = collections.OrderedDict();
+        setting_list['Optimizer']={'GradientDescentOptimizer', 'AdamOptimizer'}
+        setting_list['Learning Rate']=0.01
+        setting_list['Optimization Epoch']=10
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
