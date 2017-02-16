@@ -36,7 +36,7 @@ class Algorithm(APIView):
     template_name = 'practice/algorithm.html'
 
     def get(self, request, practice_name):
-        setting_list = collections.OrderedDict();
+        setting_list = collections.OrderedDict()
         setting_list['Model Type']={'Single layer', 'Multiple layers'}
         setting_list['Activation Function']={'Sigmoid', 'ReLU'}
         setting_list['Dropout']={'No', 'Yes'}
@@ -59,7 +59,7 @@ class Training(APIView):
     template_name = 'practice/training/training.html'
 
     def get(self, request, practice_name):
-        setting_list = collections.OrderedDict();
+        setting_list = collections.OrderedDict()
         setting_list['Optimizer']={'GradientDescentOptimizer', 'AdamOptimizer'}
         setting_list['Learning Rate']=0.01
         setting_list['Optimization Epoch']=10
