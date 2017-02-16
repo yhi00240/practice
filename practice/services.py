@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
