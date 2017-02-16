@@ -181,10 +181,32 @@ body .nextButton {
 }
 
 #result {
-    margin : 20px;
+  margin : 20px;
 }
 
-.icon {
-    width : auto;
-    height : 40px;
+label > .radio-icon {
+  width : auto;
+  height : 40px;
+  cursor:pointer;
+  border:2px solid transparent;
+  margin-right : 20px;
+}
+
+label > input:checked + img{
+  border:2px solid #222a35;
+}
+
+body .radio {
+  visibility : hidden;
+  position : absolute;
+}
+
+body .table_name {
+  width : 200px;
+  align : center;
+}
+
+body .table_value {
+  overflow : hidden;
+  margin-left : 80px;
 }

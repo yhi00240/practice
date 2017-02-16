@@ -11,18 +11,20 @@
     <table border="1" class="w3-table-all">
       {% for key, value_list in list.items %}
         <tr>
-          <td>{{ key }}
-            {% if "Yes" in value_list %}
-              <select name="{{ key }}">
-              {% for value in value_list %}
-                <option value="{{ value }}">{{ value }}</option>
-              {% endfor %}
-              </select>
-            {% else %}
-              {% for value in value_list %}
-                <label><input type="radio" name="{{ key }}" value="{{ value }}">{{ value }}<img class="icon" src="/static/practice/images/{{ value }}.png"></label>
-              {% endfor %}
-            {% endif %}
+          <td><div class="table_name col-sm-4">{{ key }}</div>
+            <div class="table_value col-sm-8">
+              {% if "Yes" in value_list %}
+                <select name="{{ key }}">
+                  {% for value in value_list %}
+                    <option value="{{ value }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              {% else %}
+                {% for value in value_list %}
+                  <label><input class="radio" type="radio" name="{{ key }}" value="{{ value }}">{{ value }}<img class="radio-icon" src="/static/practice/images/{{ value }}.png"></label>
+                {% endfor %}
+              {% endif %}
+            </div>
           </td>
         </tr>
       {% endfor %}

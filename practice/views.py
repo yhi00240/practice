@@ -41,9 +41,6 @@ class Algorithm(APIView):
             'Activation Function': [
                 'Sigmoid', 'ReLU'
             ],
-            'Optimizer': [
-                'GradientDescentOptimizer', 'AdamOptimizer'
-            ],
             'Weight Initialization': [
                 'No', 'Yes'
             ],
@@ -59,7 +56,6 @@ class Algorithm(APIView):
         HttpResponse = redirect(reverse('training', kwargs={'practice_name':practice_name}))
         HttpResponse.set_cookie('model_type', request.data.get('Model Type'))
         HttpResponse.set_cookie('activation_function', request.data.get('Activation Function'))
-        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('weight_initialization', request.data.get('Weight Initialization'))
         HttpResponse.set_cookie('dropout', request.data.get('Dropout'))
         return HttpResponse
@@ -71,13 +67,18 @@ class Training(APIView):
 
     def get(self, request, practice_name):
         setting_list = {
+            'Optimizer': [
+                'GradientDescentOptimizer', 'AdamOptimizer'
+            ],
             'Learning Rate': 0.01,
             'Optimization Epoch': 10,
+
         }
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
         HttpResponse = redirect(reverse('training_check', kwargs={'practice_name':practice_name}))
+        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('learning_rate', request.data.get('Learning Rate'))
         HttpResponse.set_cookie('optimization_epoch', request.data.get('Optimization Epoch'))
         return HttpResponse
