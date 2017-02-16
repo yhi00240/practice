@@ -81,14 +81,8 @@ class Training(APIView):
         print_list = ['Model type', 'Activation Function', 'Optimizer', 'Weight Initialization', 'Dropout', 'Learning Rate', 'Optimization Epoch']
         cookies_list = {}
 
-        for i in range(len(print_list)) :
-            cookie_name=''
-            for j in range(len(print_list[i])) :
-                if print_list[i][j]==' ':
-                    cookie_name += '_'
-                else :
-                    cookie_name += print_list[i][j].lower()
-            cookies_list[print_list[i]]=request.COOKIES.get(cookie_name)
+        for item in print_list :
+            cookies_list[item]=request.COOKIES.get(item.replace(' ','_').lower())
 
         return render(request, template, {'practice_name': practice_name, 'cookies_list': cookies_list})
 
