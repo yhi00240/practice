@@ -1,0 +1,42 @@
+{% extends 'practice/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row" >
+  <br>
+  <h1>WELCOME TO TENSORFLOW WORLD!!</h1>
+  <br>
+  <h3>Select Tensorflow Tutorial you want to Start!</h3>
+  <br>
+  <label><input type='radio' name = 'practice' value='mnist'>MNIST</label>
+  <br>
+  <br>
+  <button id="nextButton" class="nextButton w3-btn w3-dark-gray">Let's start</button>
+</div>
+{% endblock content %}
+
+{% block help %}
+{% endblock help %}
+
+{% block scripts %}
+<script>
+  $('#nextButton').click(
+    function() {
+      var obj = document.getElementsByName('practice');
+      var checked_value = '';
+      for( i=0; i<obj.length; i++ ) {
+        if(obj[i].checked) {
+	      checked_value = obj[i].value;
+	    }
+      }
+      location.href='/'+ checked_value +'/data'
+      }
+  );
+  $(document).ready(function() {
+    var cur= window.location.pathname;
+    if(cur.indexOf('main')){
+      $('.submenu').hide();
+    }
+  });
+</script>
+{% endblock scripts %}

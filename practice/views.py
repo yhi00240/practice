@@ -1,4 +1,5 @@
-# -*- coding:utf-8 -*-
+import collections
+
 import json
 
 from django.http import HttpResponse
@@ -9,6 +10,13 @@ from rest_framework.views import APIView
 
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
+
+class Main(APIView):
+
+    template_name = 'practice/main.html'
+
+    def get(self,request):
+        return render(request, self.template_name, {})
 
 
 class Data(APIView):
@@ -28,23 +36,11 @@ class Algorithm(APIView):
     template_name = 'practice/algorithm.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Model Type': [
-                'Single layer', 'Multiple layers'
-            ],
-            'Activation Function': [
-                'Sigmoid', 'ReLU'
-            ],
-            'Optimizer': [
-                'GradientDescentOptimizer', 'AdamOptimizer'
-            ],
-            'Weight Initialization': [
-                'No', 'Yes'
-            ],
-            'Dropout': [
-                'No', 'Yes'
-            ]
-        }
+        setting_list = collections.OrderedDict()
+        setting_list['Model Type']={'Single layer', 'Multiple layers'}
+        setting_list['Activation Function']={'Sigmoid', 'ReLU'}
+        setting_list['Dropout']={'No', 'Yes'}
+        setting_list['Weight Initialization']={'No', 'Yes'}
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
@@ -53,7 +49,6 @@ class Algorithm(APIView):
         HttpResponse = redirect(reverse('training', kwargs={'practice_name':practice_name}))
         HttpResponse.set_cookie('model_type', request.data.get('Model Type'))
         HttpResponse.set_cookie('activation_function', request.data.get('Activation Function'))
-        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('weight_initialization', request.data.get('Weight Initialization'))
         HttpResponse.set_cookie('dropout', request.data.get('Dropout'))
         return HttpResponse
@@ -64,14 +59,15 @@ class Training(APIView):
     template_name = 'practice/training/training.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Learning Rate': 0.01,
-            'Optimization Epoch': 10,
-        }
+        setting_list = collections.OrderedDict()
+        setting_list['Optimizer']={'GradientDescentOptimizer', 'AdamOptimizer'}
+        setting_list['Learning Rate']=0.01
+        setting_list['Optimization Epoch']=10
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
         HttpResponse = redirect(reverse('training_check', kwargs={'practice_name':practice_name}))
+        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('learning_rate', request.data.get('Learning Rate'))
         HttpResponse.set_cookie('optimization_epoch', request.data.get('Optimization Epoch'))
         return HttpResponse
