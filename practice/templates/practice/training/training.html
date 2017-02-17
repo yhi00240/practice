@@ -1,34 +1,49 @@
 {% extends 'practice/base_training.html' %}
 {% load staticfiles %}
 
-{% block frame %}
-<h3>Set {{ practice_name }} training settings</h3>
-<br>
-<form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
-  {% for key,value_list in list.items %}
-    <div class="w3-card-2 w3-round w3-white w3-hide-small">
-      <div class="w3-container">
-        <div class="table_name col-sm-4">{{ key }}</div>
-        <div class="table_value col-sm-8">
-          {% if "Optimizer" in key %}
-            <div class="cc-selector">
-              {% for value in value_list %}
-                <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="w3-container">
-              <label class="w3-label w3-text-teal"></label>
-              <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
-            </div>
-          {% endif %}
+<!--override-->
+{% block content %}
+<div class="row">
+  <br>
+  {% block frame %}
+  <h3>Set {{ practice_name }} training settings</h3>
+  <br>
+  <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
+    {% for key,value_list in list.items %}
+      <div class="w3-card-2 w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+          <div class="table_name col-sm-4">{{ key }}</div>
+          <div class="table_value col-sm-8">
+            {% if "Optimizer" in key %}
+              <div class="cc-selector">
+                {% for value in value_list %}
+                  <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="w3-container">
+                <label class="w3-label w3-text-teal"></label>
+                <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
+              </div>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-  {% endfor %}
-  <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
-</form>
-{% endblock frame %}
+    {% endfor %}
+    <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
+  </form>
+  {% endblock frame %}
+</div>
+<p><a href="#section02"><span></span>HELP</a></p>
+<script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('training')){
+    $('.submenu').hide();
+    $('#training.submenu').show();
+  }
+   $('#training').prev().children().css('color','#009925');
+</script>
+{% endblock content %}
 
 {% block help %}
 <h3>How is the MNIST algorithm organized?</h3>
@@ -53,6 +68,15 @@
 
 {% block scripts %}
 <script>
+  $(function() {
+    $('a[href="#section02"]').on('click', function(e) {
+      $('html, body').animate({
+        scrollTop: $("#section02").offset().top
+      }, 500);
+      return false;
+    });
+  });
+
   var interval = undefined;
   $(document).ready(function () {
     interval = setInterval(getFirst, 2000);// milliseconds

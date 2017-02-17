@@ -32,6 +32,7 @@
     <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
   </form>
 </div>
+<p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
 {% block help %}
@@ -60,6 +61,15 @@
 
 {% block scripts %}
 <script>
+  $(function() {
+    $('a[href="#section02"]').on('click', function(e) {
+      $('html, body').animate({
+        scrollTop: $("#section02").offset().top
+      }, 500);
+      return false;
+    });
+  });
+
   var interval = undefined;
   $(document).ready(function () {
     interval = setInterval(getFirst, 2000);// milliseconds
