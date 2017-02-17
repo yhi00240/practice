@@ -12,17 +12,17 @@
 {% endblock content %}
 
 {% block help %}
-    <h3>What is the MNIST Data Structure?</h3>
-    <div class="slideshow">
-      <img src="{% static 'practice/images/ppt/slide(1).png' %}" width="auto" height="400" alt="first image">
-      <img src="{% static 'practice/images/ppt/slide(2).png' %}" width="auto" height="400" alt="second image">
-      <img src="{% static 'practice/images/ppt/slide(3).png' %}" width="auto" height="400" alt="third image">
-      <img src="{% static 'practice/images/ppt/slide(4).png' %}" width="auto" height="400" alt="fourth image">
-      <p style="position:absolute;bottom:0;right:0;">
-        <button id="prevSlide">Prev</button>
-        <button id="nextSlide">Next</button>
-      </p>
-    </div>
+<h3>What is the MNIST Data Structure?</h3>
+<div class="slideshow">
+  <img src="{% static 'practice/images/ppt/data (1).png' %}" width="auto" height="400" alt="first image">
+  <img src="{% static 'practice/images/ppt/data (2).png' %}" width="auto" height="400" alt="second image">
+  <img src="{% static 'practice/images/ppt/data (3).png' %}" width="auto" height="400" alt="third image">
+  <img src="{% static 'practice/images/ppt/data (4).png' %}" width="auto" height="400" alt="fourth image">
+  <p style="position:absolute;bottom:0;right:0;">
+    <button id="prevSlide">Prev</button>
+    <button id="nextSlide">Next</button>
+  </p>
+</div>
 {% endblock help %}
 
 {% block scripts %}
@@ -38,6 +38,7 @@
     $('#data-1').parent().next().children().css('font-size','17px');
     $('#data').prev().children().css('color','#d50f25');
   });
+
   function loadData() {
     $.post("/{{ practice_name }}/data/",
         function (data) {

@@ -29,14 +29,70 @@
           </div>
         </div>
       {% endfor %}
-    <br><br>
     <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
   </form>
 </div>
 {% endblock content %}
 
+{% block help %}
+<h3>How is the MNIST algorithm organized?</h3>
+<div class="slideshow">
+  <img src="{% static 'practice/images/ppt/algorithm (1).png' %}" width="auto" height="400" alt="first image">
+  <img src="{% static 'practice/images/ppt/algorithm (2).png' %}" width="auto" height="400" alt="second image">
+  <img src="{% static 'practice/images/ppt/algorithm (3).png' %}" width="auto" height="400" alt="third image">
+  <img src="{% static 'practice/images/ppt/algorithm (4).png' %}" width="auto" height="400" alt="fourth image">
+  <img src="{% static 'practice/images/ppt/algorithm (5).png' %}" width="auto" height="400" alt="first image">
+  <img src="{% static 'practice/images/ppt/algorithm (6).png' %}" width="auto" height="400" alt="second image">
+  <img src="{% static 'practice/images/ppt/algorithm (7).png' %}" width="auto" height="400" alt="third image">
+  <img src="{% static 'practice/images/ppt/algorithm (8).png' %}" width="auto" height="400" alt="fourth image">
+  <img src="{% static 'practice/images/ppt/algorithm (9).png' %}" width="auto" height="400" alt="first image">
+  <img src="{% static 'practice/images/ppt/algorithm (10).png' %}" width="auto" height="400" alt="second image">
+  <img src="{% static 'practice/images/ppt/algorithm (11).png' %}" width="auto" height="400" alt="third image">
+  <img src="{% static 'practice/images/ppt/algorithm (12).png' %}" width="auto" height="400" alt="fourth image">
+  <img src="{% static 'practice/images/ppt/algorithm (13).png' %}" width="auto" height="400" alt="first image">
+  <img src="{% static 'practice/images/ppt/algorithm (14).png' %}" width="auto" height="400" alt="second image">
+  <p style="position:absolute;bottom:0;right:0;">
+    <button id="prevSlide">Prev</button>
+    <button id="nextSlide">Next</button>
+  </p>
+</div>
+{% endblock help %}
+
 {% block scripts %}
 <script>
+  var interval = undefined;
+  $(document).ready(function () {
+    interval = setInterval(getFirst, 2000);// milliseconds
+    getNext();
+    $('#nextSlide').on('click', getNext);
+    $('#prevSlide').on('click', getPrev);
+  });
+
+  function getFirst() {
+    var $curr = $('.slideshow img:visible').first();
+    $curr.css('z-index', 1);
+  }
+
+  function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+    transition($curr, $next);
+  }
+
+  function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+  }
+
+  function transition($curr, $next) {
+    clearInterval(interval);
+    $next.css('z-index', 2).fadeIn('slow', function () {
+      $curr.hide().css('z-index', 0);
+      $next.css('z-index', 1);
+    });
+  }
+
   $(document).ready(function() {
     var cur= window.location.pathname;
     if(cur.indexOf('algorithm')){
