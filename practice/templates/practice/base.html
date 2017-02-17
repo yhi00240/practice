@@ -81,15 +81,28 @@
     </ul>
   </div>
   <div class="col-sm-8" id="main">
-    {% block content %}
-    {% endblock content %}
-    <br><br>
-    <div id="divide">
-    </div>
-    {% block help %}
-    {% endblock help %}
+    <section id="section01" class="main demo">
+      {% block content %}
+      {% endblock content %}
+      <p><a href="#section02"><span></span>HELP</a></p>
+    </section>
+    <section id="section02" class="help demo">
+      {% block help %}
+      {% endblock help %}
+    </section>
   </div>
+
 </body>
+<script>
+  $(function() {
+    $('a[href="#section02"]').on('click', function(e) {
+      $('html, body').animate({
+        scrollTop: $("#section02").offset().top
+      }, 500);
+      return false;
+    });
+  });
+</script>
 {% block scripts %}
 {% endblock scripts %}
 <script src="{% static 'practice/js/base.js' %}"></script>

@@ -8,42 +8,50 @@
   <br>
   <h4>Training Image&Lable</h4>
   <button onclick="loadData()" class="w3-btn w3-dark-gray">Load data</button>
-  <li>
-    <h3>Detail</h3>
+</div>
+{% endblock content %}
+
+{% block help %}
+    <h3>What is the MNIST Data Structure?</h3>
     <div class="slideshow">
-      <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image">
-      <img src="http://placehold.it/500x100/008000&text=2" width="500" height="100" alt="second image">
-      <img src="http://placehold.it/500x100/B22222&text=3" width="500" height="100" alt="third image">
-      <img src="http://placehold.it/500x100/F4A460&text=4" width="500" height="100" alt="fourth image">
+      <img src="{% static 'practice/images/ppt/slide(1).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/slide(2).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/slide(3).png' %}" width="auto" height="400" alt="third image">
+      <img src="{% static 'practice/images/ppt/slide(4).png' %}" width="auto" height="400" alt="fourth image">
       <p style="position:absolute;bottom:0;right:0;">
         <button id="prevSlide">Prev</button>
         <button id="nextSlide">Next</button>
       </p>
     </div>
-  </li>
-  <br><br>
-  <button id="nextButton" class="nextButton w3-btn w3-dark-gray" disabled>Next</button>
-</div>
+{% endblock help %}
 
-
+{% block scripts %}
 <script>
+  $(document).ready(function() {
+    var cur= window.location.pathname;
+    if(cur.indexOf('data')){
+      $('.submenu').hide();
+      $('#data.submenu').show();
+    }
+    $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#data-1').parent().next().children().css('font-weight','Bold');
+    $('#data-1').parent().next().children().css('font-size','17px');
+    $('#data').prev().children().css('color','#d50f25');
+  });
   function loadData() {
     $.post("/{{ practice_name }}/data/",
         function (data) {
-          alert("Data Loaded");
-          $('#nextButton').attr('disabled', false);
+          if(confirm("Data Loaded"))
+            document.location = '/{{ practice_name }}/algorithm';
         },
         "json"
     );
   }
 
-  $('#nextButton').click(function () {
-    location.href = '/{{ practice_name }}/algorithm'
-  });
-
   var interval = undefined;
   $(document).ready(function () {
-    interval = setInterval(getFirst, 2000); // milliseconds
+    interval = setInterval(getFirst, 2000);// milliseconds
+    getNext();
     $('#nextSlide').on('click', getNext);
     $('#prevSlide').on('click', getPrev);
   });
@@ -72,21 +80,5 @@
       $next.css('z-index', 1);
     });
   }
-</script>
-{% endblock content %}
-
-{% block scripts %}
-<script>
-  $(document).ready(function() {
-    var cur= window.location.pathname;
-    if(cur.indexOf('data')){
-      $('.submenu').hide();
-      $('#data.submenu').show();
-    }
-    $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
-    $('#data-1').parent().next().children().css('font-weight','Bold');
-    $('#data-1').parent().next().children().css('font-size','17px');
-    $('#data').prev().children().css('color','#d50f25');
-  });
 </script>
 {% endblock scripts %}
