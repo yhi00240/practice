@@ -144,6 +144,14 @@
           resultData.eq(i).find('#original').text(rounding_original);
           resultData.eq(i).find('#reference').text(rounding_reference);
         }
+        for (var i = 0; i < 10; i++) {
+          if(i == original_max_index) {
+            resultData.eq(i).find('#original').addClass("maxValueHighlight");
+          }
+          if(i == reference_max_index) {
+            resultData.eq(i).find('#reference').addClass("maxValueHighlight");
+          }
+        }
       }
     );
   }
