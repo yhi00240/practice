@@ -77,6 +77,19 @@
     });
   });
 
+  $(document).ready(function(){
+    $('.nextButton').attr("disabled",true);
+    $("*").on('click',function(){
+     var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
+     var rate_check=$(':text[name="Learning Rate"]').val();
+     var epoch_check=$(':text[name="Optimization Epoch"]').val();
+     if(optimizer_check && rate_check && epoch_check)
+       $('.nextButton').attr("disabled",false);
+     else
+       $('.nextButton').attr("disabled",true);
+    });
+  });
+
   var interval = undefined;
   $(document).ready(function () {
     interval = setInterval(getFirst, 2000);// milliseconds

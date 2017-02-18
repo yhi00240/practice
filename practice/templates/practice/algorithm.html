@@ -21,7 +21,7 @@
               {% else %}
                 <div class="cc-selector">
                   {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                    <label><input type="radio" name="{{ key }}" value="{{ value }}" id="{{ value }}"/><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
                   {% endfor %}
                 </div>
               {% endif %}
@@ -61,6 +61,30 @@
 
 {% block scripts %}
 <script>
+  $(':radio[name="Model Type"]').on('click', function(){
+    var layer_check=$(':radio[name="Model Type"]:checked').val();
+    if($(':radio[name="Model Type"]:checked').val() == "Single layer"){
+      $("#Sigmoid").attr("checked", true);
+      $("#Sigmoid").prop("checked", true);
+      $('input[name="Activation Function"]').attr("disabled",true);
+    }
+    else{
+      $('input[name="Activation Function"]').attr("disabled",false);
+    }
+  });
+
+  $(document).ready(function(){
+    $('.nextButton').attr("disabled",true);
+    $('*').on('click',function(){
+     var layer_check=$(':radio[name="Model Type"]:checked').val();
+     var function_check=$(':radio[name="Activation Function"]:checked').val();
+     var dropout_check=$(':radio[name="Dropout"]:checked').val();
+     var weight_check=$(':radio[name="Weight Initialization"]:checked').val();
+     if(layer_check && function_check && dropout_check && weight_check)
+       $('.nextButton').attr("disabled",false);
+    });
+  });
+
   $(function() {
     $('a[href="#section02"]').on('click', function(e) {
       $('html, body').animate({
