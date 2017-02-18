@@ -76,14 +76,13 @@
 {% block scripts %}
 <script>
   $(':radio[name="Model Type"]').on('click', function(){
-    var layer_check=$(':radio[name="Model Type"]:checked').val();
     if($(':radio[name="Model Type"]:checked').val() == "Single layer"){
-      $("#Sigmoid").attr("checked", true);
-      $("#Sigmoid").prop("checked", true);
-      $('input[name="Activation Function"]').attr("disabled",true);
+      $('#Sigmoid').attr("checked", true);
+      $('#ReLU').attr("checked",false);
+      $('input[type=radio][value="ReLU"]').attr("disabled",true);
     }
     else{
-      $('input[name="Activation Function"]').attr("disabled",false);
+      $('input[type=radio][value="ReLU"]').attr("disabled",false);
     }
   });
 
