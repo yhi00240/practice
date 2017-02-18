@@ -51,6 +51,7 @@
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < 10; i++) {
       resultData.eq(i).find('td').text("");
+      resultData.eq(i).find('td').removeClass("maxValueHighlight")
     }
   });
   $('#set').click(function () {
@@ -115,9 +116,24 @@
       "/{{ practice_name }}/test/draw_result",
       { image_data: input },
       function (data) {
+        var original_max_value = 0;
+        var original_max_index = 0;
+        var reference_max_value = 0;
+        var reference_max_index = 0;
+
         for (var i = 0; i < 10; i++) {
-          var rounding_original=data.original[i].toFixed(3);
-          var rounding_reference=data.reference[i].toFixed(3);
+          if(original_max_value < data.original[i]) {
+            original_max_value = data.original[i];
+            original_max_index = i;
+          }
+          if(reference_max_value < data.reference[i]) {
+            reference_max_value = data.reference[i];
+            reference_max_index = i;
+          }
+
+          var rounding_original = data.original[i].toFixed(3);
+          var rounding_reference = data.reference[i].toFixed(3);
+
           resultData.eq(i).find('#original').text(rounding_original);
           resultData.eq(i).find('#reference').text(rounding_reference);
         }
