@@ -75,13 +75,21 @@ class Training(APIView):
     @staticmethod
     def check(request, practice_name):
         template = 'practice/training/check.html'
-        print_list = ['Model type', 'Activation Function', 'Optimizer', 'Weight Initialization', 'Dropout', 'Learning Rate', 'Optimization Epoch']
-        cookies_list = {}
-
-        for item in print_list :
-            cookies_list[item]=request.COOKIES.get(item.replace(' ','_').lower())
-
-        return render(request, template, {'practice_name': practice_name, 'cookies_list': cookies_list})
+        algorithm_print_list = ['Model Type', 'Activation Function', 'Weight Initialization', 'Dropout']
+        training_print_list = ['Optimizer', 'Learning Rate', 'Optimization Epoch']
+        cookies = dict()
+        cookies['algorithm'] = collections.OrderedDict()
+        cookies['training'] = collections.OrderedDict()
+        for item in algorithm_print_list:
+            cookies['algorithm'][item] = request.COOKIES.get(item.replace(' ', '_').lower())
+        for item in training_print_list:
+            cookies['training'][item] = request.COOKIES.get(item.replace(' ', '_').lower())
+        params = {
+            'practice_name': practice_name,
+            'algorithm_cookies': cookies['algorithm'],
+            'training_cookies': cookies['training'],
+        }
+        return render(request, template, params)
 
     @staticmethod
     def run(request, practice_name):
@@ -132,7 +140,7 @@ class Test(APIView):
     def draw_result(request, practice_name):
         image_data = eval(request.POST['image_data'])
         mnist = MNIST()
-        results = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
-        # TODO : select model type to test
-        print(results)
-        return HttpResponse(json.dumps({'results': results}), content_type='application/json')
+        original, reference = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
+        print('original', original)
+        print('reference', reference)
+        return HttpResponse(json.dumps({'original': original, 'reference': reference}), content_type='application/json')
