@@ -4,16 +4,27 @@
 {% block frame %}
 <h3>Check all settings</h3>
 <br>
+<p>Algorithm Settings</p>
 <table border="1" class="w3-table-all">
-  {% for key, value in cookies_list.items %}
+  {% for key, value in algorithm_cookies.items %}
   <tr>
-    <td>{{ key }}</td>
+    <th style="width:30%">{{ key }}</th>
     <td>{{ value }}</td>
   </tr>
   {% endfor %}
 </table>
 <br>
-<button id="nextButton" class="nextButton w3-btn w3-dark-gray">Check</button>
+<p>Training Settings</p>
+<table border="1" class="w3-table-all">
+  {% for key, value in training_cookies.items %}
+  <tr>
+    <th style="width:30%">{{ key }}</th>
+    <td>{{ value }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br>
+<button id="nextButton" class="nextButton w3-btn w3-dark-gray">Next</button>
 
 <script>
   $('#nextButton').click(
