@@ -132,7 +132,7 @@ class Test(APIView):
     def draw_result(request, practice_name):
         image_data = eval(request.POST['image_data'])
         mnist = MNIST()
-        results = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
-        # TODO : select model type to test
-        print(results)
-        return HttpResponse(json.dumps({'results': results}), content_type='application/json')
+        original, reference = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
+        print('original', original)
+        print('reference', reference)
+        return HttpResponse(json.dumps({'original': original, 'reference': reference}), content_type='application/json')

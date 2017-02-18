@@ -15,10 +15,16 @@
 </div>
 <div class="col-md-7">
   <table id="result" class="table">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Your Model</th>
+      <th scope="col">Reference Model(99%)</th>
+    </tr>
     {% for key in keys %}
-      <tr>
-        <th>{{ key }}</th>
-        <td></td>
+      <tr id="data">
+        <th scope="row">{{ key }}</th>
+        <td id="original"></td>
+        <td id="reference"></td>
       </tr>
     {% endfor %}
   </table>
@@ -31,6 +37,7 @@
   };
   var canvas = document.getElementById('input');
   var context = canvas.getContext("2d");
+  var resultData = $('#result').find('#data');
   (function initialize() {
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -43,7 +50,7 @@
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < 10; i++) {
-      $('#result').find('tr').eq(i).find('td').text("");
+      resultData.eq(i).find('td').text("");
     }
   });
   $('#set').click(function () {
@@ -63,7 +70,7 @@
     eventObject.y = curr.y;
     canvas.style.cursor = 'default';
     context.fillStyle = '#000000';
-    context.lineWidth = 20;
+    context.lineWidth = 15;
     context.lineCap = 'round';
   }
   function draw(event) {
@@ -106,13 +113,11 @@
     console.log('input: ' + input);
     $.post(
       "/{{ practice_name }}/test/draw_result",
-      {
-        image_data: input
-      },
+      { image_data: input },
       function (data) {
-        console.log('result: ' + data.results);
         for (var i = 0; i < 10; i++) {
-          $('#result').find('tr').eq(i).find('td').text(data.results[i]);
+          resultData.eq(i).find('#original').text(data.original[i]);
+          resultData.eq(i).find('#reference').text(data.reference[i]);
         }
       }
     );
