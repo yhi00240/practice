@@ -116,8 +116,8 @@
       { image_data: input },
       function (data) {
         for (var i = 0; i < 10; i++) {
-          var rounding_original=data.original[i].toFixed(6);
-          var rounding_reference=data.reference[i].toFixed(6);
+          var rounding_original=data.original[i].toFixed(3);
+          var rounding_reference=data.reference[i].toFixed(3);
           resultData.eq(i).find('#original').text(rounding_original);
           resultData.eq(i).find('#reference').text(rounding_reference);
         }
