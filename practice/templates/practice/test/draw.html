@@ -2,6 +2,11 @@
 {% load staticfiles %}
 
 {% block frame %}
+<style>
+  .maxValueHighlight{
+    background : #E0FFDB;
+  }
+</style>
 <h3>Using your own data</h3>
 <div class="col-md-5">
   <p>Draw a number</p>
@@ -15,13 +20,18 @@
 </div>
 <div class="col-md-7">
   <table id="result" class="table">
+    <colgroup>
+      <col style="width:10%">
+      <col style="width:45%">
+      <col style="width:45%">
+    </colgroup>
     <tr>
       <th scope="col"></th>
-      <th scope="col">Your Model</th>
-      <th scope="col">Reference Model(99%)</th>
+      <th scope="col" style="text-align:center">Your Model</th>
+      <th scope="col" style="text-align:center">Reference Model(99%)</th>
     </tr>
     {% for key in keys %}
-      <tr id="data">
+      <tr id="data" align="center">
         <th scope="row">{{ key }}</th>
         <td id="original"></td>
         <td id="reference"></td>
@@ -29,13 +39,6 @@
     {% endfor %}
   </table>
 </div>
-
-<style>
-.maxValueHighlight{
-  background : #E0FFDB;
-}
-</style>
-
 <script>
   var eventObject = {
     drawing: false,
