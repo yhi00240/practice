@@ -46,23 +46,37 @@
 {% endblock content %}
 
 {% block help %}
-<h3>How is the MNIST algorithm organized?</h3>
-<div class="slideshow">
-  <img src="{% static 'practice/images/ppt/training (1).png' %}" width="auto" height="400" alt="first image">
-  <img src="{% static 'practice/images/ppt/training (2).png' %}" width="auto" height="400" alt="second image">
-  <img src="{% static 'practice/images/ppt/training (3).png' %}" width="auto" height="400" alt="third image">
-  <img src="{% static 'practice/images/ppt/training (4).png' %}" width="auto" height="400" alt="fourth image">
-  <img src="{% static 'practice/images/ppt/training (5).png' %}" width="auto" height="400" alt="first image">
-  <img src="{% static 'practice/images/ppt/training (6).png' %}" width="auto" height="400" alt="second image">
-  <img src="{% static 'practice/images/ppt/training (7).png' %}" width="auto" height="400" alt="third image">
-  <img src="{% static 'practice/images/ppt/training (8).png' %}" width="auto" height="400" alt="fourth image">
-  <img src="{% static 'practice/images/ppt/training (9).png' %}" width="auto" height="400" alt="first image">
-  <img src="{% static 'practice/images/ppt/training (10).png' %}" width="auto" height="400" alt="second image">
-  <img src="{% static 'practice/images/ppt/training (11).png' %}" width="auto" height="400" alt="third image">
-  <p style="position:absolute;bottom:0;right:0;">
-    <button id="prevSlide">Prev</button>
-    <button id="nextSlide">Next</button>
-  </p>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-left" style="margin-right:-300px">
+    <br><br><br><br>
+    <ul class="w3-ul">
+      <li><h4>List</h4></li>
+      <li><span onClick="getIndex(0)">Cost Function</span></li>
+      <li><span onClick="getIndex(5)">Optimizer</span></li>
+      <li><span onClick="getIndex(8)">Optimization Epoch</span></li>
+      <li><span onClick="getIndex(9)">Learning Rate</span></li>
+    </ul>
+  </div>
+  <div class="w3-container w3-cell">
+    <h3>How is the MNIST algorithm organized?</h3>
+    <div class="slideshow">
+      <img src="{% static 'practice/images/ppt/training (1).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/training (2).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/training (3).png' %}" width="auto" height="400" alt="third image">
+      <img src="{% static 'practice/images/ppt/training (4).png' %}" width="auto" height="400" alt="fourth image">
+      <img src="{% static 'practice/images/ppt/training (5).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/training (6).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/training (7).png' %}" width="auto" height="400" alt="third image">
+      <img src="{% static 'practice/images/ppt/training (8).png' %}" width="auto" height="400" alt="fourth image">
+      <img src="{% static 'practice/images/ppt/training (9).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/training (10).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/training (11).png' %}" width="auto" height="400" alt="third image">
+    </div>
+    <div class="w3-display-middle" style="width:70%">
+      <div class="w3-btn-floating w3-display-left w3-light-gray" style="margin-left:90px" onclick="getPrev()">&#10094;</div>
+      <div class="w3-btn-floating w3-display-right w3-light-gray" onclick="getNext()">&#10095;</div>
+    </div>
+  </div>
 </div>
 {% endblock help %}
 
@@ -121,6 +135,13 @@
       $curr.hide().css('z-index', 0);
       $next.css('z-index', 1);
     });
+  }
+
+  function getIndex(index) {
+    var $curr = $('.slideshow img:visible'),
+        $next = $('.slideshow img:eq('+index+')');
+    if($curr[0]!=$next[0])
+      transition($curr, $next);
   }
 
   $(document).ready(function() {

@@ -144,17 +144,17 @@ li {
 /*------------ Slide show ------------*/
 body .slideshow {
   position : relative;
-  width : 800px;
+  width : 600px;
   height : 400px;
   background-color : #ffffff;
-  overflow : auto;
+  overflow : none;
+  margin-left : 200px;
 }
 
 body .slideshow img {
   position : absolute;
   margin : auto;
   top : 0;
-  left : 0;
   right : 0;
   bottom : 0;
   display : none;
@@ -166,10 +166,6 @@ body .help {
 
 body .main {
   padding-bottom : 100px;
-}
-
-body .help-title {
-  margin-left : 200px;
 }
 
 body .row {
@@ -335,7 +331,7 @@ body #section02 {
 }
 
 body #section02 h3 {
-  margin-left : 150px;
+  margin-left : 250px;
 }
 
 body #section01 a {
