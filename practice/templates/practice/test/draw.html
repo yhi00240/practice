@@ -2,6 +2,11 @@
 {% load staticfiles %}
 
 {% block frame %}
+<style>
+  .maxValueHighlight{
+    background : #E0FFDB;
+  }
+</style>
 <h3>Using your own data</h3>
 <div class="col-md-5">
   <p>Draw a number</p>
@@ -15,10 +20,21 @@
 </div>
 <div class="col-md-7">
   <table id="result" class="table">
+    <colgroup>
+      <col style="width:10%">
+      <col style="width:45%">
+      <col style="width:45%">
+    </colgroup>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col" style="text-align:center">Your Model</th>
+      <th scope="col" style="text-align:center">Reference Model(99%)</th>
+    </tr>
     {% for key in keys %}
-      <tr>
-        <th>{{ key }}</th>
-        <td></td>
+      <tr id="data" align="center">
+        <th scope="row">{{ key }}</th>
+        <td id="original"></td>
+        <td id="reference"></td>
       </tr>
     {% endfor %}
   </table>
@@ -31,6 +47,7 @@
   };
   var canvas = document.getElementById('input');
   var context = canvas.getContext("2d");
+  var resultData = $('#result').find('#data');
   (function initialize() {
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -43,7 +60,8 @@
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < 10; i++) {
-      $('#result').find('tr').eq(i).find('td').text("");
+      resultData.eq(i).find('td').text("");
+      resultData.eq(i).find('td').removeClass("maxValueHighlight")
     }
   });
   $('#set').click(function () {
@@ -63,7 +81,7 @@
     eventObject.y = curr.y;
     canvas.style.cursor = 'default';
     context.fillStyle = '#000000';
-    context.lineWidth = 8;
+    context.lineWidth = 15;
     context.lineCap = 'round';
   }
   function draw(event) {
@@ -84,34 +102,55 @@
     eventObject.y = 0;
   }
   function getTestImage() {
-    var img = new Image();
-    var inputs = [];
-    img.onload = function () {
-      var actualContext = document.createElement('canvas').getContext('2d');
-      actualContext.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
-      var data = actualContext.getImageData(0, 0, 28, 28).data;
-      for (var i = 0; i < 28; i++) {
-        for (var j = 0; j < 28; j++) {
-          var n = 4 * (i * 28 + j);
-          inputs[i * 28 + j] = (data[n] + data[n + 1] + data[n + 2]) / 3;
-        }
+    var inputs = new Array(784).fill(0);
+    var data = context.getImageData(0, 0, 280, 280).data;
+    var stride = 280 * 4;
+    var i, j;
+    for (i = 0; i < 280; i++) {
+      var y = Math.floor(i / 10);
+      var n = i * stride;
+      for (j = 0; j < 280; j++) {
+        var x = Math.floor(j / 10);
+        inputs[y * 28 + x] += (data[n] + data[n + 1] + data[n + 2]) / 3;
+        n += 4;
       }
-      var input = JSON.stringify(inputs);
-      console.log('input: ' + input);
-      $.post(
-        "/{{ practice_name }}/test/draw_result",
-        {
-          image_data: input
-        },
-        function (data) {
-          console.log('result: ' + data.results);
-          for (var i = 0; i < 10; i++) {
-            $('#result').find('tr').eq(i).find('td').text(data.results[i]);
+    }
+    for (i = 0; i < 28; i++) {
+      for (j = 0; j < 28; j++) {
+        inputs[i * 28 + j] /= 100;
+      }
+    }
+    input = JSON.stringify(inputs);
+    console.log('input: ' + input);
+    $.post(
+      "/{{ practice_name }}/test/draw_result",
+      { image_data: input },
+      function (data) {
+        var original_max_value = 0;
+        var original_max_index = 0;
+        var reference_max_value = 0;
+        var reference_max_index = 0;
+
+        for (var i = 0; i < 10; i++) {
+          if(original_max_value < data.original[i]) {
+            original_max_value = data.original[i];
+            original_max_index = i;
           }
+          if(reference_max_value < data.reference[i]) {
+            reference_max_value = data.reference[i];
+            reference_max_index = i;
+          }
+
+          var rounding_original = data.original[i].toFixed(3);
+          var rounding_reference = data.reference[i].toFixed(3);
+
+          resultData.eq(i).find('#original').text(rounding_original);
+          resultData.eq(i).find('#reference').text(rounding_reference);
         }
-      );
-    };
-    img.src = canvas.toDataURL();
+        resultData.eq(original_max_index).find('#original').addClass("maxValueHighlight");
+        resultData.eq(reference_max_index).find('#reference').addClass("maxValueHighlight");
+      }
+    );
   }
 </script>
 {% endblock frame %}
