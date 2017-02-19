@@ -4,10 +4,8 @@
 {% block frame %}
 <h3>Run {{ practice_name }} training</h3>
 <br>
-<button id="runButton">Run</button>
-<button id="nextButton" disabled>Next</button>
+<button id="runButton" class = "w3-btn w3-dark-gray">Run</button>
 <div id="result">Results will be shown here</div>
-
 <style>
   #result {
     text-align:center;
@@ -21,9 +19,6 @@
 <script>
   $('#runButton').click(function () {
     runService()
-  });
-  $('#nextButton').click(function() {
-    location.href='/{{ practice_name }}/training/result'
   });
 
   var interval_id;
@@ -41,8 +36,8 @@
         clearInterval(interval_id);
         runButton.html('Run');
         runButton.attr('disabled', false);
-        $("#nextButton").attr('disabled', false);
-        alert("Training Finished!");
+        if(confirm("Training Finished!"))
+          document.location='/{{ practice_name }}/training/result';
       },
       "json"
     );

@@ -1,3 +1,5 @@
+import collections
+
 import json
 
 from django.http import HttpResponse
@@ -9,6 +11,13 @@ from rest_framework.views import APIView
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
 from practice.models import *
+
+class Main(APIView):
+
+    template_name = 'practice/main.html'
+
+    def get(self,request):
+        return render(request, self.template_name, {})
 
 class Data(APIView):
 
@@ -38,23 +47,11 @@ class Algorithm(APIView):
     template_name = 'practice/algorithm.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Model Type': [
-                'Single layer', 'Multiple layers'
-            ],
-            'Activation Function': [
-                'Sigmoid', 'ReLU'
-            ],
-            'Optimizer': [
-                'GradientDescentOptimizer', 'AdamOptimizer'
-            ],
-            'Weight Initialization': [
-                'No', 'Yes'
-            ],
-            'Dropout': [
-                'No', 'Yes'
-            ]
-        }
+        setting_list = collections.OrderedDict()
+        setting_list['Model Type']={'Single layer', 'Multiple layers'}
+        setting_list['Activation Function']={'Sigmoid', 'ReLU'}
+        setting_list['Dropout']={'No', 'Yes'}
+        setting_list['Weight Initialization']={'No', 'Yes'}
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
@@ -63,7 +60,6 @@ class Algorithm(APIView):
         HttpResponse = redirect(reverse('training', kwargs={'practice_name':practice_name}))
         HttpResponse.set_cookie('model_type', request.data.get('Model Type'))
         HttpResponse.set_cookie('activation_function', request.data.get('Activation Function'))
-        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('weight_initialization', request.data.get('Weight Initialization'))
         HttpResponse.set_cookie('dropout', request.data.get('Dropout'))
         return HttpResponse
@@ -74,14 +70,15 @@ class Training(APIView):
     template_name = 'practice/training/training.html'
 
     def get(self, request, practice_name):
-        setting_list = {
-            'Learning Rate': 0.01,
-            'Optimization Epoch': 10,
-        }
+        setting_list = collections.OrderedDict()
+        setting_list['Optimizer']={'GradientDescentOptimizer', 'AdamOptimizer'}
+        setting_list['Learning Rate']=0.01
+        setting_list['Optimization Epoch']=10
         return render(request, self.template_name, {'list': setting_list, 'practice_name': practice_name})
 
     def post(self, request, practice_name):
         HttpResponse = redirect(reverse('training_check', kwargs={'practice_name':practice_name}))
+        HttpResponse.set_cookie('optimizer', request.data.get('Optimizer'))
         HttpResponse.set_cookie('learning_rate', request.data.get('Learning Rate'))
         HttpResponse.set_cookie('optimization_epoch', request.data.get('Optimization Epoch'))
         return HttpResponse
@@ -89,13 +86,21 @@ class Training(APIView):
     @staticmethod
     def check(request, practice_name):
         template = 'practice/training/check.html'
-        print_list = ['model_type', 'activation_function', 'optimizer', 'weight_initialization', 'dropout', 'learning_rate', 'optimization_epoch']
-        cookies_list = {}
-
-        for i in range(len(print_list)) :
-            cookies_list[print_list[i]]=request.COOKIES.get(print_list[i])
-
-        return render(request, template, {'practice_name': practice_name, 'cookies_list': cookies_list})
+        algorithm_print_list = ['Model Type', 'Activation Function', 'Weight Initialization', 'Dropout']
+        training_print_list = ['Optimizer', 'Learning Rate', 'Optimization Epoch']
+        cookies = dict()
+        cookies['algorithm'] = collections.OrderedDict()
+        cookies['training'] = collections.OrderedDict()
+        for item in algorithm_print_list:
+            cookies['algorithm'][item] = request.COOKIES.get(item.replace(' ', '_').lower())
+        for item in training_print_list:
+            cookies['training'][item] = request.COOKIES.get(item.replace(' ', '_').lower())
+        params = {
+            'practice_name': practice_name,
+            'algorithm_cookies': cookies['algorithm'],
+            'training_cookies': cookies['training'],
+        }
+        return render(request, template, params)
 
     @staticmethod
     def run(request, practice_name):
@@ -146,7 +151,7 @@ class Test(APIView):
     def draw_result(request, practice_name):
         image_data = eval(request.POST['image_data'])
         mnist = MNIST()
-        results = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
-        # TODO : select model type to test
-        print(results)
-        return HttpResponse(json.dumps({'results': results}), content_type='application/json')
+        original, reference = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
+        print('original', original)
+        print('reference', reference)
+        return HttpResponse(json.dumps({'original': original, 'reference': reference}), content_type='application/json')

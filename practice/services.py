@@ -1,9 +1,11 @@
+# -*- coding:utf-8 -*-
 from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import os
 
 from EasyTensor.redis_utils import RedisManager
+from practice import high_accuracy
 from practice.utils import image_to_mnist
 
 class BasePractice(object):
@@ -181,8 +183,11 @@ class MNIST(BasePractice):
         saver = tf.train.Saver(variables)
         saver.restore(self.sess, save_path)
         print('Model restored from file: {0}'.format(save_path))
+        y_ref, variables = high_accuracy.convolutional(MNIST.X, 1.0)
+        saver = tf.train.Saver(variables)
+        saver.restore(self.sess, "practice/trained_model/convolutional.ckpt")
         mnist_data = image_to_mnist(image_data)
-        return self.sess.run(y, feed_dict={MNIST.X: mnist_data}).flatten().tolist()
+        return self.sess.run(y, feed_dict={MNIST.X: mnist_data}).flatten().tolist(), self.sess.run(y_ref, feed_dict={MNIST.X: mnist_data}).flatten().tolist()
 
     @staticmethod
     def tensorboard():

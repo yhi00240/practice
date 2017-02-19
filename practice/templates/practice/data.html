@@ -32,7 +32,7 @@
     <h3>Load Example Data</h3>
     <br>
     <h4>Training Image&Lable</h4>
-    <button onclick="loadData()">Load data</button>
+    <button onclick="loadData()" class="w3-btn w3-dark-gray">Load data</button>
     <li>
       <h4>Loaded Data</h4>
       <button id="showDataButton">Show</button>
@@ -52,22 +52,21 @@
         </p>
       </div>
     </li>
+    <br><br>
   </div>
-  <br><br>
-  <div>
-    <button id="nextButton" disabled>Next</button>
-  </div>
+
 
   <script>
     function loadData() {
       $.post("/{{ practice_name }}/data/",
           function (data) {
-            alert("Data Loaded");
-            $('#nextButton').attr('disabled', false);
+            if (confirm("Data Loaded"))
+              document.location = '/{{ practice_name }}/algorithm';
           },
           "json"
       );
     }
+
     next_data = 1;
     $('#showDataButton').click(function () {
       var showDataButton = $('#showDataButton');
@@ -123,7 +122,6 @@
       );
     });
 
-    {#formatter:off#}
     $('#nextButton').click(function () {
       location.href = '/{{ practice_name }}/algorithm'
     });
@@ -162,6 +160,7 @@
   </script>
 {% endblock content %}
 
+{#formatter:off#}
 {% block scripts %}
   <script>
     $(document).ready(function () {
