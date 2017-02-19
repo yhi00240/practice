@@ -9,7 +9,6 @@ from rest_framework.views import APIView
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
 from practice.models import *
-import numpy
 
 class Data(APIView):
 
