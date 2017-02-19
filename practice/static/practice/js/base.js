@@ -11,5 +11,4 @@ $(document).ready( function() {
   $mainmenu.on('click', 'li', function() {
     $(this).next('.submenu').slideToggle().siblings('.submenu').slideUp();
   });
-
 });
