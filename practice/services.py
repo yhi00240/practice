@@ -1,12 +1,10 @@
 from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
-from tensorflow.contrib.learn.python.learn.datasets import mnist
 import tensorflow as tf
 import os
 
 from EasyTensor.redis_utils import RedisManager
 from practice.utils import image_to_mnist
-from practice.models import *
 
 class BasePractice(object):
     # Path는 각 practice 별로 정의한다.
