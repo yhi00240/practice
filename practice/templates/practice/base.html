@@ -71,7 +71,7 @@
       <ul id="test" class="submenu">
         <li>
           <div class="submenu_image"><img id="test-1" src="{% static 'practice/images/middle.png' %}" class="step-image test-middle"></div>
-          <div class="submenu_name"><span>Data</span></div>
+          <div class="submenu_name"><span>Draw</span></div>
         </li>
         <li>
           <div class="submenu_image"><img id="test-2" src="{% static 'practice/images/end.png' %}" class="step-image test-end"></div>
@@ -81,14 +81,16 @@
     </ul>
   </div>
   <div class="col-sm-8" id="main">
-    {% block content %}
-    {% endblock content %}
-    <br><br>
-    <div id="divide">
-    </div>
-    {% block help %}
-    {% endblock help %}
+    <section id="section01" class="main demo">
+      {% block content %}
+      {% endblock content %}
+    </section>
+    <section id="section02" class="help demo">
+      {% block help %}
+      {% endblock help %}
+    </section>
   </div>
+
 </body>
 {% block scripts %}
 {% endblock scripts %}

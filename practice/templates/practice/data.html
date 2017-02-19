@@ -39,24 +39,61 @@
       <div id="dataTableDiv" style="overflow:auto; width:1100px; height:300px">
       </div>
     </li>
-    <li>
-      <h3>Detail</h3>
-      <div class="slideshow">
-        <img src="http://placehold.it/500x100/0000CD&text=1" width="500" height="100" alt="first image">
-        <img src="http://placehold.it/500x100/008000&text=2" width="500" height="100" alt="second image">
-        <img src="http://placehold.it/500x100/B22222&text=3" width="500" height="100" alt="third image">
-        <img src="http://placehold.it/500x100/F4A460&text=4" width="500" height="100" alt="fourth image">
-        <p style="position:absolute;bottom:0;right:0;">
-          <button id="prevSlide">Prev</button>
-          <button id="nextSlide">Next</button>
-        </p>
-      </div>
-    </li>
-    <br><br>
   </div>
+  <p><a href="#section02"><span></span>HELP</a></p>
+{% endblock content %}
 
+{% block help %}
+  <div class="w3-cell-row">
+    <div class="w3-container w3-cell w3-left" style="margin-right:-300px">
+      <br><br><br><br>
+      <ul class="w3-ul">
+        <li><h4>List</h4></li>
+        <li><span onClick="getIndex(0)">Data Image</span></li>
+        <li><span onClick="getIndex(2)">Data Label</span></li>
+        <li><span onClick="getIndex(3)">W and b</span></li>
+      </ul>
+    </div>
+    <div class="w3-container w3-cell">
+      <h3>What is the MNIST Data Structure?</h3>
+      <div class="slideshow">
+        <img src="{% static 'practice/images/ppt/data (1).png' %}" width="auto" height="400">
+        <img src="{% static 'practice/images/ppt/data (2).png' %}" width="auto" height="400">
+        <img src="{% static 'practice/images/ppt/data (3).png' %}" width="auto" height="400">
+        <img src="{% static 'practice/images/ppt/data (4).png' %}" width="auto" height="400">
+      </div>
+      <div class="w3-display-middle" style="width:70%">
+        <div class="w3-btn-floating w3-display-left w3-light-gray" style="margin-left:90px" onclick="getPrev()">
+          &#10094;</div>
+        <div class="w3-btn-floating w3-display-right w3-light-gray" onclick="getNext()">&#10095;</div>
+      </div>
+    </div>
+  </div>
+{% endblock help %}
 
+{% block scripts %}
   <script>
+    $(function () {
+      $('a[href="#section02"]').on('click', function (e) {
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+        }, 500);
+        return false;
+      });
+    });
+
+    $(document).ready(function () {
+      var cur = window.location.pathname;
+      if (cur.indexOf('data')) {
+        $('.submenu').hide();
+        $('#data.submenu').show();
+      }
+      $('.data-end').attr('src', '{% static 'practice/images/end_exec.png' %}');
+      $('#data-1').parent().next().children().css('font-weight', 'Bold');
+      $('#data-1').parent().next().children().css('font-size', '17px');
+      $('#data').prev().children().css('color', '#d50f25');
+    });
+
     function loadData() {
       $.post("/{{ practice_name }}/data/",
           function (data) {
@@ -122,15 +159,10 @@
       );
     });
 
-    $('#nextButton').click(function () {
-      location.href = '/{{ practice_name }}/algorithm'
-    });
-
     var interval = undefined;
     $(document).ready(function () {
-      interval = setInterval(getFirst, 2000); // milliseconds
-      $('#nextSlide').on('click', getNext);
-      $('#prevSlide').on('click', getPrev);
+      interval = setInterval(getFirst, 2000);// milliseconds
+      getNext();
     });
 
     function getFirst() {
@@ -157,23 +189,12 @@
         $next.css('z-index', 1);
       });
     }
-  </script>
-{% endblock content %}
 
-{#formatter:off#}
-{% block scripts %}
-  <script>
-    $(document).ready(function () {
-      var cur = window.location.pathname;
-      if (cur.indexOf('data')) {
-        $('.submenu').hide();
-        $('#data.submenu').show();
-      }
-      $('.data-end').attr('src', '{% static 'practice/images/end_exec.png' %}');
-      $('#data-1').parent().next().children().css('font-weight', 'Bold');
-      $('#data-1').parent().next().children().css('font-size', '17px');
-      $('#data').prev().children().css('color', '#d50f25');
-    });
+    function getIndex(index) {
+      var $curr = $('.slideshow img:visible'),
+          $next = $('.slideshow img:eq(' + index + ')');
+      if ($curr[0] != $next[0])
+        transition($curr, $next);
+    }
   </script>
 {% endblock scripts %}
-{#formatter:off#}
