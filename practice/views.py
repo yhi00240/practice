@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
-from practice.models import *
+from practice.models import TrainData
 
 class Main(APIView):
 
