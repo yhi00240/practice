@@ -3,12 +3,13 @@
 
 {% block content %}
   <style>
-    td{
+    td {
       width: 5px;
       height: 5px;
       text-align: center;
       font-size: x-large;
     }
+
     th {
       border: 1px solid white;
       width: 50px;
@@ -17,6 +18,7 @@
       background-color: black;
       color: white;
     }
+
     table {
       border: 2px solid black;
       vertical-align: top;
@@ -80,7 +82,7 @@
             }
 
             var tables = document.getElementsByTagName("table");
-            for (var i = next_data*5 - 5, table; table = tables[i]; i++) {
+            for (var i = next_data * 5 - 5, table; table = tables[i]; i++) {
               {# head of table#}
               var tr = document.createElement("tr");
               table.appendChild(tr);
@@ -100,8 +102,8 @@
                 {# width of image #}
                 for (var k = 0; k < 28; k++) {
                   var col = document.createElement("td");
-                  var color = 255 - data.images[i - 5*next_data + 5][j*28+k];
-                  col.style.backgroundColor='#'+color+color+color;
+                  var color = 255 - data.images[i - 5 * next_data + 5][j * 28 + k];
+                  col.style.backgroundColor = '#' + color + color + color;
                   row.appendChild(col);
                 }
 
@@ -110,7 +112,7 @@
                   var label = document.createElement("td");
                   label.rowSpan = "28";
                   label.style.border = "1px solid black";
-                  label.textContent = data.labels[i - 5*next_data + 5];
+                  label.textContent = data.labels[i - 5 * next_data + 5];
                   row.appendChild(label);
                 }
               }
