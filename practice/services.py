@@ -7,38 +7,6 @@ import os
 from EasyTensor.redis_utils import RedisManager
 from practice.utils import image_to_mnist
 from practice.models import *
-import gzip
-import numpy
-
-# save training data to database
-def save_data_to_db(f_image, f_label):
-    with gzip.GzipFile(fileobj=f_image) as imagestream:
-        magic = mnist._read32(imagestream)
-        if magic != 2051:
-            raise ValueError('Invalid magic number %d in MNIST image file: %s' %
-                             (magic, f_image.name))
-        num_images = mnist._read32(imagestream)
-        rows = mnist._read32(imagestream)
-        cols = mnist._read32(imagestream)
-        buf = imagestream.read(rows * cols * num_images)
-        dtype = numpy.dtype((numpy.uint8, 784))
-        images = numpy.frombuffer(buf, dtype=dtype)
-        # images = images.reshape(num_images, rows, cols, 1)
-
-    with gzip.GzipFile(fileobj=f_label) as labelstream:
-        magic = mnist._read32(labelstream)
-        if magic != 2049:
-            raise ValueError('Invalid magic number %d in MNIST label file: %s' %
-                             (magic, f_label.name))
-
-        num_items = mnist._read32(labelstream)
-        buf = labelstream.read(num_items)
-        labels = numpy.frombuffer(buf, dtype=numpy.uint8)
-
-    for (image, label) in zip(images, labels):
-        record = TrainData(image=image.tobytes(), label=label)
-        record.save()
-    return num_images
 
 class BasePractice(object):
     # Path는 각 practice 별로 정의한다.
@@ -98,16 +66,6 @@ class MNIST(BasePractice):
 
     def load_data(self, test=False, *params):
         data_set = input_data.read_data_sets(MNIST.DATA_PATH, one_hot=True)
-
-        TRAIN_IMAGES = 'train-images-idx3-ubyte.gz'
-        TRAIN_LABELS = 'train-labels-idx1-ubyte.gz'
-        TEST_IMAGES = 't10k-images-idx3-ubyte.gz'
-        TEST_LABELS = 't10k-labels-idx1-ubyte.gz'
-
-        # save training data to database
-        save_data_to_db(open(os.path.join(MNIST.DATA_PATH, TRAIN_IMAGES), 'rb'),
-                        open(os.path.join(MNIST.DATA_PATH, TRAIN_LABELS), 'rb'))
-
         if test:
             self.data = data_set.test
         else:
