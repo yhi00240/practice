@@ -77,10 +77,6 @@
 <script>
   $(':radio[name="Model Type"]').on('click', function(){
     if($(':radio[name="Model Type"]:checked').val() == "Single layer"){
-      $('#Sigmoid').attr("checked", true);
-      $('#ReLU').attr("checked",false);
-      $('input:radio[name="Dropout"][value="No"]').attr("checked",true);
-      $('input:radio[name="Dropout"][value="Yes"]').attr("chedked",false);
       $('input[type=radio][value="ReLU"]').attr("disabled",true);
       $('input:radio[name="Dropout"][value="Yes"]').attr("disabled",true);
     }

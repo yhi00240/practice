@@ -218,6 +218,12 @@ body .cc-selector  input:checked + .drinkcard-cc {
   filter : none;
 }
 
+body .cc-selector  input:disabled + .drinkcard-cc {
+  -webkit-filter : grayscale(1);
+  -moz-filter : grayscale(1);
+  filter : grayscale(1);
+}
+
 body .drinkcard-cc {
   cursor:pointer;
   background-size : contain;
@@ -230,9 +236,9 @@ body .drinkcard-cc {
   -webkit-transition : all 100ms ease-in;
   -moz-transition : all 100ms ease-in;
   transition : all 100ms ease-in;
-  -webkit-filter : brightness(1.8) grayscale(1) opacity(.7);
-  -moz-filter : brightness(1.8) grayscale(1) opacity(.7);
-  filter : brightness(1.8) grayscale(1) opacity(.7);
+  -webkit-filter : opacity(.4);
+  -moz-filter : opacity(.4);
+  filter : opacity(.4);
 }
 
 body .drinkcard-cc:hover {
@@ -262,14 +268,13 @@ body .drinkcard-cc:hover {
 .switch-field label p {
   display : inline-block;
   width : 60px;
-  background-color : #e4e4e4;
-  color : rgba(0, 0, 0, 0.6);
+  background-color : rgb(84,174,0);
+  color : white;
   font-size : 14px;
-  font-weight : normal;
+  font-weight : Bold;
   text-align : center;
   text-shadow : none;
   padding : 6px 14px;
-  border : 1px solid rgba(0, 0, 0, 0.2);
   -webkit-box-shadow : inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
   box-shadow : inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
   -webkit-transition : all 0.1s ease-in-out;
@@ -277,17 +282,32 @@ body .drinkcard-cc:hover {
   -ms-transition : all 0.1s ease-in-out;
   -o-transition : all 0.1s ease-in-out;
   transition : all 0.1s ease-in-out;
+  -webkit-filter : opacity(.4);
+  -moz-filter : opacity(.4);
+  filter : opacity(.4);
+  border : 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .switch-field label:hover {
+  -webkit-filter : brightness(1.2) grayscale(.5) opacity(.9);
+  -moz-filter : brightness(1.2) grayscale(.5) opacity(.9);
+  filter : brightness(1.2) grayscale(.5) opacity(.9);
   cursor : pointer;
 }
 
 .switch-field input:checked + p {
-  background-color : #222a35;
   -webkit-box-shadow : none;
   box-shadow : none;
   color : #ffffff;
+  -webkit-filter : none;
+  -moz-filter : none;
+  filter : none;
+}
+
+.switch-field input:disabled + p {
+  -webkit-filter : grayscale(1) opacity(.7);
+  -moz-filter : grayscale(1) opacity(.7);
+  filter : grayscale(1) opacity(.7);
 }
 
 .w3-container {
@@ -410,7 +430,7 @@ body #section01 a span {
 }
 
 .no_active_img {
-    -webkit-filter : brightness(1.2) grayscale(1) opacity(.5);
+  -webkit-filter : brightness(1.2) grayscale(1) opacity(.5);
   -moz-filter : brightness(1.2) grayscale(1) opacity(.5);
   filter : brightness(1.2) grayscale(1) opacity(.5);
 }
