@@ -148,7 +148,6 @@ body .slideshow {
   height : 400px;
   background-color : #ffffff;
   overflow : none;
-  margin-left : 200px;
 }
 
 body .slideshow img {
@@ -158,6 +157,15 @@ body .slideshow img {
   right : 0;
   bottom : 0;
   display : none;
+}
+
+.w3-left {
+  position : absolute;
+}
+
+.w3-right {
+  position : absolute;
+  margin-left : 600px;
 }
 
 body .help {
@@ -328,10 +336,6 @@ body .demo a {
 
 body #section02 {
   margin-top : -30px;
-}
-
-body #section02 h3 {
-  margin-left : 250px;
 }
 
 body #section01 a {
