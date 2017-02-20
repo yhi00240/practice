@@ -10,9 +10,9 @@
   <h3>Select Tensorflow Tutorial you want to Start!</h3>
   <br>
   <div class="cc-selector">
-    <label><input type='radio' name = 'practice' value='mnist'/><img src="{%  static 'practice/images/MNIST.png' %}"  class="drinkcard-cc"></label>
-    <label><input type='radio' name = 'practice' value='iris'/><img src="{%  static 'practice/images/IRIS.png' %}"  class="drinkcard-cc"></label>
-    <label><input type='radio' name = 'practice' value='cifar10'/><img src="{%  static 'practice/images/CIFAR10.png' %}"  class="drinkcard-cc"></label>
+    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/MNIST.png' %}" width="300" height="auto" class="active_img" style="margin-right:15px;"></label>
+    <label><input type="radio" name = "practice" value="iris"/><img src="{%  static 'practice/images/IRIS.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
+    <label><input type="radio" name = "practice" value="cifar10"/><img src="{%  static 'practice/images/CIFAR10.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
   </div>
   <br>
   <br>
@@ -48,8 +48,8 @@
 
 {% block scripts %}
 <script>
- $(function () {
-      $('a[href="#section02"]').on('click', function (e) {
+  $(function () {
+     $('a[href="#section02"]').on('click', function (e) {
         $('html, body').animate({
           scrollTop: $("#section02").offset().top
         }, 500);
@@ -57,7 +57,7 @@
       });
     });
 
-  $('input').click(
+  $('input:radio[name="practice"]').click(
     function() {
       var obj = document.getElementsByName('practice');
       var checked_value = '';
@@ -66,9 +66,11 @@
 	      checked_value = obj[i].value;
 	    }
       }
-      location.href='/'+ checked_value +'/data'
-      }
-  );
+      if(checked_value=="mnist")
+        location.href='/'+ checked_value +'/data'
+      else
+        alert("These tutorials aren't available");
+  });
 
   $(document).ready(function() {
     var cur= window.location.pathname;

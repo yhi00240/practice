@@ -211,6 +211,7 @@ body .cc-selector input {
 body .cc-selector  input:active + .drinkcard-cc {
   opacity: .9;
 }
+
 body .cc-selector  input:checked + .drinkcard-cc {
   -webkit-filter : none;
   -moz-filter : none;
@@ -406,4 +407,34 @@ body #section01 a span {
   display: inline-table;
   margin-right: 5px;
   margin-top: 10px;
+}
+
+.no_active_img {
+    -webkit-filter : brightness(1.2) grayscale(1) opacity(.5);
+  -moz-filter : brightness(1.2) grayscale(1) opacity(.5);
+  filter : brightness(1.2) grayscale(1) opacity(.5);
+}
+
+body .cc-selector  input:active + .active_img {
+  opacity: .9;
+}
+
+body .cc-selector  input:checked + .active_img {
+  -webkit-filter : none;
+  -moz-filter : none;
+  filter : none;
+}
+
+body .active_img {
+  cursor:pointer;
+  background-size : contain;
+  background-repeat : no-repeat;
+  display : inline-block;
+  -webkit-transition : all 100ms ease-in;
+  -moz-transition : all 100ms ease-in;
+  transition : all 100ms ease-in;
+}
+
+body .active_img:hover {
+  box-shadow : 2px 2px black;
 }
