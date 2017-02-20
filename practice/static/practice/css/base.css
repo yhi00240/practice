@@ -486,3 +486,20 @@ body .active_img {
 body .active_img:hover {
   box-shadow : 2px 2px black;
 }
+
+
+.help_list li span{
+  display : inline-block;
+  margin : 0;
+  padding : 0;
+  width : 160px;
+}
+
+.help_list {
+  margin:0;
+  padding:0;
+  list-style-type:none;
+  width:100%;
+  position:relative;
+  display:block;
+}

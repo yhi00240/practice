@@ -20,7 +20,7 @@
 <div class="w3-cell-row">
   <div class="w3-container w3-cell">
     <br><br><br><br>
-    <ul class="w3-ul">
+    <ul class="w3-ul help_list">
       <li><h4>List</h4></li>
       <li><span onClick="getIndex(0)">Data Image</span></li>
       <li><span onClick="getIndex(2)">Data Label</span></li>
@@ -45,6 +45,15 @@
 
 {% block scripts %}
   <script>
+  $(document).ready(function(){
+    if($(window).scrollTop() == $(document).height() - $(window).height()){
+      $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+      $('#section01 a span').css("transform","rotate(135deg)");
+      $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+      $('#section01 a span').css("animation","sdb02 2s infinite");
+    }
+  });
+
   $(function () {
     $('a[href="#section02"]').on('click', function (e) {
       if($(window).scrollTop() == $(document).height() - $(window).height()){
