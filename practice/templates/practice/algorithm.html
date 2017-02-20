@@ -2,36 +2,36 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row" >
-  <br>
-  <h3>Set {{ practice_name }} algorithm</h3>
-  <br>
-  <form action = "/{{ practice_name }}/algorithm/" accept-charset="utf-8" name="save_algorithm" method="post">
-      {% for key, value_list in list.items %}
-        <div class="w3-card-2 w3-round w3-white w3-hide-small">
-          <div class="w3-container">
-            <div class="table_name col-sm-4">{{ key }}</div>
-            <div class="table_value col-sm-8">
-              {% if "Yes" in value_list %}
-                <div class="switch-field">
-                  {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}"/><p>{{ value }}</p></label>
-                  {% endfor %}
-                </div>
-              {% else %}
-                <div class="cc-selector">
-                  {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}" id="{{ value }}"/><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
+<form action = "/{{ practice_name }}/algorithm/" accept-charset="utf-8" name="save_algorithm" method="post">
+  <div class="row" >
+    <br>
+    <h3>Set {{ practice_name }} algorithm</h3>
+    <br>
+    {% for key, value_list in list.items %}
+      <div class="w3-card-2 w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+          <div class="table_name col-sm-4">{{ key }}</div>
+          <div class="table_value col-sm-8">
+            {% if "Yes" in value_list %}
+              <div class="switch-field">
+                {% for value in value_list %}
+                  <label><input type="radio" name="{{ key }}" value="{{ value }}"/><p>{{ value }}</p></label>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="cc-selector">
+                {% for value in value_list %}
+                  <label><input type="radio" name="{{ key }}" value="{{ value }}" id="{{ value }}"/><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </div>
-      {% endfor %}
-    <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
-  </form>
-</div>
+      </div>
+    {% endfor %}
+  </div>
+  <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
+</form>
 <p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 

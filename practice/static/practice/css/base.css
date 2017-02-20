@@ -181,7 +181,9 @@ body .row {
 }
 
 body .nextButton {
-  margin-left : 900px;
+  position : relative;
+  margin-bottom : 30px;
+  left : 900px;
 }
 
 #result {
@@ -363,6 +365,7 @@ body #section01 a {
   padding-top : 45px;
   padding-left : 20px;
   padding-right : 20px;
+  padding-bottom : 40px;
 }
 
 body #section01 a span {
