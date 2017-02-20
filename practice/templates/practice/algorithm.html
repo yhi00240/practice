@@ -138,6 +138,15 @@
       $curr.hide().css('z-index', 0);
       $next.css('z-index', 1);
     });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<3)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(3<=$next.index() && $next.index()<8)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else if(8<=$next.index() && $next.index()<12)
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(4)').css("font-weight","Bold");
   }
 
   function getIndex(index) {

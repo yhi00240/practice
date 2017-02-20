@@ -108,6 +108,13 @@
       $curr.hide().css('z-index', 0);
       $next.css('z-index', 1);
     });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<2)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(2<=$next.index() && $next.index()<3)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
   }
 
   function getIndex(index) {
@@ -116,5 +123,7 @@
     if($curr[0]!=$next[0])
       transition($curr, $next);
   }
+
+
 </script>
 {% endblock scripts %}
