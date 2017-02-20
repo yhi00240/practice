@@ -90,45 +90,31 @@ class MNIST(BasePractice):
         if weight_initialize:
             W1 = tf.get_variable('W1', shape=[MNIST.IMAGE_PIXELS, 256], initializer=xavier_initializer())
             W2 = tf.get_variable('W2', shape=[256, 256], initializer=xavier_initializer())
-            W3 = tf.get_variable('W3', shape=[256, 256], initializer=xavier_initializer())
-            W4 = tf.get_variable('W4', shape=[256, 256], initializer=xavier_initializer())
-            W5 = tf.get_variable('W5', shape=[256, MNIST.NUM_CLASSES], initializer=xavier_initializer())
-            B1 = tf.Variable(tf.zeros([256]), name='B1')
-            B2 = tf.Variable(tf.zeros([256]), name='B2')
-            B3 = tf.Variable(tf.zeros([256]), name='B3')
-            B4 = tf.Variable(tf.zeros([256]), name='B4')
-            B5 = tf.Variable(tf.zeros([MNIST.NUM_CLASSES]), name='B5')
+            W3 = tf.get_variable('W3', shape=[256, MNIST.NUM_CLASSES], initializer=xavier_initializer())
+            B1 = tf.Variable(tf.random_normal([256]), name='B1')
+            B2 = tf.Variable(tf.random_normal([256]), name='B2')
+            B3 = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='B3')
         else:
             W1 = tf.Variable(tf.random_normal([MNIST.IMAGE_PIXELS, 256]), name='W1')
             W2 = tf.Variable(tf.random_normal([256, 256]), name='W2')
-            W3 = tf.Variable(tf.random_normal([256, 256]), name='W3')
-            W4 = tf.Variable(tf.random_normal([256, 256]), name='W4')
-            W5 = tf.Variable(tf.random_normal([256, MNIST.NUM_CLASSES]), name='W5')
+            W3 = tf.Variable(tf.random_normal([256, MNIST.NUM_CLASSES]), name='W3')
             B1 = tf.Variable(tf.random_normal([256]), name='B1')
             B2 = tf.Variable(tf.random_normal([256]), name='B2')
-            B3 = tf.Variable(tf.random_normal([256]), name='B3')
-            B4 = tf.Variable(tf.random_normal([256]), name='B4')
-            B5 = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='B5')
+            B3 = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='B3')
         activation_function = tf.nn.sigmoid if sigmoid else tf.nn.relu
         if dropout:
             _L1 = activation_function(tf.add(tf.matmul(MNIST.X, W1), B1), name='Hidden_layer1')
             L1 = tf.nn.dropout(_L1, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer1')
             _L2 = activation_function(tf.add(tf.matmul(L1, W2), B2), name='Hidden_layer2')
             L2 = tf.nn.dropout(_L2, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer2')
-            _L3 = activation_function(tf.add(tf.matmul(L2, W3), B3), name='Hidden_layer3')
-            L3 = tf.nn.dropout(_L3, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer3')
-            _L4 = activation_function(tf.add(tf.matmul(L3, W4), B4), name='Hidden_layer4')
-            L4 = tf.nn.dropout(_L4, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer4')
-            hypothesis = tf.add(tf.matmul(L4, W5), B5)
+            hypothesis = tf.add(tf.matmul(L2, W3), B3)
 
         else:
             L1 = activation_function(tf.add(tf.matmul(MNIST.X, W1), B1), name='Hidden_layer1')
             L2 = activation_function(tf.add(tf.matmul(L1, W2), B2), name='Hidden_layer2')
-            L3 = activation_function(tf.add(tf.matmul(L2, W3), B3), name='Hidden_layer3')
-            L4 = activation_function(tf.add(tf.matmul(L3, W4), B4), name='Hidden_layer4')
-            hypothesis = tf.add(tf.matmul(L4, W5), B5)
+            hypothesis = tf.add(tf.matmul(L2, W3), B3)
 
-        return hypothesis, [W1, W2, W3, W4, W5, B1, B2, B3, B4, B5]
+        return hypothesis, [W1, W2, W3, B1, B2, B3]
 
     def get_model(self, model_type, weight_initialize, activation_function, dropout):
         single_layer = (model_type == 'Single layer')
