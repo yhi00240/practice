@@ -17,6 +17,7 @@
   <br>
   <br>
 </div>
+<br><br><br>
 <p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
@@ -49,13 +50,29 @@
 {% block scripts %}
 <script>
   $(function () {
-     $('a[href="#section02"]').on('click', function (e) {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
         $('html, body').animate({
           scrollTop: $("#section02").offset().top
-        }, 500);
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
         return false;
-      });
+      }
     });
+  });
 
   $('input:radio[name="practice"]').click(
     function() {

@@ -359,6 +359,7 @@ body .demo a {
 
 body #section02 {
   margin-top : -30px;
+  height : 500px;
 }
 
 body #section01 a {
@@ -405,6 +406,30 @@ body #section01 a span {
   }
   40% {
     transform : rotate(-45deg) translate(0, 0);
+  }
+}
+
+@-webkit-keyframes sdb02 {
+  0% {
+    -webkit-transform : rotate(135deg) translate(0, 0);
+  }
+  20% {
+    -webkit-transform : rotate(135deg) translate(-10px, 10px);
+  }
+  40% {
+    -webkit-transform : rotate(135deg) translate(0, 0);
+  }
+}
+
+@keyframes sdb02 {
+  0% {
+    transform : rotate(135deg) translate(0, 0);
+  }
+  20% {
+    transform : rotate(135deg) translate(-10px, 10px);
+  }
+  40% {
+    transform : rotate(135deg) translate(0, 0);
   }
 }
 

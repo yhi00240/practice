@@ -82,25 +82,41 @@
 
 {% block scripts %}
 <script>
-  $(function() {
-    $('a[href="#section02"]').on('click', function(e) {
-      $('html, body').animate({
-        scrollTop: $("#section02").offset().top
-      }, 500);
-      return false;
+  $(function () {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
+        return false;
+      }
     });
   });
 
   $(document).ready(function(){
     $('.nextButton').attr("disabled",true);
     $("*").on('click',function(){
-     var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
-     var rate_check=$(':text[name="Learning Rate"]').val();
-     var epoch_check=$(':text[name="Optimization Epoch"]').val();
-     if(optimizer_check && rate_check && epoch_check)
-       $('.nextButton').attr("disabled",false);
-     else
-       $('.nextButton').attr("disabled",true);
+      var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
+      var rate_check=$(':text[name="Learning Rate"]').val();
+      var epoch_check=$(':text[name="Optimization Epoch"]').val();
+      if(optimizer_check && rate_check && epoch_check)
+        $('.nextButton').attr("disabled",false);
+      else
+        $('.nextButton').attr("disabled",true);
     });
   });
 
