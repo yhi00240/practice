@@ -111,13 +111,13 @@ class MNIST(BasePractice):
             B5 = tf.Variable(tf.random_normal([MNIST.NUM_CLASSES]), name='B5')
         activation_function = tf.nn.sigmoid if sigmoid else tf.nn.relu
         if dropout:
-            _L1 =  activation_function(tf.add(tf.matmul(MNIST.X, W1), B1), name='Hidden_layer1')
+            _L1 = activation_function(tf.add(tf.matmul(MNIST.X, W1), B1), name='Hidden_layer1')
             L1 = tf.nn.dropout(_L1, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer1')
             _L2 = activation_function(tf.add(tf.matmul(L1, W2), B2), name='Hidden_layer2')
             L2 = tf.nn.dropout(_L2, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer2')
-            _L3 =  activation_function(tf.add(tf.matmul(L2, W3), B3), name='Hidden_layer3')
+            _L3 = activation_function(tf.add(tf.matmul(L2, W3), B3), name='Hidden_layer3')
             L3 = tf.nn.dropout(_L3, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer3')
-            _L4 =  activation_function(tf.add(tf.matmul(L3, W4), B4), name='Hidden_layer4')
+            _L4 = activation_function(tf.add(tf.matmul(L3, W4), B4), name='Hidden_layer4')
             L4 = tf.nn.dropout(_L4, MNIST.DROPOUT_RATE, name='Hidden_dropout_layer4')
             hypothesis = tf.add(tf.matmul(L4, W5), B5)
 
