@@ -383,3 +383,27 @@ body #section01 a span {
     transform : rotate(-45deg) translate(0, 0);
   }
 }
+
+#dataTableDiv td {
+  width: 5px;
+  height: 5px;
+  text-align: center;
+  font-size: x-large;
+}
+
+#dataTableDiv th {
+  border: 1px solid white;
+  width: 50px;
+  height: 5px;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+#dataTableDiv table {
+  border: 2px solid black;
+  vertical-align: top;
+  display: inline-table;
+  margin-right: 5px;
+  margin-top: 10px;
+}

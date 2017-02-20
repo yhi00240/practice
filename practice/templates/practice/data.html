@@ -2,42 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
-<style>
-  td {
-  width: 5px;
-  height: 5px;
-  text-align: center;
-  font-size: x-large;
-  }
-
-  th {
-    border: 1px solid white;
-    width: 50px;
-    height: 5px;
-    text-align: center;
-    background-color: black;
-    color: white;
-  }
-
-  table {
-    border: 2px solid black;
-    vertical-align: top;
-    display: inline-table;
-    margin-right: 5px;
-    margin-top: 10px;
-  }
-</style>
 <div class="row">
   <br>
   <h3>Load Example Data</h3>
   <br>
-  <h4>Training Image&Lable</h4>
-  <button onclick="loadData()" class="w3-btn w3-dark-gray">Load data</button>
   <li>
-    <h4>Loaded Data</h4>
+    <h4>Show Training Image&Lable</h4>
     <button id="showDataButton" class="w3-btn w3-dark-gray">Show</button>
     <div id="dataTableDiv" style="overflow:auto; width:1100px; height:300px"></div>
   </li>
+  <button onclick="loadData()" class="w3-btn w3-dark-gray w3-right" style="margin-left:900px;margin-top:50px">Load data</button>
 </div>
 <p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
@@ -168,31 +142,31 @@
       $curr.css('z-index', 1);
     }
 
-    function getNext() {
-      var $curr = $('.slideshow img:visible'),
-          $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+  function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+    transition($curr, $next);
+  }
+
+  function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+  }
+
+  function transition($curr, $next) {
+    clearInterval(interval);
+    $next.css('z-index', 2).fadeIn('slow', function () {
+      $curr.hide().css('z-index', 0);
+      $next.css('z-index', 1);
+    });
+  }
+
+  function getIndex(index) {
+    var $curr = $('.slideshow img:visible'),
+        $next = $('.slideshow img:eq('+index+')');
+    if($curr[0]!=$next[0])
       transition($curr, $next);
-    }
-
-    function getPrev() {
-      var $curr = $('.slideshow img:visible'),
-          $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
-      transition($curr, $next);
-    }
-
-    function transition($curr, $next) {
-      clearInterval(interval);
-      $next.css('z-index', 2).fadeIn('slow', function () {
-        $curr.hide().css('z-index', 0);
-        $next.css('z-index', 1);
-      });
-    }
-
-    function getIndex(index) {
-      var $curr = $('.slideshow img:visible'),
-          $next = $('.slideshow img:eq(' + index + ')');
-      if ($curr[0] != $next[0])
-        transition($curr, $next);
-    }
-  </script>
+  }
+</script>
 {% endblock scripts %}
