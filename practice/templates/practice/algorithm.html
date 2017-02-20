@@ -15,7 +15,7 @@
               {% if "Yes" in value_list %}
                 <div class="switch-field">
                   {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}" checked/><p>{{ value }}</p></label>
+                    <label><input type="radio" name="{{ key }}" value="{{ value }}"/><p>{{ value }}</p></label>
                   {% endfor %}
                 </div>
               {% else %}
@@ -79,10 +79,14 @@
     if($(':radio[name="Model Type"]:checked').val() == "Single layer"){
       $('#Sigmoid').attr("checked", true);
       $('#ReLU').attr("checked",false);
+      $('input:radio[name="Dropout"][value="No"]').attr("checked",true);
+      $('input:radio[name="Dropout"][value="Yes"]').attr("chedked",false);
       $('input[type=radio][value="ReLU"]').attr("disabled",true);
+      $('input:radio[name="Dropout"][value="Yes"]').attr("disabled",true);
     }
     else{
-      $('input[type=radio][value="ReLU"]').attr("disabled",false);
+      $('input:radio[type=radio][value="ReLU"]').attr("disabled",false);
+      $('input:radio[name="Dropout"][value="Yes"]').attr("disabled",false);
     }
   });
 
