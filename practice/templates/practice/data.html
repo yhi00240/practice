@@ -2,12 +2,42 @@
 {% load staticfiles %}
 
 {% block content %}
+<style>
+  td {
+  width: 5px;
+  height: 5px;
+  text-align: center;
+  font-size: x-large;
+  }
+
+  th {
+    border: 1px solid white;
+    width: 50px;
+    height: 5px;
+    text-align: center;
+    background-color: black;
+    color: white;
+  }
+
+  table {
+    border: 2px solid black;
+    vertical-align: top;
+    display: inline-table;
+    margin-right: 5px;
+    margin-top: 10px;
+  }
+</style>
 <div class="row">
   <br>
   <h3>Load Example Data</h3>
   <br>
   <h4>Training Image&Lable</h4>
   <button onclick="loadData()" class="w3-btn w3-dark-gray">Load data</button>
+  <li>
+    <h4>Loaded Data</h4>
+    <button id="showDataButton" class="w3-btn w3-dark-gray">Show</button>
+    <div id="dataTableDiv" style="overflow:auto; width:1100px; height:300px"></div>
+  </li>
 </div>
 <p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
@@ -40,74 +70,129 @@
 {% endblock help %}
 
 {% block scripts %}
-<script>
-  $(function() {
-    $('a[href="#section02"]').on('click', function(e) {
-      $('html, body').animate({
-        scrollTop: $("#section02").offset().top
-      }, 500);
-      return false;
+  <script>
+    $(function () {
+      $('a[href="#section02"]').on('click', function (e) {
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+        }, 500);
+        return false;
+      });
     });
-  });
 
-  $(document).ready(function() {
-    var cur= window.location.pathname;
-    if(cur.indexOf('data')){
-      $('.submenu').hide();
-      $('#data.submenu').show();
+    $(document).ready(function () {
+      var cur = window.location.pathname;
+      if (cur.indexOf('data')) {
+        $('.submenu').hide();
+        $('#data.submenu').show();
+      }
+      $('.data-end').attr('src', '{% static 'practice/images/end_exec.png' %}');
+      $('#data-1').parent().next().children().css('font-weight', 'Bold');
+      $('#data-1').parent().next().children().css('font-size', '17px');
+      $('#data').prev().children().css('color', '#d50f25');
+    });
+
+    function loadData() {
+      $.post("/{{ practice_name }}/data/",
+          function (data) {
+            if (confirm("Data Loaded"))
+              document.location = '/{{ practice_name }}/algorithm';
+          },
+          "json"
+      );
     }
-    $('.data-end').attr('src','{% static 'practice/images/end_exec.png' %}');
-    $('#data-1').parent().next().children().css('font-weight','Bold');
-    $('#data-1').parent().next().children().css('font-size','17px');
-    $('#data').prev().children().css('color','#d50f25');
-  });
 
-  function loadData() {
-    $.post("/{{ practice_name }}/data/",
-        function (data) {
-          if(confirm("Data Loaded"))
-            document.location = '/{{ practice_name }}/algorithm';
-        },
-        "json"
-    );
-  }
+    next_data = 1;
+    $('#showDataButton').click(function () {
+      var showDataButton = $('#showDataButton');
+      showDataButton.html('Show more');
 
-  var interval = undefined;
-  $(document).ready(function () {
-    interval = setInterval(getFirst, 2000);// milliseconds
-    getNext();
-  });
+      $.post("/{{ practice_name }}/data/show_loaded_data/", {next: next_data},
+          function (data) {
 
-  function getFirst() {
-    var $curr = $('.slideshow img:visible').first();
-    $curr.css('z-index', 1);
-  }
+            {# create 5 tables to show 5 images and labels #}
+            for (var i = 0; i < 5; i++) {
+              document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
+            }
 
-  function getNext() {
-    var $curr = $('.slideshow img:visible'),
-        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
-    transition($curr, $next);
-  }
+            var tables = document.getElementsByTagName("table");
+            for (var i = next_data * 5 - 5, table; table = tables[i]; i++) {
+              {# head of table#}
+              var tr = document.createElement("tr");
+              table.appendChild(tr);
+              var head_image = document.createElement("th");
+              head_image.colSpan = "28";
+              head_image.appendChild(document.createTextNode("Image"));
+              tr.appendChild(head_image);
+              var head_label = document.createElement("th");
+              head_label.appendChild(document.createTextNode("Label"));
+              tr.appendChild(head_label);
 
-  function getPrev() {
-    var $curr = $('.slideshow img:visible'),
-        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
-    transition($curr, $next);
-  }
+              {# hight of image#}
+              for (var j = 0; j < 28; j++) {
+                var row = document.createElement("tr");
+                table.appendChild(row);
 
-  function transition($curr, $next) {
-    clearInterval(interval);
-    $next.css('z-index', 2).fadeIn('slow', function () {
-      $curr.hide().css('z-index', 0);
-      $next.css('z-index', 1);
+                {# width of image #}
+                for (var k = 0; k < 28; k++) {
+                  var col = document.createElement("td");
+                  var color = 255 - data.images[i - 5 * next_data + 5][j * 28 + k];
+                  col.style.backgroundColor = '#' + color + color + color;
+                  row.appendChild(col);
+                }
+
+                {# label column #}
+                if (j == 0) {
+                  var label = document.createElement("td");
+                  label.rowSpan = "28";
+                  label.style.border = "1px solid black";
+                  label.textContent = data.labels[i - 5 * next_data + 5];
+                  row.appendChild(label);
+                }
+              }
+            }
+            next_data++;
+          },
+          "json"
+      );
     });
-  }
 
-  function getIndex(index) {
-    var $curr = $('.slideshow img:visible'),
-        $next = $('.slideshow img:eq('+index+')');
-    if($curr[0]!=$next[0])
+    var interval = undefined;
+    $(document).ready(function () {
+      interval = setInterval(getFirst, 2000);// milliseconds
+      getNext();
+    });
+
+    function getFirst() {
+      var $curr = $('.slideshow img:visible').first();
+      $curr.css('z-index', 1);
+    }
+
+    function getNext() {
+      var $curr = $('.slideshow img:visible'),
+          $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
       transition($curr, $next);
-  }
-</script>
+    }
+
+    function getPrev() {
+      var $curr = $('.slideshow img:visible'),
+          $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+      transition($curr, $next);
+    }
+
+    function transition($curr, $next) {
+      clearInterval(interval);
+      $next.css('z-index', 2).fadeIn('slow', function () {
+        $curr.hide().css('z-index', 0);
+        $next.css('z-index', 1);
+      });
+    }
+
+    function getIndex(index) {
+      var $curr = $('.slideshow img:visible'),
+          $next = $('.slideshow img:eq(' + index + ')');
+      if ($curr[0] != $next[0])
+        transition($curr, $next);
+    }
+  </script>
 {% endblock scripts %}

@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from EasyTensor.redis_utils import RedisManager
 from practice.services import MNIST
+from practice.models import TrainData
 
 class Main(APIView):
 
@@ -17,7 +18,6 @@ class Main(APIView):
 
     def get(self,request):
         return render(request, self.template_name, {})
-
 
 class Data(APIView):
 
@@ -30,6 +30,17 @@ class Data(APIView):
         # TODO : data 상태 화면에 보여주기.
         return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
+    @staticmethod
+    @csrf_exempt
+    def show_loaded_data(request, practice_name):
+        images = []
+        labels = []
+        next = request.POST['next']
+        for index in range(5*int(next)-4, 5*int(next)+1):
+            data = TrainData.objects.get(id=index)
+            images.append(list(data.image))
+            labels.append(data.label)
+        return HttpResponse(json.dumps({'success': True, 'images': images, 'labels': labels}), content_type='application/json')
 
 class Algorithm(APIView):
 

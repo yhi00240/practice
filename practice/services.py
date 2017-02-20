@@ -8,7 +8,6 @@ from EasyTensor.redis_utils import RedisManager
 from practice import high_accuracy
 from practice.utils import image_to_mnist
 
-
 class BasePractice(object):
     # Path는 각 practice 별로 정의한다.
     LOGS_PATH = None
