@@ -112,7 +112,7 @@ class Training(APIView):
     def run_service(request, practice_name):
         mnist = MNIST()
         mnist.load_data()
-        mnist.set_algorithm(request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
+        mnist.set_algorithm(request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'), request.COOKIES.get('activation_function'), request.COOKIES.get('dropout'))
         mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         RedisManager.delete(practice_name)
         mnist.run() # TODO : make async
@@ -151,7 +151,7 @@ class Test(APIView):
     def draw_result(request, practice_name):
         image_data = eval(request.POST['image_data'])
         mnist = MNIST()
-        original, reference = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'))
+        original, reference = mnist.test_single(image_data, request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'), request.COOKIES.get('activation_function'), request.COOKIES.get('dropout'))
         print('original', original)
         print('reference', reference)
         return HttpResponse(json.dumps({'original': original, 'reference': reference}), content_type='application/json')
