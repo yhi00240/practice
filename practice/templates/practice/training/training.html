@@ -3,38 +3,38 @@
 
 <!--override-->
 {% block content %}
-<div class="row">
-  <br>
   {% block frame %}
-  <h3>Set {{ practice_name }} training settings</h3>
-  <br>
   <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
-    {% for key,value_list in list.items %}
-      <div class="w3-card-2 w3-round w3-white w3-hide-small">
-        <div class="w3-container">
-          <div class="table_name col-sm-4">{{ key }}</div>
-          <div class="table_value col-sm-8">
-            {% if "Optimizer" in key %}
-              <div class="cc-selector">
-                {% for value in value_list %}
-                  <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
-                {% endfor %}
-              </div>
-            {% else %}
-              <div class="w3-container">
-                <label class="w3-label w3-text-teal"></label>
-                <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
-              </div>
-            {% endif %}
+    <div class="row">
+      <br>
+      <h3>Set {{ practice_name }} training settings</h3>
+      <br>
+      {% for key,value_list in list.items %}
+        <div class="w3-card-2 w3-round w3-white w3-hide-small">
+          <div class="w3-container">
+            <div class="table_name col-sm-4">{{ key }}</div>
+            <div class="table_value col-sm-8">
+              {% if "Optimizer" in key %}
+                <div class="cc-selector">
+                  {% for value in value_list %}
+                    <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="w3-container">
+                  <label class="w3-label w3-text-teal"></label>
+                  <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
+                </div>
+              {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
     <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
   </form>
   {% endblock frame %}
-</div>
-<p><a href="#section02"><span></span>HELP</a></p>
+<p id="div_section"><a href="#section02"><span></span>HELP</a></p>
 <script>
   var cur= window.location.pathname;
   if(cur.indexOf('training')){
@@ -47,9 +47,9 @@
 
 {% block help %}
 <div class="w3-cell-row">
-  <div class="w3-container w3-cell w3-left" style="margin-right:-300px">
+  <div class="w3-container w3-cell">
     <br><br><br><br>
-    <ul class="w3-ul">
+    <ul class="w3-ul help_list">
       <li><h4>List</h4></li>
       <li><span onClick="getIndex(0)">Cost Function</span></li>
       <li><span onClick="getIndex(5)">Optimizer</span></li>
@@ -72,9 +72,9 @@
       <img src="{% static 'practice/images/ppt/training (10).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/training (11).png' %}" width="auto" height="400">
     </div>
-    <div class="w3-display-middle" style="width:70%">
-      <div class="w3-btn-floating w3-display-left w3-light-gray" style="margin-left:90px" onclick="getPrev()">&#10094;</div>
-      <div class="w3-btn-floating w3-display-right w3-light-gray" onclick="getNext()">&#10095;</div>
+    <div class="w3-middle">
+      <div class="w3-btn-floating w3-left w3-light-gray" onclick="getPrev()">&#10094;</div>
+      <div class="w3-btn-floating w3-right w3-light-gray" onclick="getNext()">&#10095;</div>
     </div>
   </div>
 </div>
@@ -82,25 +82,50 @@
 
 {% block scripts %}
 <script>
-  $(function() {
-    $('a[href="#section02"]').on('click', function(e) {
-      $('html, body').animate({
-        scrollTop: $("#section02").offset().top
-      }, 500);
-      return false;
+  $(document).ready(function(){
+    if($(window).scrollTop() == $(document).height() - $(window).height()){
+      $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+      $('#section01 a span').css("transform","rotate(135deg)");
+      $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+      $('#section01 a span').css("animation","sdb02 2s infinite");
+    }
+  });
+
+  $(function () {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
+        return false;
+      }
     });
   });
 
   $(document).ready(function(){
     $('.nextButton').attr("disabled",true);
     $("*").on('click',function(){
-     var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
-     var rate_check=$(':text[name="Learning Rate"]').val();
-     var epoch_check=$(':text[name="Optimization Epoch"]').val();
-     if(optimizer_check && rate_check && epoch_check)
-       $('.nextButton').attr("disabled",false);
-     else
-       $('.nextButton').attr("disabled",true);
+      var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
+      var rate_check=$(':text[name="Learning Rate"]').val();
+      var epoch_check=$(':text[name="Optimization Epoch"]').val();
+      if(optimizer_check && rate_check && epoch_check)
+        $('.nextButton').attr("disabled",false);
+      else
+        $('.nextButton').attr("disabled",true);
     });
   });
 
@@ -135,6 +160,15 @@
       $curr.hide().css('z-index', 0);
       $next.css('z-index', 1);
     });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<5)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(5<=$next.index() && $next.index()<8)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else if(8<=$next.index() && $next.index()<9)
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(4)').css("font-weight","Bold");
   }
 
   function getIndex(index) {

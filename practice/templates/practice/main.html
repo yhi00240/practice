@@ -4,23 +4,86 @@
 {% block content %}
 <div class="row" >
   <br>
-  <h1>WELCOME TO TENSORFLOW WORLD!!</h1>
+  <h1>WELCOME TO EasyTensor!!</h1>
+  <h5>You can easily learn Tensorflow tutorials through this.</h5>
   <br>
-  <h3>Select Tensorflow Tutorial you want to Start!</h3>
+  <h3>Select Tensorflow tutorial you want to start!</h3>
   <br>
-  <label><input type='radio' name = 'practice' value='mnist'>MNIST</label>
+  <div class="cc-selector">
+    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/MNIST.png' %}" width="300" height="auto" class="active_img" style="margin-right:15px;"></label>
+    <label><input type="radio" name = "practice" value="iris"/><img src="{%  static 'practice/images/IRIS.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
+    <label><input type="radio" name = "practice" value="cifar10"/><img src="{%  static 'practice/images/CIFAR10.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
+  </div>
   <br>
   <br>
-  <button id="nextButton" class="nextButton w3-btn w3-dark-gray">Let's start</button>
 </div>
+<br><br><br>
+<p id="div_section"><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
+
 {% block help %}
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell">
+    <br><br><br><br>
+    <ul class="w3-ul help_list">
+      <li><h4>List</h4></li>
+      <li><span onClick="getIndex(0)">MNIST</span></li>
+    </ul>
+  </div>
+  <div class="w3-container w3-cell">
+    <h3>What is the MNIST Data Structure?</h3>
+    <div class="slideshow">
+      <img src="{% static 'practice/images/ppt/data (1).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/data (2).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/data (3).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/data (4).png' %}" width="auto" height="400">
+    </div>
+    <div class="w3-middle">
+      <div class="w3-btn-floating w3-left w3-light-gray" onclick="getPrev()">&#10094;</div>
+      <div class="w3-btn-floating w3-right w3-light-gray" onclick="getNext()">&#10095;</div>
+    </div>
+  </div>
+</div>
 {% endblock help %}
 
 {% block scripts %}
 <script>
-  $('#nextButton').click(
+  $(document).ready(function(){
+    if($(window).scrollTop() == $(document).height() - $(window).height()){
+      $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+      $('#section01 a span').css("transform","rotate(135deg)");
+      $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+      $('#section01 a span').css("animation","sdb02 2s infinite");
+    }
+  });
+
+  $(function () {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
+        return false;
+      }
+    });
+  });
+
+  $('input:radio[name="practice"]').click(
     function() {
       var obj = document.getElementsByName('practice');
       var checked_value = '';
@@ -29,14 +92,64 @@
 	      checked_value = obj[i].value;
 	    }
       }
-      location.href='/'+ checked_value +'/data'
-      }
-  );
+      if(checked_value=="mnist")
+        location.href='/'+ checked_value +'/data'
+      else
+        alert("These tutorials aren't available");
+  });
+
   $(document).ready(function() {
     var cur= window.location.pathname;
     if(cur.indexOf('main')){
       $('.submenu').hide();
     }
   });
+
+  var interval = undefined;
+    $(document).ready(function () {
+      interval = setInterval(getFirst, 2000);// milliseconds
+      getNext();
+    });
+
+    function getFirst() {
+      var $curr = $('.slideshow img:visible').first();
+      $curr.css('z-index', 1);
+    }
+
+  function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+    transition($curr, $next);
+  }
+
+  function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+  }
+
+  function transition($curr, $next) {
+    clearInterval(interval);
+    $next.css('z-index', 2).fadeIn('slow', function () {
+      $curr.hide().css('z-index', 0);
+      $next.css('z-index', 1);
+    });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<2)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(2<=$next.index() && $next.index()<3)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+  }
+
+  function getIndex(index) {
+    var $curr = $('.slideshow img:visible'),
+        $next = $('.slideshow img:eq('+index+')');
+    if($curr[0]!=$next[0])
+      transition($curr, $next);
+  }
+
+
 </script>
 {% endblock scripts %}

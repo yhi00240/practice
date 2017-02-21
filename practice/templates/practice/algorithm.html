@@ -2,44 +2,44 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row" >
-  <br>
-  <h3>Set {{ practice_name }} algorithm</h3>
-  <br>
-  <form action = "/{{ practice_name }}/algorithm/" accept-charset="utf-8" name="save_algorithm" method="post">
-      {% for key, value_list in list.items %}
-        <div class="w3-card-2 w3-round w3-white w3-hide-small">
-          <div class="w3-container">
-            <div class="table_name col-sm-4">{{ key }}</div>
-            <div class="table_value col-sm-8">
-              {% if "Yes" in value_list %}
-                <div class="switch-field">
-                  {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}" checked/><p>{{ value }}</p></label>
-                  {% endfor %}
-                </div>
-              {% else %}
-                <div class="cc-selector">
-                  {% for value in value_list %}
-                    <label><input type="radio" name="{{ key }}" value="{{ value }}" id="{{ value }}"/><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
+<form action = "/{{ practice_name }}/algorithm/" accept-charset="utf-8" name="save_algorithm" method="post">
+  <div class="row" >
+    <br>
+    <h3>Set {{ practice_name }} algorithm</h3>
+    <br>
+    {% for key, value_list in list.items %}
+      <div class="w3-card-2 w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+          <div class="table_name col-sm-4">{{ key }}</div>
+          <div class="table_value col-sm-8">
+            {% if "Yes" in value_list %}
+              <div class="switch-field">
+                {% for value in value_list %}
+                  <label><input type="radio" name="{{ key }}" value="{{ value }}"/><p>{{ value }}</p></label>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="cc-selector">
+                {% for value in value_list %}
+                  <label><input type="radio" name="{{ key }}" value="{{ value }}" id="{{ value }}"/><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </div>
-      {% endfor %}
-    <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
-  </form>
-</div>
-<p><a href="#section02"><span></span>HELP</a></p>
+      </div>
+    {% endfor %}
+  </div>
+  <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
+</form>
+<p id="div_section"><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
 {% block help %}
 <div class="w3-cell-row">
-  <div class="w3-container w3-cell w3-left" style="margin-right:-300px">
+  <div class="w3-container w3-cell">
     <br><br><br><br>
-    <ul class="w3-ul">
+    <ul class="w3-ul help_list">
       <li><h4>List</h4></li>
       <li><span onClick="getIndex(0)">Layers</span></li>
       <li><span onClick="getIndex(3)">Activation Function</span></li>
@@ -47,27 +47,27 @@
       <li><span onClick="getIndex(12)">Dropout</span></li>
     </ul>
   </div>
-  <div class="w3-container w3-cell">
+  <div class="w3-container">
     <h3>How is the Neural Network algorithm organized?</h3>
     <div class="slideshow">
-      <img src="{% static 'practice/images/ppt/algorithm (1).png' %}" width="auto" height="400" alt="first image">
-      <img src="{% static 'practice/images/ppt/algorithm (2).png' %}" width="auto" height="400" alt="second image">
-      <img src="{% static 'practice/images/ppt/algorithm (3).png' %}" width="auto" height="400" alt="third image">
-      <img src="{% static 'practice/images/ppt/algorithm (4).png' %}" width="auto" height="400" alt="fourth image">
-      <img src="{% static 'practice/images/ppt/algorithm (5).png' %}" width="auto" height="400" alt="first image">
-      <img src="{% static 'practice/images/ppt/algorithm (6).png' %}" width="auto" height="400" alt="second image">
-      <img src="{% static 'practice/images/ppt/algorithm (7).png' %}" width="auto" height="400" alt="third image">
-      <img src="{% static 'practice/images/ppt/algorithm (8).png' %}" width="auto" height="400" alt="fourth image">
-      <img src="{% static 'practice/images/ppt/algorithm (9).png' %}" width="auto" height="400" alt="first image">
-      <img src="{% static 'practice/images/ppt/algorithm (10).png' %}" width="auto" height="400" alt="second image">
-      <img src="{% static 'practice/images/ppt/algorithm (11).png' %}" width="auto" height="400" alt="third image">
-      <img src="{% static 'practice/images/ppt/algorithm (12).png' %}" width="auto" height="400" alt="fourth image">
-      <img src="{% static 'practice/images/ppt/algorithm (13).png' %}" width="auto" height="400" alt="first image">
-      <img src="{% static 'practice/images/ppt/algorithm (14).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/algorithm (1).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (2).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (3).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (4).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (5).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (6).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (7).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (8).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (9).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (10).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (11).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (12).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (13).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (14).png' %}" width="auto" height="400">
     </div>
-    <div class="w3-display-middle" style="width:70%">
-      <div class="w3-btn-floating w3-display-left w3-light-gray" style="margin-left:90px" onclick="getPrev()">&#10094;</div>
-      <div class="w3-btn-floating w3-display-right w3-light-gray" onclick="getNext()">&#10095;</div>
+    <div class="w3-middle">
+      <div class="w3-btn-floating w3-left w3-light-gray"  onclick="getPrev()">&#10094;</div>
+      <div class="w3-btn-floating w3-right w3-light-gray" onclick="getNext()">&#10095;</div>
     </div>
   </div>
 </div>
@@ -75,35 +75,60 @@
 
 {% block scripts %}
 <script>
+  $(document).ready(function(){
+    if($(window).scrollTop() == $(document).height() - $(window).height()){
+      $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+      $('#section01 a span').css("transform","rotate(135deg)");
+      $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+      $('#section01 a span').css("animation","sdb02 2s infinite");
+    }
+  });
+
+  $(function () {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
+        return false;
+      }
+    });
+  });
+
   $(':radio[name="Model Type"]').on('click', function(){
     if($(':radio[name="Model Type"]:checked').val() == "Single layer"){
-      $('#Sigmoid').attr("checked", true);
-      $('#ReLU').attr("checked",false);
       $('input[type=radio][value="ReLU"]').attr("disabled",true);
+      $('input:radio[name="Dropout"][value="Yes"]').attr("disabled",true);
     }
     else{
-      $('input[type=radio][value="ReLU"]').attr("disabled",false);
+      $('input:radio[type=radio][value="ReLU"]').attr("disabled",false);
+      $('input:radio[name="Dropout"][value="Yes"]').attr("disabled",false);
     }
   });
 
   $(document).ready(function(){
     $('.nextButton').attr("disabled",true);
     $('*').on('click',function(){
-     var layer_check=$(':radio[name="Model Type"]:checked').val();
-     var function_check=$(':radio[name="Activation Function"]:checked').val();
-     var dropout_check=$(':radio[name="Dropout"]:checked').val();
-     var weight_check=$(':radio[name="Weight Initialization"]:checked').val();
-     if(layer_check && function_check && dropout_check && weight_check)
-       $('.nextButton').attr("disabled",false);
-    });
-  });
-
-  $(function() {
-    $('a[href="#section02"]').on('click', function(e) {
-      $('html, body').animate({
-        scrollTop: $("#section02").offset().top
-      }, 500);
-      return false;
+      var layer_check=$(':radio[name="Model Type"]:checked').val();
+      var function_check=$(':radio[name="Activation Function"]:checked').val();
+      var dropout_check=$(':radio[name="Dropout"]:checked').val();
+      var weight_check=$(':radio[name="Weight Initialization"]:checked').val();
+      if(layer_check && function_check && dropout_check && weight_check)
+        $('.nextButton').attr("disabled",false);
     });
   });
 
@@ -138,6 +163,15 @@
       $curr.hide().css('z-index', 0);
       $next.css('z-index', 1);
     });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<3)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(3<=$next.index() && $next.index()<8)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else if(8<=$next.index() && $next.index()<12)
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(4)').css("font-weight","Bold");
   }
 
   function getIndex(index) {

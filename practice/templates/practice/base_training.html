@@ -2,11 +2,8 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row">
-  <br>
   {% block frame %}
   {% endblock frame %}
-</div>
 <script>
   var cur= window.location.pathname;
   if(cur.indexOf('training')){
