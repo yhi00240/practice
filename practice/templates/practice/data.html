@@ -8,11 +8,13 @@
   <br>
   <li>
     <h4>Show Training Image&Lable</h4>
-    <button id="showDataButton" class="w3-btn w3-dark-gray">Show</button>
-    <div id="dataTableDiv" style="overflow:auto; width:1100px; height:300px"></div>
+    <button id="showDataButton" class="w3-btn w3-dark-gray" style="margin-bottom:20px;">
+      <i id="spinner"></i>Load data
+    </button>
+    <div id="dataTableDiv" style="overflow:auto; width:1200px; height:300px"></div>
   </li>
 </div>
-<button onclick="loadData()" class="nextButton w3-btn w3-dark-gray">Load data</button>
+<button onclick="loadData()" class="nextButton w3-btn w3-dark-gray">Next</button>
 <p><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
@@ -79,93 +81,101 @@
     });
   });
 
-    $(document).ready(function () {
-      var cur = window.location.pathname;
-      if (cur.indexOf('data')) {
-        $('.submenu').hide();
-        $('#data.submenu').show();
+  $(document).ready(function () {
+    var cur = window.location.pathname;
+    if (cur.indexOf('data')) {
+      $('.submenu').hide();
+      $('#data.submenu').show();
+    }
+    $('.data-end').attr('src', '{% static 'practice/images/end_exec.png' %}');
+    $('#data-1').parent().next().children().css('font-weight', 'Bold');
+    $('#data-1').parent().next().children().css('font-size', '17px');
+    $('#data').prev().children().css('color', '#d50f25');
+  });
+
+  function loadData() {
+    $.post("/{{ practice_name }}/data/",
+      function (data) {
+        document.location = '/{{ practice_name }}/algorithm';
+        },
+       "json"
+    );
+  }
+
+  next_data = 1;
+  var load = 0;
+  $('#showDataButton').click(function () {
+    var showDataButton = $('#showDataButton');
+    if(load == 0){
+      $('#spinner').addClass("fa fa-spinner fa-spin");
+      setTimeout( function(){
+        $('#spinner').removeClass("fa fa-spinner fa-spin");
+        show_table();
+        showDataButton.html('Show more');
+        load=1;
+      }  , 3000 );
+    }else
+      show_table();
+  });
+  function show_table() {
+    $.post("/{{ practice_name }}/data/show_loaded_data/", {next: next_data},
+    function (data) {
+
+      {# create 10 tables to show 10 images and labels #}
+      for (var i = 0; i < 10; i++) {
+        document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
       }
-      $('.data-end').attr('src', '{% static 'practice/images/end_exec.png' %}');
-      $('#data-1').parent().next().children().css('font-weight', 'Bold');
-      $('#data-1').parent().next().children().css('font-size', '17px');
-      $('#data').prev().children().css('color', '#d50f25');
-    });
+      var tables = document.getElementsByTagName("table");
+      for (var i = next_data * 10 - 10, table; table = tables[i]; i++) {
+        {# head of table#}
+        var tr = document.createElement("tr");
+        table.appendChild(tr);
+        var head_image = document.createElement("th");
+        head_image.colSpan = "28";
+        head_image.appendChild(document.createTextNode("Image"));
+        tr.appendChild(head_image);
+        var head_label = document.createElement("th");
+        head_label.appendChild(document.createTextNode("Label"));
+        tr.appendChild(head_label);
 
-    function loadData() {
-      $.post("/{{ practice_name }}/data/",
-          function (data) {
-            if (confirm("Data Loaded"))
-              document.location = '/{{ practice_name }}/algorithm';
-          },
-          "json"
-      );
-    }
+        {# height of image#}
+        for (var j = 0; j < 28; j++) {
+          var row = document.createElement("tr");
+          table.appendChild(row);
+          {# width of image #}
+          for (var k = 0; k < 28; k++) {
+            var col = document.createElement("td");
+            var color = 255 - data.images[i - 10 * next_data + 10][j * 28 + k];
+            col.style.backgroundColor = '#' + color + color + color;
+            row.appendChild(col);
+          }
 
-    next_data = 1;
-    $('#showDataButton').click(function () {
-      var showDataButton = $('#showDataButton');
-      showDataButton.html('Show more');
+          {# label column #}
+          if (j == 0) {
+            var label = document.createElement("td");
+            label.rowSpan = "28";
+            label.style.border = "1px solid black";
+            label.textContent = data.labels[i - 10 * next_data + 10];
+            row.appendChild(label);
+          }
+        }
+      }
+      next_data++;
+    },
+    "json"
+    );
+  }
 
-      $.post("/{{ practice_name }}/data/show_loaded_data/", {next: next_data},
-          function (data) {
+  var interval = undefined;
+  $(document).ready(function () {
+    interval = setInterval(getFirst, 2000);// milliseconds
+    getNext();
+  });
 
-            {# create 5 tables to show 5 images and labels #}
-            for (var i = 0; i < 5; i++) {
-              document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
-            }
-
-            var tables = document.getElementsByTagName("table");
-            for (var i = next_data * 5 - 5, table; table = tables[i]; i++) {
-              {# head of table#}
-              var tr = document.createElement("tr");
-              table.appendChild(tr);
-              var head_image = document.createElement("th");
-              head_image.colSpan = "28";
-              head_image.appendChild(document.createTextNode("Image"));
-              tr.appendChild(head_image);
-              var head_label = document.createElement("th");
-              head_label.appendChild(document.createTextNode("Label"));
-              tr.appendChild(head_label);
-
-              {# hight of image#}
-              for (var j = 0; j < 28; j++) {
-                var row = document.createElement("tr");
-                table.appendChild(row);
-
-                {# width of image #}
-                for (var k = 0; k < 28; k++) {
-                  var col = document.createElement("td");
-                  var color = 255 - data.images[i - 5 * next_data + 5][j * 28 + k];
-                  col.style.backgroundColor = '#' + color + color + color;
-                  row.appendChild(col);
-                }
-
-                {# label column #}
-                if (j == 0) {
-                  var label = document.createElement("td");
-                  label.rowSpan = "28";
-                  label.style.border = "1px solid black";
-                  label.textContent = data.labels[i - 5 * next_data + 5];
-                  row.appendChild(label);
-                }
-              }
-            }
-            next_data++;
-          },
-          "json"
-      );
-    });
-
-    var interval = undefined;
-    $(document).ready(function () {
-      interval = setInterval(getFirst, 2000);// milliseconds
-      getNext();
-    });
-
-    function getFirst() {
-      var $curr = $('.slideshow img:visible').first();
-      $curr.css('z-index', 1);
-    }
+  function getFirst() {
+    var $curr = $('.slideshow img:visible').first();
+    $curr.css('z-index', 1);
+  }
 
   function getNext() {
     var $curr = $('.slideshow img:visible'),
