@@ -338,7 +338,7 @@ section::after {
   height : 80%;
 }
 
-body .demo p {
+#div_section {
   border-bottom : 1px solid #222a35;
 }
 
