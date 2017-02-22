@@ -76,8 +76,9 @@
         //services.py가 처음부터 돌아가면 data.EPOCH 값이 다시 0부터 저장됩니다.
         if(first_flag == true && data.EPOCH != 0) {}
         else if(data.EPOCH != cost_last_idx){
-          var cur_cost=data.cur_cost;
-          $('#text').html("Epoch" + data.EPOCH + " : " + "cost=" + cur_cost);
+          var cur_cost = data.cur_cost;
+          var cur_epoch = parseInt(data.EPOCH) + 1
+          $('#text').html("Epoch" + cur_epoch + " : " + "cost=" + cur_cost);
             for(var i = 0; i < add_width; i++){
               width++;
               bar_elem.style.width = width + '%';
