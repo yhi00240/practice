@@ -10,7 +10,6 @@
 <script type="text/javascript" src="{% static 'practice/js/graph/plugins/jqplot.highlighter.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
-
 <style>
 #wrap {
   width : 1024px;
@@ -31,9 +30,7 @@
   float : left;
   margin-left : 10px;
 }
-
 </style>
-
 <div class="row">
   <br>
   <h3>{{ practice_name }} training result</h3>
@@ -43,7 +40,6 @@
   </div>
   <button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 </div>
-
 <script>
 var cost = {{costs}};
 var accuracy = {{accuracys}};
