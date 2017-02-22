@@ -96,8 +96,9 @@
 {% block scripts %}
 {% endblock scripts %}
 <script>
-  var height =  $(window).height() - 150;
-  $('.row').css('height',height);
+  var main_height =  $(window).height() - 160;
+  $('.row').css('height',main_height);
+  $('#help_row').css('height',main_height-40);
 </script>
 <script src="{% static 'practice/js/base.js' %}"></script>
 </html>
