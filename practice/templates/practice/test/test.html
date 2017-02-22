@@ -64,7 +64,17 @@
     arrowImage = loadImage("{% static 'practice/images/arrow.png' %}");
     dataset = new Dataset();
     dataset.loadMNIST(true);
-    $.getJSON("{% static 'practice/js/datasets/mnist/mnist_snapshot.json' %}", function(json) {
+    var accuracy = localStorage.getItem('latest_accuracy');
+    console.log('latest_accuracy : ' + accuracy);
+    var snapshots = [60, 72, 78, 82, 85, 88, 92, 95];
+    var fileName;
+    for (var i = snapshots.length - 1; i >= 0; i--) {
+      if(accuracy > snapshots[i]) {
+        fileName = '/static/practice/js/datasets/mnist/mnist_snapshot_'+snapshots[i]+'.json';
+        break;
+      }
+    }
+    $.getJSON(fileName, function(json) {
       convnet = new convnet(dataset);
       convnet.load_from_json(json);
       ready = true;
