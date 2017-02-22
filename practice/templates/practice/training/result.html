@@ -11,15 +11,65 @@
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
 
+<style>
+#wrap {
+  width : 1024px;
+  height : auto;
+  margin : 0px auto;
+}
+
+#accuracy_graph {
+  width : 50%;
+  height : 480px;
+  float : left;
+  margin-left : 10px;
+}
+
+#cost_graph {
+  width : 50%;
+  height : 480px;
+  float : left;
+  margin-left : 10px;
+}
+
+</style>
+
 <div class="row">
   <br>
   <h3>{{ practice_name }} training result</h3>
-  <br>
-
-  <br><br>
+  <div id="wrap">
+    <div id="cost_graph" style="width:500px;height:480px;"></div>
+    <div id="accuracy_graph" style="width:500px;height:480px;"></div>
+  </div>
+  <button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 </div>
-<button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 <p id="div_section"></p>
+
+<script>
+//제목은 세부적으로 바꾸기, y축 이름 세로로 출력되게 하기
+//var cost = {{costs}};
+//var accuracy = {{accuracys}};
+var cost = [1,2,3,4,5];
+var accuracy = [5,4,3,2,1];
+$.jqplot('cost_graph', [cost],{
+        title : 'cost',
+        axes: {
+            xaxis: { label: "epoch" },
+            yaxis: { label: "cost" }
+           }
+        }
+    );
+
+$.jqplot('accuracy_graph', [accuracy],{
+        title : 'accuracy',
+        axes: {
+            xaxis: { label: "epoch" },
+            yaxis: { label: "accuracy" }
+           }
+        }
+    );
+</script>
+
 {% endblock frame %}
 
 {% block scripts %}
