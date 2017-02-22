@@ -105,7 +105,7 @@ class Training(APIView):
     @staticmethod
     def run(request, practice_name):
         template = 'practice/training/run.html'
-        return render(request, template, {'practice_name': practice_name})
+        return render(request, template, {'practice_name': practice_name, 'epoch_num': int(request.COOKIES.get('optimization_epoch'))})
 
     @staticmethod
     @csrf_exempt
@@ -115,24 +115,45 @@ class Training(APIView):
         mnist.set_algorithm(request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'), request.COOKIES.get('activation_function'), request.COOKIES.get('dropout'))
         mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         RedisManager.delete(practice_name)
-        mnist.run() # TODO : make async
-        MNIST.tensorboard()
+        mnist.run()
         return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
     @staticmethod
     @csrf_exempt
     def get_progress(request, practice_name):
-        message = RedisManager.get_message(practice_name)
-        if not message:
+        #현재 epoch는 어디까지 진행됐느냐?
+        epoch_message = (RedisManager.get_element('epoch')).decode('ascii')
+        cost_step = "cost_step" + epoch_message
+        b_cost = RedisManager.get_element(cost_step)
+        cur_cost = float(b_cost.decode('ascii'))
+        if not epoch_message:
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')
         else:
-            return HttpResponse(json.dumps({'success': True, 'messages': str(message, 'utf-8')}), content_type='application/json')
+            return HttpResponse(json.dumps({'success': True, 'EPOCH': epoch_message, 'cur_cost': cur_cost}),
+                                content_type='application/json')
 
     @staticmethod
     def result(request, practice_name):
         template = 'practice/training/result.html'
-        return render(request, template, {'practice_name': practice_name})
 
+        step_cnt = int(request.COOKIES.get('optimization_epoch'))
+        cost_logs = []
+        accuracy_logs = []
+
+        for i in range(step_cnt):
+            cost_step= 'cost_step' + str(i)
+            accuracy_step = 'accuracy_step' + str(i)
+
+            #Redis에 저장되는 모든 값들은 binary로 저장되기 때문에 변환이 필요합니다.
+            b_cost = RedisManager.get_element(cost_step)
+            b_accuracy = RedisManager.get_element(accuracy_step)
+            cost = float(b_cost.decode('ascii'))
+            accuracy = float(b_accuracy.decode('ascii'))
+            cost_logs.append(cost)
+            accuracy_logs.append(accuracy)
+
+        return render(request, template,
+                      {'practice_name': practice_name, 'costs': cost_logs, 'accuracys': accuracy_logs})
 
 class Test(APIView):
 
