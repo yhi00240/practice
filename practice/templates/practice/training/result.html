@@ -2,6 +2,15 @@
 {% load staticfiles %}
 
 {% block frame %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'practice/js/jquery.jqplot.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/jquery.jqplot.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.barRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.categoryAxisRenderer.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
+
 <div class="row">
   <br>
   <h3>{{ practice_name }} training result</h3>
