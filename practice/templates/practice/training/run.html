@@ -77,8 +77,9 @@
   function progress_worker() {
     $.post("/{{ practice_name }}/training/get_progress/", function(data) {
       if(data.success){
-        //처음 run 했을 때, epoch단계가 0일때만 출력하게 한다.
-        //cache기반이라 data.EPOCH 값이 0이 아닐 수도 있기 때문에, data.EPOCH 값이 0일때 시작한다.
+        //처음 run 했을 때, 현재 data.EPOCH값이 0일때 출력하도록 합니다.
+        //cache기반이라 마지막 저장되어있는 data.EPOCH 값이 0이 아닐 수도 있습니다.
+        //services.py가 처음부터 돌아가면 data.EPOCH 값이 다시 0부터 저장됩니다.
         if(first_flag == true && data.EPOCH != 0) {}
         else if(data.EPOCH != cost_last_idx){
           var cur_cost=data.cur_cost;

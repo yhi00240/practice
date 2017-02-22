@@ -115,7 +115,7 @@ class Training(APIView):
         mnist.set_algorithm(request.COOKIES.get('model_type'), request.COOKIES.get('weight_initialization'), request.COOKIES.get('activation_function'), request.COOKIES.get('dropout'))
         mnist.set_training(request.COOKIES.get('optimizer'), float(request.COOKIES.get('learning_rate')), int(request.COOKIES.get('optimization_epoch')))
         RedisManager.delete(practice_name)
-        mnist.run() # TODO : make async
+        mnist.run()
         return HttpResponse(json.dumps({'success': True}), content_type='application/json')
 
     @staticmethod
