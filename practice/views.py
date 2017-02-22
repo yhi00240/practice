@@ -36,7 +36,7 @@ class Data(APIView):
         images = []
         labels = []
         next = request.POST['next']
-        for index in range(10*int(next)-9, 10*int(next)+1):
+        for index in range(40*int(next)-39, 40*int(next)+1):
             data = TrainData.objects.get(id=index)
             images.append(list(data.image))
             labels.append(data.label)

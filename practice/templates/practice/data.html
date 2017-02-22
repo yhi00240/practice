@@ -7,17 +7,20 @@
   <h3>Load Training Data</h3>
   <br>
   <h5>Let's load the mnist training Images & Lables</h5>
-  <button id="showDataButton" class="w3-btn w3-dark-gray" style="margin-bottom:20px;">
-    <i id="spinner"></i>Load data
-  </button>
-  <div id="dataTableDiv" style="overflow:auto;height:400px;"></div>
+  <div class="w3-container w3-border w3-cell-row" style="width:1000px;position:relative;">
+    <p style="text-align:center;vertical-align:middle;font-size:20px;position:relative;" class="w3-cell" id="info_load">Please Load Data</p>
+    <div id="dataTableDiv" style="height:350px;vertical-align:middle;position:relative;text-align:center;" class="w3-cell w3-display-center"></div>
+  </div>
+  <p id="info_data" style="float:right;font-size:20px;"></p>
 </div>
-<button onclick="loadData()" class="nextButton w3-btn w3-dark-gray">Next</button>
+<button id="showDataButton" class="w3-btn w3-dark-gray nextButton">
+    <i id="spinner"></i>Load data
+</button>
 <p id="div_section"><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
 
 {% block help %}
-<div class="w3-cell-row">
+<div id="help_row" class="w3-cell-row">
   <div class="w3-container w3-cell">
     <br><br><br><br>
     <ul class="w3-ul help_list">
@@ -27,6 +30,7 @@
     </ul>
   </div>
   <div class="w3-container w3-cell">
+    <br>
     <h3>How is the MNIST Data structured?</h3>
     <div class="slideshow">
       <img src="{% static 'practice/images/ppt/data(1).png' %}" width="auto" height="400">
@@ -106,23 +110,31 @@
       $('#spinner').addClass("fa fa-spinner fa-spin");
       setTimeout( function(){
         $('#spinner').removeClass("fa fa-spinner fa-spin");
+        $('#info_load').css('display','none');
         show_table();
-        showDataButton.html('Show more');
+        showDataButton.html('Next');
         load=1;
+        setTimeout( function(){
+          $('#info_data').html('59,960 data more...');
+        }, 1000 );
       }  , 3000 );
-    }else
-      show_table();
+    }else{
+      loadData();
+    }
   });
+
   function show_table() {
     $.post("/{{ practice_name }}/data/show_loaded_data/", {next: next_data},
     function (data) {
 
-      {# create 10 tables to show 10 images and labels #}
-      for (var i = 0; i < 10; i++) {
+      {# create 40 tables to show 40 images and labels #}
+      for (var i = 0; i < 40; i++) {
+        if(i%10==0 && i/10>0)
+          document.getElementById("dataTableDiv").appendChild(document.createElement("br"));
         document.getElementById("dataTableDiv").appendChild(document.createElement("table"));
       }
       var tables = document.getElementsByTagName("table");
-      for (var i = next_data * 10 - 10, table; table = tables[i]; i++) {
+      for (var i = next_data * 40 - 40, table; table = tables[i]; i++) {
         {# head of table#}
         var tr = document.createElement("tr");
         table.appendChild(tr);
@@ -141,7 +153,7 @@
           {# width of image #}
           for (var k = 0; k < 28; k++) {
             var col = document.createElement("td");
-            var color = 255 - data.images[i - 10 * next_data + 10][j * 28 + k];
+            var color = 255 - data.images[i - 40 * next_data + 40][j * 28 + k];
             col.style.backgroundColor = '#' + color + color + color;
             row.appendChild(col);
           }
@@ -151,7 +163,7 @@
             var label = document.createElement("td");
             label.rowSpan = "28";
             label.style.border = "1px solid black";
-            label.textContent = data.labels[i - 10 * next_data + 10];
+            label.textContent = data.labels[i - 40 * next_data + 40];
             row.appendChild(label);
           }
         }
