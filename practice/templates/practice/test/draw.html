@@ -62,6 +62,8 @@
     canvas.addEventListener('mouseup', endDraw);
     canvas.addEventListener('mouseout', endDraw);
   })();
+
+  $("#accuracy").html(localStorage.getItem('latest_accuracy'));
   $('#clear').click(function () {
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, canvas.width, canvas.height);

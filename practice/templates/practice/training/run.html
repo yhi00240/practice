@@ -2,62 +2,85 @@
 {% load staticfiles %}
 
 {% block frame %}
+<style>
+#progress{
+  top : 20px;
+  position : relative;
+  width : 100%;
+  height : 50px;
+  background-color : #ddd;
+}
+#bar{
+  position : absolute;
+  width : 0%;
+  height : 100%;
+  background-color : #4CAF23;
+}
+#text{
+  position : absolute;
+  width : 100%;
+  height : 100%;
+  text-align : center;
+  align-items : center;
+  margin : 15px 0;
+}
+</style>
 <div class="row">
   <br>
   <h3>Run {{ practice_name }} training</h3>
   <br>
   <button id="runButton" class = "w3-btn w3-dark-gray">Run</button>
-  <div id="result">Results will be shown here</div>
+  <div id="progress">
+    <div id="bar"></div>
+    <div id="text">Results will be shown here</div>
+  </div>
 </div>
-<br><br><br>
 <p id="div_section"></p>
-<style>
-  #result {
-    text-align:center;
-    border: 2px solid black;
-    align-items: center;
-    width: 100%;
-    height: auto;
-   }
-</style>
 <script>
   $('#runButton').click(function () {
-    runService()
+    runService();
   });
 
   var interval_id;
-  var first;
-  var last_message;
+  var epoch_num = {{epoch_num}};
+  var cost_last_idx = "-1";
+  var bar_elem = document.getElementById("bar");
+  var txt_elem = document.getElementById("text");
+  var width = 1;
+  var add_width = parseInt(100/epoch_num);
+  var first_flag=true;
+
   function runService() {
     var runButton = $('#runButton');
     runButton.attr('disabled', true);
     runButton.html('Running');
-    $('#result').html('Processing...');
-    first = true;
-    last_message = "";
-    $.post("/{{ practice_name }}/training/run_service/",
-      function(data) {
+    $('#text').html('Processing...');
+    interval_id = setInterval(progress_worker, 100);
+
+    $.post("/{{ practice_name }}/training/run_service/", function(data){
         clearInterval(interval_id);
-        runButton.html('Run');
-        runButton.attr('disabled', false);
-        if(confirm("Training Finished!"))
-          document.location='/{{ practice_name }}/training/result';
-      },
-      "json"
-    );
-    interval_id = setInterval(worker, 1000);
+        document.location='/{{ practice_name }}/training/result';
+    });
   }
 
-  function worker() {
+  function progress_worker() {
     $.post("/{{ practice_name }}/training/get_progress/", function(data) {
-      if (data.success && data.messages != last_message) {
-        if (first) {
-          $('#result').html(data.messages + "<br>");
-          first = false;
-        } else {
-          $('#result').append(data.messages + "<br>");
+      if(data.success){
+        //처음 run 했을 때, 현재 data.EPOCH값이 0일때 출력하도록 합니다.
+        //cache기반이라 마지막 저장되어있는 data.EPOCH 값이 0이 아닐 수도 있습니다.
+        //services.py가 처음부터 돌아가면 data.EPOCH 값이 다시 0부터 저장됩니다.
+        if(first_flag == true && data.EPOCH != 0) {}
+        else if(data.EPOCH != cost_last_idx){
+          var cur_cost = data.cur_cost;
+          var cur_epoch = parseInt(data.EPOCH) + 1
+          $('#text').html("Epoch" + cur_epoch + " : " + "cost=" + cur_cost);
+            for(var i = 0; i < add_width; i++){
+              width++;
+              bar_elem.style.width = width + '%';
+            }
+            cost_last_idx = data.EPOCH;
+            first_flag=false;
         }
-        last_message = data.messages;
       }
     });
   }

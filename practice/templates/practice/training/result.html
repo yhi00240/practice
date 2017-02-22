@@ -2,21 +2,94 @@
 {% load staticfiles %}
 
 {% block frame %}
+<script type="text/javascript" src="{% static 'practice/js/graph/jquery.jqplot.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/graph/jquery.jqplot.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/graph/plugins/jqplot.canvasAxisLabelRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/graph/plugins/jqplot.canvasTextRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/graph/plugins/jqplot.highlighter.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
+<style>
+#wrap {
+  width : 1024px;
+  height : auto;
+  margin : 0px auto;
+}
+
+#accuracy_graph {
+  width : 50%;
+  height : 480px;
+  float : left;
+  margin-left : 10px;
+}
+
+#cost_graph {
+  width : 50%;
+  height : 480px;
+  float : left;
+  margin-left : 10px;
+}
+</style>
 <div class="row">
   <br>
   <h3>{{ practice_name }} training result</h3>
-  <br>
-    <iframe src="http://localhost:6006" scrolling=yes width=1000 height=480 frameborder=1></iframe>
-  <br><br>
+  <div id="wrap">
+    <div id="cost_graph" style="width:500px;height:480px;"></div>
+    <div id="accuracy_graph" style="width:500px;height:480px;"></div>
+  </div>
+  <button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 </div>
-<button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 <p id="div_section"></p>
+<script>
+var cost = {{costs}};
+var accuracy = {{accuracys}};
+localStorage.setItem('latest_accuracy', accuracy[accuracy.length - 1].toFixed(3)*100);
+
+$.jqplot('cost_graph', [cost],{
+        axes: {
+            xaxis: {
+                label: "epoch",
+            },
+            yaxis: {
+                label: "cost",
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickOptions: {
+                    formatString: '%.4f'
+                }
+            }
+        },
+        highlighter: {
+            show: true,
+            sizeAdjust: 10,
+            formatString:'epoch: %d, cost: %#.4f'
+        }
+      }
+    );
+$.jqplot('accuracy_graph', [accuracy],{
+        axes: {
+            xaxis: { label: "epoch" },
+            yaxis: {
+                label: "accuracy",
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickOptions: {
+                    formatString: '%.4f'
+                }
+            }
+        },
+        highlighter: {
+            show: true,
+            sizeAdjust: 10,
+            formatString:'epoch: %d, accuracy: %#.4f'
+        }
+      }
+    );
+</script>
 {% endblock frame %}
 
 {% block scripts %}
 <script>
  $('#nextButton').click(function() {
-    location.href='/{{ practice_name }}/test/draw'
+    location.href='/{{ practice_name }}/test/'
   });
   $(document).ready(function() {
     $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');

@@ -2,7 +2,6 @@
 from tensorflow.contrib.layers import xavier_initializer
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
-import os
 
 from EasyTensor.redis_utils import RedisManager
 from practice import high_accuracy
@@ -31,9 +30,6 @@ class BasePractice(object):
     def test_single(self, *params):
         raise NotImplementedError()
 
-    @staticmethod
-    def tensorboard():
-        raise NotImplementedError()
 
 class MNIST(BasePractice):
 
@@ -59,7 +55,6 @@ class MNIST(BasePractice):
         self.training_epochs = None
         self.train_operation = None
         self.accuracy_operation = None
-        self.summary_operation = None
         self.save_path = None
 
         with tf.name_scope('Input'):
@@ -137,7 +132,7 @@ class MNIST(BasePractice):
     def set_algorithm(self, model_type, weight_initialize, activation_function, dropout):
         self.save_path, self.hypothesis, variables = self.get_model(model_type, weight_initialize, activation_function, dropout)
         with tf.name_scope('Cost'):
-            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.hypothesis, MNIST.Y))
+            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.hypothesis, labels=MNIST.Y))
         tf.summary.scalar('cost', self.cost)
 
     def set_training(self, optimizer, learning_rate, epochs):
@@ -146,35 +141,34 @@ class MNIST(BasePractice):
                 return tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
             elif optimizer == 'AdamOptimizer':
                 return tf.train.AdamOptimizer(learning_rate=learning_rate)
-            # else
-            # TODO else일경우 오류처리
-        with tf.name_scope('Training'):
-            self.optimizer = select_optimizer(optimizer, learning_rate)
-            self.train_operation = self.optimizer.minimize(loss=self.cost, name='optimizer')
+        self.optimizer = select_optimizer(optimizer, learning_rate)
+        self.train_operation = self.optimizer.minimize(loss=self.cost, name='optimizer')
         self.training_epochs = epochs
-        with tf.name_scope('Test'):
-            correct_prediction = tf.equal(tf.argmax(self.hypothesis, 1), tf.argmax(MNIST.Y, 1))
-            self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        tf.summary.scalar('accuracy', self.accuracy_operation)
-        self.summary_operation = tf.summary.merge_all()
+        correct_prediction = tf.equal(tf.argmax(self.hypothesis, 1), tf.argmax(MNIST.Y, 1))
+        self.accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     def run(self, *params):
         self.sess.run(tf.global_variables_initializer())
-        writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
         for epoch in range(self.training_epochs):
             avg_cost = 0.
+            avg_accuracy = 0.
             batch_count = int(self.data.num_examples / MNIST.BATCH_SIZE)
             for i in range(batch_count):
                 batch_xs, batch_ys = self.data.next_batch(MNIST.BATCH_SIZE)
-                _, cost, summary = self.sess.run(
-                    [self.train_operation, self.cost, self.summary_operation],
+                _, cost, accuracy = self.sess.run(
+                    [self.train_operation, self.cost, self.accuracy_operation],
                     feed_dict={MNIST.X: batch_xs, MNIST.Y: batch_ys, MNIST.DROPOUT_RATE: 0.7}
                 )
                 avg_cost += cost / batch_count
-                writer.add_summary(summary, epoch * batch_count + i)
-            message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
-            RedisManager.set_message('mnist', message)
-            print(message)
+                avg_accuracy += accuracy / batch_count
+
+            cost_stepName = 'cost_step' + str(epoch)
+            accuracy_stepName = 'accuracy_step' + str(epoch)
+
+            RedisManager.set_element('epoch', epoch)
+            RedisManager.set_element(cost_stepName, avg_cost)
+            RedisManager.set_element(accuracy_stepName, avg_accuracy)
+
         saver = tf.train.Saver()
         saver.save(self.sess, self.save_path)
         print('Model saved in file: {0}'.format(self.save_path))
@@ -204,8 +198,3 @@ class MNIST(BasePractice):
         saver.restore(self.sess, "practice/trained_model/convolutional.ckpt")
         mnist_data = image_to_mnist(image_data)
         return self.sess.run(y, feed_dict={MNIST.X: mnist_data, MNIST.DROPOUT_RATE: 1}).flatten().tolist(), self.sess.run(y_ref, feed_dict={MNIST.X: mnist_data, MNIST.DROPOUT_RATE: 1}).flatten().tolist()
-
-    @staticmethod
-    def tensorboard():
-        path = "tensorboard --logdir=" + os.path.abspath('./' + MNIST.LOGS_PATH) + " &"
-        os.system(path)
