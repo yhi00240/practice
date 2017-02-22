@@ -55,9 +55,7 @@
     runButton.attr('disabled', true);
     runButton.html('Running');
     $('#text').html('Processing...');
-
     interval_id = setInterval(progress_worker, 100);
-
     $.post("/{{ practice_name }}/training/run_service/", function(data){
         clearInterval(interval_id);
         document.location='/{{ practice_name }}/training/result';
