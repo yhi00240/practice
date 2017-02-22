@@ -8,6 +8,8 @@
 <script type="text/javascript" src="{% static 'practice/js/jquery.jqplot.js' %}"></script>
 <script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.barRenderer.js' %}"></script>
 <script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.categoryAxisRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.canvasAxisLabelRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.canvasTextRenderer.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
 
@@ -45,25 +47,31 @@
 </div>
 
 <script>
-//제목은 세부적으로 바꾸기, y축 이름 세로로 출력되게 하기
+
 var cost = {{costs}};
 var accuracy = {{accuracys}};
 $.jqplot('cost_graph', [cost],{
         title : 'cost',
         axes: {
-            xaxis: { label: "epoch" },
-            yaxis: { label: "cost" }
+           xaxis: { label: "epoch" },
+           yaxis: {
+             label: "cost",
+             labelRenderer: $.jqplot.CanvasAxisLabelRenderer
            }
         }
+      }
     );
 
 $.jqplot('accuracy_graph', [accuracy],{
         title : 'accuracy',
         axes: {
-            xaxis: { label: "epoch" },
-            yaxis: { label: "accuracy" }
-           }
+          xaxis: { label: "epoch" },
+          yaxis: {
+            label: "accuracy",
+            labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+          }
         }
+      }
     );
 </script>
 
