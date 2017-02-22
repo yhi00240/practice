@@ -1,7 +1,7 @@
 
 function draw_current_data(convnet, x, y, w, h) {
   push();
-  var total_samples = convnet.get_dataset().get_test_size_all();
+  var total_samples = convnet.get_dataset().get_test_size();
   var index = convnet.get_dataset().get_sample_index().test;
   var sample_image = convnet.get_test_sample_image();
   var actual = convnet.get_actual_label();
