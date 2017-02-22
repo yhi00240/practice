@@ -10,6 +10,7 @@
 <script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.categoryAxisRenderer.js' %}"></script>
 <script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.canvasAxisLabelRenderer.js' %}"></script>
 <script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.canvasTextRenderer.js' %}"></script>
+<script type="text/javascript" src="{% static 'practice/js/plugins/jqplot.highlighter.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'practice/css/jquery.jqplot.min.css' %}"/>
 
@@ -50,26 +51,49 @@
 
 var cost = {{costs}};
 var accuracy = {{accuracys}};
+
+for(var i =0;i<cost.length;i++)
+{
+    console.log(cost[i]);
+}
 $.jqplot('cost_graph', [cost],{
-        title : 'cost',
+        title: 'cost',
         axes: {
-           xaxis: { label: "epoch" },
-           yaxis: {
-             label: "cost",
-             labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-           }
+            xaxis: {
+                label: "epoch",
+            },
+            yaxis: {
+                label: "cost",
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickOptions: {
+                    formatString: '%.4f'
+                }
+            }
+        },
+        highlighter: {
+            show: true,
+            sizeAdjust: 10,
+            formatString:'epoch: %d, cost: %#.4f'
         }
       }
     );
 
 $.jqplot('accuracy_graph', [accuracy],{
-        title : 'accuracy',
+        title: 'accuracy',
         axes: {
-          xaxis: { label: "epoch" },
-          yaxis: {
-            label: "accuracy",
-            labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-          }
+            xaxis: { label: "epoch" },
+            yaxis: {
+                label: "accuracy",
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickOptions: {
+                    formatString: '%.4f'
+                }
+            }
+        },
+        highlighter: {
+            show: true,
+            sizeAdjust: 10,
+            formatString:'epoch: %d, accuracy: %#.4f'
         }
       }
     );
