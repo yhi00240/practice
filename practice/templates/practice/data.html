@@ -2,17 +2,15 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row">
+<div class="row" style="position:relative;">
   <br>
-  <h3>Load Example Data</h3>
+  <h3>Load Training Data</h3>
   <br>
-  <li>
-    <h4>Show Training Image&Lable</h4>
-    <button id="showDataButton" class="w3-btn w3-dark-gray" style="margin-bottom:20px;">
-      <i id="spinner"></i>Load data
-    </button>
-    <div id="dataTableDiv" style="overflow:auto; width:1200px; height:300px"></div>
-  </li>
+  <h5>Let's load the mnist training Images & Lables</h5>
+  <button id="showDataButton" class="w3-btn w3-dark-gray" style="margin-bottom:20px;">
+    <i id="spinner"></i>Load data
+  </button>
+  <div id="dataTableDiv" style="overflow:auto;height:400px;width:auto;"></div>
 </div>
 <button onclick="loadData()" class="nextButton w3-btn w3-dark-gray">Next</button>
 <p id="div_section"><a href="#section02"><span></span>HELP</a></p>
@@ -29,7 +27,7 @@
     </ul>
   </div>
   <div class="w3-container w3-cell">
-    <h3>What is the MNIST Data Structure?</h3>
+    <h3>How is the MNIST Data structured?</h3>
     <div class="slideshow">
       <img src="{% static 'practice/images/ppt/data(1).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/data(2).png' %}" width="auto" height="400">
