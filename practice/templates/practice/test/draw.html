@@ -7,38 +7,42 @@
     background : #E0FFDB;
   }
 </style>
-<h3>Using your own data</h3>
-<div class="col-md-5">
-  <p>Draw a number</p>
-  <p>
-    <canvas id="input" width="280" height="280" style="border:solid 2px"></canvas>
-  </p>
-  <p>
-    <button id="clear" class="btn btn-default">clear</button>
-    <button id="set" class="btn btn-default">set</button>
-  </p>
-</div>
-<div class="col-md-7">
-  <table id="result" class="table">
-    <colgroup>
-      <col style="width:10%">
-      <col style="width:45%">
-      <col style="width:45%">
-    </colgroup>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col" style="text-align:center">Your Model</th>
-      <th scope="col" style="text-align:center">Reference Model(99%)</th>
-    </tr>
-    {% for key in keys %}
-      <tr id="data" align="center">
-        <th scope="row">{{ key }}</th>
-        <td id="original"></td>
-        <td id="reference"></td>
+<div class="row">
+  <h3>Using your own data</h3>
+  <div class="col-md-5">
+    <p>Draw a number</p>
+    <p>
+      <canvas id="input" width="280" height="280" style="border:solid 2px"></canvas>
+    </p>
+    <p>
+      <button id="clear" class="btn btn-default">clear</button>
+      <button id="set" class="btn btn-default">set</button>
+    </p>
+  </div>
+  <div class="col-md-7">
+    <table id="result" class="table">
+      <colgroup>
+        <col style="width:10%">
+        <col style="width:45%">
+        <col style="width:45%">
+      </colgroup>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col" style="text-align:center">Your Model</th>
+        <th scope="col" style="text-align:center">Reference Model(99%)</th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for key in keys %}
+        <tr id="data" align="center">
+          <th scope="row">{{ key }}</th>
+          <td id="original"></td>
+          <td id="reference"></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 </div>
+<button id="finish" class="nextButton w3-btn w3-dark-gray">Finish</button>
+<p id="div_section"></p>
 <script>
   var eventObject = {
     drawing: false,
@@ -66,6 +70,10 @@
   });
   $('#set').click(function () {
     getTestImage();
+  });
+  $('#finish').click(function () {
+    localStorage.setItem("easytensor-mnist", true);
+    location.href='/main/'
   });
   function getPosition(event) {
     var bounding = canvas.getBoundingClientRect();
@@ -162,9 +170,10 @@
     $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
     $('.training-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
     $('.training-end').attr('src','{% static 'practice/images/end_check.png' %}');
-    $('#test-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
-    $('#test-1').parent().next().children().css('font-weight','Bold');
-    $('#test-1').parent().next().children().css('font-size','17px');
+    $('#test-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#test-2').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#test-2').parent().next().children().css('font-weight','Bold');
+    $('#test-2').parent().next().children().css('font-size','17px');
   });
 </script>
 {% endblock scripts %}
