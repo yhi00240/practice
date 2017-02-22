@@ -7,7 +7,11 @@
   <h3>Load Training Data</h3>
   <br>
   <h5>Let's load the mnist training Images & Lables</h5>
-  <div id="dataTableDiv" style="overflow:auto;height:400px;width:auto;"></div>
+  <div class="w3-container w3-border w3-cell-row">
+    <p style="text-align:center;vertical-align:middle;font-size:20px;" class="w3-cell" id="info_load">Please Load Data</p>
+    <div id="dataTableDiv" style="overflow:auto;height:400px;width:auto;vertical-align:middle;" class="w3-cell w3-center"></div>
+  </div>
+  <p id="info_data" style="float:right;font-size:20px;"></p>
 </div>
 <button id="showDataButton" class="w3-btn w3-dark-gray nextButton" style="margin-bottom:20px;">
     <i id="spinner"></i>Load data
@@ -105,9 +109,13 @@
       $('#spinner').addClass("fa fa-spinner fa-spin");
       setTimeout( function(){
         $('#spinner').removeClass("fa fa-spinner fa-spin");
+        $('#info_load').css('display','none');
         show_table();
         showDataButton.html('Next');
         load=1;
+        setTimeout( function(){
+          $('#info_data').html('59,960 datas more...');
+        }, 1000 );
       }  , 3000 );
     }else{
       loadData();
