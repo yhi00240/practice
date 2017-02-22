@@ -39,9 +39,11 @@
   </div>
   <button id="nextButton" class="nextButton w3-btn w3-dark-gray" >Test</button>
 </div>
+<p id="div_section"></p>
 <script>
 var cost = {{costs}};
 var accuracy = {{accuracys}};
+localStorage.setItem('latest_accuracy', accuracy[accuracy.length - 1].toFixed(3)*100);
 
 $.jqplot('cost_graph', [cost],{
         axes: {
