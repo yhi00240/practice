@@ -163,18 +163,25 @@ class MNIST(BasePractice):
         writer = tf.summary.FileWriter(self.LOGS_PATH, tf.get_default_graph())
         for epoch in range(self.training_epochs):
             avg_cost = 0.
+            avg_accuracy = 0.
             batch_count = int(self.data.num_examples / MNIST.BATCH_SIZE)
             for i in range(batch_count):
                 batch_xs, batch_ys = self.data.next_batch(MNIST.BATCH_SIZE)
-                _, cost, summary = self.sess.run(
-                    [self.train_operation, self.cost, self.summary_operation],
+                _, cost, accuracy, summary = self.sess.run(
+                    [self.train_operation, self.cost, self.accuracy_operation, self.summary_operation],
                     feed_dict={MNIST.X: batch_xs, MNIST.Y: batch_ys, MNIST.DROPOUT_RATE: 0.7}
                 )
                 avg_cost += cost / batch_count
+                avg_accuracy += accuracy / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
-            message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
-            RedisManager.set_message('mnist', message)
-            print(message)
+
+            cost_stepName = 'cost_step' + str(epoch)
+            accuracy_stepName = 'accuracy_step' + str(epoch)
+
+            RedisManager.set_element('epoch', epoch)
+            RedisManager.set_element(cost_stepName, avg_cost)
+            RedisManager.set_element(accuracy_stepName, avg_accuracy)
+
         saver = tf.train.Saver()
         saver.save(self.sess, self.save_path)
         print('Model saved in file: {0}'.format(self.save_path))
