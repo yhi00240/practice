@@ -137,7 +137,7 @@ class MNIST(BasePractice):
     def set_algorithm(self, model_type, weight_initialize, activation_function, dropout):
         self.save_path, self.hypothesis, variables = self.get_model(model_type, weight_initialize, activation_function, dropout)
         with tf.name_scope('Cost'):
-            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.hypothesis, MNIST.Y))
+            self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.hypothesis, labels=MNIST.Y))
         tf.summary.scalar('cost', self.cost)
 
     def set_training(self, optimizer, learning_rate, epochs):

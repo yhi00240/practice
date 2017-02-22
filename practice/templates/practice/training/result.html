@@ -96,7 +96,7 @@ $.jqplot('accuracy_graph', [accuracy],{
 {% block scripts %}
 <script>
  $('#nextButton').click(function() {
-    location.href='/{{ practice_name }}/test/draw'
+    location.href='/{{ practice_name }}/test/'
   });
   $(document).ready(function() {
     $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
