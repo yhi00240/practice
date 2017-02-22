@@ -10,7 +10,7 @@
   <h3>Select Tensorflow tutorial you want to start!</h3>
   <br>
   <div class="cc-selector">
-    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/MNIST.png' %}" width="300" height="auto" class="active_img" style="margin-right:15px;"></label>
+    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/MNIST.png' %}" width="300" height="auto" class="active_img" style="margin-right:15px"></label>
     <label><input type="radio" name = "practice" value="iris"/><img src="{%  static 'practice/images/IRIS.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
     <label><input type="radio" name = "practice" value="cifar10"/><img src="{%  static 'practice/images/CIFAR10.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
   </div>
@@ -34,10 +34,7 @@
   <div class="w3-container w3-cell">
     <h3>What is the MNIST Data Structure?</h3>
     <div class="slideshow">
-      <img src="{% static 'practice/images/ppt/data (1).png' %}" width="auto" height="400">
-      <img src="{% static 'practice/images/ppt/data (2).png' %}" width="auto" height="400">
-      <img src="{% static 'practice/images/ppt/data (3).png' %}" width="auto" height="400">
-      <img src="{% static 'practice/images/ppt/data (4).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/MNIST (1).png' %}" width="auto" height="400">
     </div>
     <div class="w3-middle">
       <div class="w3-btn-floating w3-left w3-light-gray" onclick="getPrev()">&#10094;</div>
@@ -135,12 +132,8 @@
       $next.css('z-index', 1);
     });
     $('.w3-ul li').css("font-weight","normal");
-    if(0<=$next.index() && $next.index()<2)
+    if(0<=$next.index() && $next.index()<1)
       $('.w3-ul li:eq(1)').css("font-weight","Bold");
-    else if(2<=$next.index() && $next.index()<3)
-      $('.w3-ul li:eq(2)').css("font-weight","Bold");
-    else
-      $('.w3-ul li:eq(3)').css("font-weight","Bold");
   }
 
   function getIndex(index) {
