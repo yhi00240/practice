@@ -105,7 +105,7 @@ class Training(APIView):
     @staticmethod
     def run(request, practice_name):
         template = 'practice/training/run.html'
-        return render(request, template, {'practice_name': practice_name})
+        return render(request, template, {'practice_name': practice_name, 'epoch_num': int(request.COOKIES.get('optimization_epoch'))})
 
     @staticmethod
     @csrf_exempt
@@ -121,11 +121,16 @@ class Training(APIView):
     @staticmethod
     @csrf_exempt
     def get_progress(request, practice_name):
-        message = RedisManager.get_message(practice_name)
-        if not message:
+        #현재 epoch는 어디까지 진행됐느냐?
+        epoch_message = (RedisManager.get_element('epoch')).decode('ascii')
+        cost_step = "cost_step" + epoch_message
+        b_cost = RedisManager.get_element(cost_step)
+        cur_cost = float(b_cost.decode('ascii'))
+        if not epoch_message:
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')
         else:
-            return HttpResponse(json.dumps({'success': True, 'messages': str(message, 'utf-8')}), content_type='application/json')
+            return HttpResponse(json.dumps({'success': True, 'EPOCH': epoch_message, 'cur_cost': cur_cost}),
+                                content_type='application/json')
 
     @staticmethod
     def result(request, practice_name):

@@ -7,16 +7,6 @@ def get_redis():
 class RedisManager():
 
     @staticmethod
-    def get_message(practice_name):
-        r = get_redis()
-        return r.get(practice_name)
-
-    @staticmethod
-    def set_message(practice_name, message):
-        r = get_redis()
-        r.set(practice_name, message)
-
-    @staticmethod
     def get_element(step_name): #step_accuacy, step_cost의 방식으로 저장합니다.
         r = get_redis()
         return r.get(step_name)

@@ -174,15 +174,13 @@ class MNIST(BasePractice):
                 avg_cost += cost / batch_count
                 avg_accuracy += accuracy / batch_count
                 writer.add_summary(summary, epoch * batch_count + i)
-            message = 'Epoch %03d : cost=%.9f' % (epoch + 1, avg_cost)
+
             cost_stepName = 'cost_step' + str(epoch)
             accuracy_stepName = 'accuracy_step' + str(epoch)
 
-            RedisManager.set_message('mnist', message)
+            RedisManager.set_element('epoch', epoch)
             RedisManager.set_element(cost_stepName, avg_cost)
             RedisManager.set_element(accuracy_stepName, avg_accuracy)
-
-            print(message)
 
         saver = tf.train.Saver()
         saver.save(self.sess, self.save_path)
