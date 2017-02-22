@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row">
+<div class="row" style="position:relative;">
   <br>
   <h3>Load Training Data</h3>
   <br>
@@ -10,7 +10,7 @@
   <button id="showDataButton" class="w3-btn w3-dark-gray" style="margin-bottom:20px;">
     <i id="spinner"></i>Load data
   </button>
-  <div id="dataTableDiv" style="overflow:auto; width:1200px; height:300px"></div>
+  <div id="dataTableDiv" style="overflow:auto;height:400px;"></div>
 </div>
 <button onclick="loadData()" class="nextButton w3-btn w3-dark-gray">Next</button>
 <p id="div_section"><a href="#section02"><span></span>HELP</a></p>

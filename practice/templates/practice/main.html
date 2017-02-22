@@ -2,17 +2,17 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row" >
+<div class="row"  style="position:relative;">
   <br>
   <h1>WELCOME to EasyTensor!!</h1>
   <h5>You can learn Tensorflow tutorials from scratch</h5>
   <br>
   <h3>Select the tutorial you want to learn</h3>
   <br>
-  <div class="cc-selector">
-    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/MNIST.png' %}" width="300" height="auto" class="active_img" style="margin-right:15px"></label>
-    <label><input type="radio" name = "practice" value="iris"/><img src="{%  static 'practice/images/IRIS.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
-    <label><input type="radio" name = "practice" value="cifar10"/><img src="{%  static 'practice/images/CIFAR10.png' %}" width="300" height="auto" class="no_active_img" style="margin-right:15px;"></label>
+  <div class="cc-selector" style="position:relative;">
+    <label><input type="radio" name = "practice" value="mnist"/><img src="{%  static 'practice/images/mnist.png' %}" width="300" height="auto" class="active_img" style="left:5;position:absolute;"></label>
+    <label><input type="radio" name = "practice" value="iris"/><img src="{%  static 'practice/images/IRIS.png' %}" width="300" height="auto" class="no_active_img" style="left:320px;position:absolute;"></label>
+    <label><input type="radio" name = "practice" value="cifar10"/><img src="{%  static 'practice/images/CIFAR10.png' %}" width="300" height="auto" class="no_active_img" style="left:640px;position:absolute;"></label>
   </div>
   <br>
   <br>
@@ -20,7 +20,6 @@
 <br><br><br>
 <p id="div_section"><a href="#section02"><span></span>HELP</a></p>
 {% endblock content %}
-
 
 {% block help %}
 <div class="w3-cell-row">
