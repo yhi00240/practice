@@ -130,8 +130,25 @@ class Training(APIView):
     @staticmethod
     def result(request, practice_name):
         template = 'practice/training/result.html'
-        return render(request, template, {'practice_name': practice_name})
 
+        step_cnt = int(request.COOKIES.get('optimization_epoch'))
+        cost_logs = []
+        accuracy_logs = []
+
+        for i in range(step_cnt):
+            cost_step= 'cost_step' + str(i)
+            accuracy_step = 'accuracy_step' + str(i)
+
+            #Redis에 저장되는 모든 값들은 binary로 저장되기 때문에 변환이 필요합니다.
+            b_cost = RedisManager.get_element(cost_step)
+            b_accuracy = RedisManager.get_element(accuracy_step)
+            cost = float(b_cost.decode('ascii'))
+            accuracy = float(b_accuracy.decode('ascii'))
+            cost_logs.append(cost)
+            accuracy_logs.append(accuracy)
+
+        return render(request, template,
+                      {'practice_name': practice_name, 'costs': cost_logs, 'accuracys': accuracy_logs})
 
 class Test(APIView):
 
