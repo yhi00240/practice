@@ -360,10 +360,12 @@ body .demo a {
 
 body #section01 {
   margin-top : -30px;
+  height : 50%;
 }
 
 body #section02 {
   margin-top : -30px;
+  height : 50%;
 }
 
 body #section01 a {

@@ -95,5 +95,9 @@
 </body>
 {% block scripts %}
 {% endblock scripts %}
+<script>
+  var height =  $(window).height() - 150;
+  $('.row').css('height',height);
+</script>
 <script src="{% static 'practice/js/base.js' %}"></script>
 </html>
