@@ -41,10 +41,11 @@
     <br><br><br><br>
     <ul class="w3-ul help_list">
       <li><h4>List</h4></li>
-      <li><span onClick="getIndex(0)">Layers</span></li>
-      <li><span onClick="getIndex(3)">Activation Function</span></li>
-      <li><span onClick="getIndex(8)">Weight Initialization</span></li>
-      <li><span onClick="getIndex(12)">Dropout</span></li>
+      <li><span onClick="getIndex(0)">W and b</span></li>
+      <li><span onClick="getIndex(1)">Layers</span></li>
+      <li><span onClick="getIndex(4)">Activation Function</span></li>
+      <li><span onClick="getIndex(9)">Weight Initialization</span></li>
+      <li><span onClick="getIndex(13)">Dropout</span></li>
     </ul>
   </div>
   <div class="w3-container">
@@ -64,6 +65,7 @@
       <img src="{% static 'practice/images/ppt/algorithm (12).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/algorithm (13).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/algorithm (14).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/algorithm (15).png' %}" width="auto" height="400">
     </div>
     <div class="w3-middle">
       <div class="w3-btn-floating w3-left w3-light-gray"  onclick="getPrev()">&#10094;</div>
@@ -164,14 +166,16 @@
       $next.css('z-index', 1);
     });
     $('.w3-ul li').css("font-weight","normal");
-    if(0<=$next.index() && $next.index()<3)
+    if(0<=$next.index() && $next.index()<1)
       $('.w3-ul li:eq(1)').css("font-weight","Bold");
-    else if(3<=$next.index() && $next.index()<8)
+    else if(1<=$next.index() && $next.index()<4)
       $('.w3-ul li:eq(2)').css("font-weight","Bold");
-    else if(8<=$next.index() && $next.index()<12)
+    else if(4<=$next.index() && $next.index()<9)
       $('.w3-ul li:eq(3)').css("font-weight","Bold");
-    else
+    else if(9<=$next.index() && $next.index()<13)
       $('.w3-ul li:eq(4)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(5)').css("font-weight","Bold");
   }
 
   function getIndex(index) {

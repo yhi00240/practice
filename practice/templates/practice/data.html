@@ -26,7 +26,6 @@
       <li><h4>List</h4></li>
       <li><span onClick="getIndex(0)">Data Image</span></li>
       <li><span onClick="getIndex(2)">Data Label</span></li>
-      <li><span onClick="getIndex(3)">W and b</span></li>
     </ul>
   </div>
   <div class="w3-container w3-cell">
@@ -35,7 +34,6 @@
       <img src="{% static 'practice/images/ppt/data (1).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/data (2).png' %}" width="auto" height="400">
       <img src="{% static 'practice/images/ppt/data (3).png' %}" width="auto" height="400">
-      <img src="{% static 'practice/images/ppt/data (4).png' %}" width="auto" height="400">
     </div>
     <div class="w3-middle">
       <div class="w3-btn-floating w3-left w3-light-gray" onclick="getPrev()">&#10094;</div>
@@ -198,10 +196,8 @@
     $('.w3-ul li').css("font-weight","normal");
     if(0<=$next.index() && $next.index()<2)
       $('.w3-ul li:eq(1)').css("font-weight","Bold");
-    else if(2<=$next.index() && $next.index()<3)
-      $('.w3-ul li:eq(2)').css("font-weight","Bold");
     else
-      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
   }
 
   function getIndex(index) {
