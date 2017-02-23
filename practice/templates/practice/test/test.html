@@ -41,8 +41,8 @@
     $('#test-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
     $('#test-1').parent().next().children().css('font-weight','Bold');
     $('#test-1').parent().next().children().css('font-size','17px');
+    $('#section01').css('height',win_height+280);
   });
-
   var dataset;
   var convnet;
   var ready = false;
@@ -53,10 +53,8 @@
   var matrix_y = 180;
   var matrix_w = 480;
   var matrix_h = 480;
-
   var labelImage;
   var arrowImage;
-
   function setup() {
     var mCanvas = createCanvas(1000, 800);
     mCanvas.parent('testResult');
@@ -81,14 +79,12 @@
       next();
     });
   }
-
   function draw() {
     if (!ready || paused) {
       return;
     }
     next();
   }
-
   function mouseMoved() {
     var x = matrix_x;
     var y = matrix_y;
@@ -106,7 +102,6 @@
       draw_frame();
     }
   }
-
   function draw_frame() {
     push();
     noStroke();
@@ -117,7 +112,6 @@
     draw_confusion(convnet, matrix_x, matrix_y, matrix_w, matrix_h, iy, ix);
     draw_confusion_samples(convnet, matrix_x + 580, matrix_y, 280, 600, iy, ix);
   }
-
   // For Buttons
   function next() {
     var tested = convnet.test_next();
@@ -130,7 +124,6 @@
       $("#btNext").attr("disabled", true);
     }
   }
-
   function buttonControl() {
     if(paused) {
       paused = false;
@@ -145,7 +138,6 @@
       draw_frame();
     }
   }
-
   function buttonRestart() {
     paused = false;
     $("#btControl").attr("disabled", false);

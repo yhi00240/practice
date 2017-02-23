@@ -62,7 +62,6 @@
     canvas.addEventListener('mouseup', endDraw);
     canvas.addEventListener('mouseout', endDraw);
   })();
-
   $("#accuracy").html(localStorage.getItem('latest_accuracy'));
   $('#clear').click(function () {
     context.fillStyle = '#FFFFFF';
@@ -142,7 +141,6 @@
         var original_max_index = 0;
         var reference_max_value = 0;
         var reference_max_index = 0;
-
         for (var i = 0; i < 10; i++) {
           if(original_max_value < data.original[i]) {
             original_max_value = data.original[i];
@@ -152,10 +150,8 @@
             reference_max_value = data.reference[i];
             reference_max_index = i;
           }
-
           var rounding_original = data.original[i].toFixed(3);
           var rounding_reference = data.reference[i].toFixed(3);
-
           resultData.eq(i).find('#original').text(rounding_original);
           resultData.eq(i).find('#reference').text(rounding_reference);
         }
