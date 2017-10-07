@@ -1,0 +1,17 @@
+{% extends 'practice/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div>
+{% block frame %}
+{% endblock frame %}
+</div>
+<script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('training')){
+    $('.submenu').hide();
+    $('#test.submenu').show();
+  }
+   $('#test').prev().children().css('color','#3369e8');
+</script>
+{% endblock content %}

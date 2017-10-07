@@ -1,0 +1,191 @@
+{% extends 'practice/base_test.html' %}
+{% load staticfiles %}
+
+{% block frame %}
+<style>
+  .maxValueHighlight{
+    background : #E0FFDB;
+  }
+</style>
+<div class="row">
+  <br>
+  <h3>Using your own data</h3>
+  <br>
+  <div class="col-md-5">
+    <p>Draw a number</p>
+    <p>
+      <canvas id="input" width="280" height="280" style="border:solid 2px"></canvas>
+    </p>
+    <p>
+      <button id="clear" class="btn btn-default">clear</button>
+      <button id="set" class="btn btn-default">set</button>
+    </p>
+  </div>
+  <div class="col-md-7">
+    <table id="result" class="table">
+      <colgroup>
+        <col style="width:10%">
+        <col style="width:45%">
+        <col style="width:45%">
+      </colgroup>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col" style="text-align:center">Your Model(<span id="accuracy"></span>%)</th>
+        <th scope="col" style="text-align:center">Reference Model(98.6%)</th>
+      </tr>
+      {% for key in keys %}
+        <tr id="data" align="center">
+          <th scope="row">{{ key }}</th>
+          <td id="original"></td>
+          <td id="reference"></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+<button id="finish" data-toggle="modal" data-target="#popup" class="nextButton w3-btn w3-dark-gray">Finish</button>
+<div id="popup" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title" style="margin: 0 auto;text-align: center;">Congratulations!</h3>
+      </div>
+      <div class="modal-body">
+        <h4 style="margin: 0 auto;text-align: center;">You just finished the MNIST tutorial.</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='/main/'">Go to Main</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p id="div_section"></p>
+<script>
+  var eventObject = {
+    drawing: false,
+    x: 0,
+    y: 0
+  };
+  var canvas = document.getElementById('input');
+  var context = canvas.getContext("2d");
+  var resultData = $('#result').find('#data');
+  (function initialize() {
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    canvas.addEventListener('mousedown', initDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseout', endDraw);
+  })();
+  $("#accuracy").html(localStorage.getItem('latest_accuracy'));
+  $('#clear').click(function () {
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < 10; i++) {
+      resultData.eq(i).find('td').text("");
+      resultData.eq(i).find('td').removeClass("maxValueHighlight")
+    }
+  });
+  $('#set').click(function () {
+    getTestImage();
+  });
+  function getPosition(event) {
+    var bounding = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - bounding.left,
+      y: event.clientY - bounding.top
+    };
+  }
+  function initDraw(event) {
+    eventObject.drawing = true;
+    var curr = getPosition(event);
+    eventObject.x = curr.x;
+    eventObject.y = curr.y;
+    canvas.style.cursor = 'default';
+    context.fillStyle = '#000000';
+    context.lineWidth = 15;
+    context.lineCap = 'round';
+  }
+  function draw(event) {
+    if (eventObject.drawing) {
+      var curr = getPosition(event);
+      context.beginPath();
+      context.moveTo(eventObject.x, eventObject.y);
+      context.lineTo(curr.x, curr.y);
+      context.stroke();
+      context.closePath();
+      eventObject.x = curr.x;
+      eventObject.y = curr.y;
+    }
+  }
+  function endDraw(event) {
+    eventObject.drawing = false;
+    eventObject.x = 0;
+    eventObject.y = 0;
+  }
+  function getTestImage() {
+    var inputs = new Array(784).fill(0);
+    var data = context.getImageData(0, 0, 280, 280).data;
+    var stride = 280 * 4;
+    var i, j;
+    for (i = 0; i < 280; i++) {
+      var y = Math.floor(i / 10);
+      var n = i * stride;
+      for (j = 0; j < 280; j++) {
+        var x = Math.floor(j / 10);
+        inputs[y * 28 + x] += (data[n] + data[n + 1] + data[n + 2]) / 3;
+        n += 4;
+      }
+    }
+    for (i = 0; i < 28; i++) {
+      for (j = 0; j < 28; j++) {
+        inputs[i * 28 + j] /= 100;
+      }
+    }
+    input = JSON.stringify(inputs);
+    console.log('input: ' + input);
+    $.post(
+      "/{{ practice_name }}/test/draw_result",
+      { image_data: input },
+      function (data) {
+        var original_max_value = 0;
+        var original_max_index = 0;
+        var reference_max_value = 0;
+        var reference_max_index = 0;
+        for (var i = 0; i < 10; i++) {
+          if(original_max_value < data.original[i]) {
+            original_max_value = data.original[i];
+            original_max_index = i;
+          }
+          if(reference_max_value < data.reference[i]) {
+            reference_max_value = data.reference[i];
+            reference_max_index = i;
+          }
+          var rounding_original = data.original[i].toFixed(3);
+          var rounding_reference = data.reference[i].toFixed(3);
+          resultData.eq(i).find('#original').text(rounding_original);
+          resultData.eq(i).find('#reference').text(rounding_reference);
+        }
+        resultData.eq(original_max_index).find('#original').addClass("maxValueHighlight");
+        resultData.eq(reference_max_index).find('#reference').addClass("maxValueHighlight");
+      }
+    );
+  }
+</script>
+{% endblock frame %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.training-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.training-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('#test-1').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#test-2').attr('src','{% static 'practice/images/end_exec.png' %}');
+    $('#test-2').parent().next().children().css('font-weight','Bold');
+    $('#test-2').parent().next().children().css('font-size','17px');
+  });
+</script>
+{% endblock scripts %}

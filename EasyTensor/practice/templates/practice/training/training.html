@@ -1,0 +1,190 @@
+{% extends 'practice/base_training.html' %}
+{% load staticfiles %}
+
+<!--override-->
+{% block content %}
+  {% block frame %}
+  <form action = "/{{ practice_name }}/training/" accept-charset="utf-8" name="save_training" method="post">
+    <div class="row">
+      <br>
+      <h3>Set {{ practice_name }} training settings</h3>
+      <br>
+      {% for key,value_list in list.items %}
+        <div class="w3-card-2 w3-round w3-white w3-hide-small">
+          <div class="w3-container">
+            <div class="table_name col-sm-4">{{ key }}</div>
+            <div class="table_value col-sm-8">
+              {% if "Optimizer" in key %}
+                <div class="cc-selector">
+                  {% for value in value_list %}
+                    <label><input type="radio" name="{{ key }}" value="{{ value }}" /><img class="drinkcard-cc" src ="/static/practice/images/{{ value }}.png"></label>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="w3-container">
+                  <label class="w3-label w3-text-teal"></label>
+                  <input class="w3-input w3-border-bottom" type="text" name="{{ key }}" value="{{ value_list }}">
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <input type="submit" class="nextButton w3-btn w3-dark-gray" value="OK">
+  </form>
+  {% endblock frame %}
+<p id="div_section"><a href="#section02"><span></span>HELP</a></p>
+<script>
+  var cur= window.location.pathname;
+  if(cur.indexOf('training')){
+    $('.submenu').hide();
+    $('#training.submenu').show();
+  }
+   $('#training').prev().children().css('color','#009925');
+</script>
+{% endblock content %}
+
+{% block help %}
+<div id="help_row" class="w3-cell-row">
+  <div class="w3-container w3-cell">
+    <br><br><br><br>
+    <ul class="w3-ul help_list">
+      <li><h4>List</h4></li>
+      <li><span onClick="getIndex(0)">Cost Function</span></li>
+      <li><span onClick="getIndex(5)">Optimizer</span></li>
+      <li><span onClick="getIndex(8)">Optimization Epoch</span></li>
+      <li><span onClick="getIndex(9)">Learning Rate</span></li>
+    </ul>
+  </div>
+  <div class="w3-container w3-cell">
+    <br>
+    <h3>How is the Neural Network algorithm organized?</h3>
+    <div class="slideshow">
+      <img src="{% static 'practice/images/ppt/training(1).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/training(2).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/training(3).png' %}" width="auto" height="400" alt="third image">
+      <img src="{% static 'practice/images/ppt/training(4).png' %}" width="auto" height="400" alt="fourth image">
+      <img src="{% static 'practice/images/ppt/training(5).png' %}" width="auto" height="400" alt="first image">
+      <img src="{% static 'practice/images/ppt/training(6).png' %}" width="auto" height="400" alt="second image">
+      <img src="{% static 'practice/images/ppt/training(7).png' %}" width="auto" height="400" alt="third image">
+      <img src="{% static 'practice/images/ppt/training(8).png' %}" width="auto" height="400" alt="fourth image">
+      <img src="{% static 'practice/images/ppt/training(9).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/training(10).png' %}" width="auto" height="400">
+      <img src="{% static 'practice/images/ppt/training(11).png' %}" width="auto" height="400">
+    </div>
+    <div class="w3-middle">
+      <div class="w3-btn-floating w3-left w3-light-gray" onclick="getPrev()">&#10094;</div>
+      <div class="w3-btn-floating w3-right w3-light-gray" onclick="getNext()">&#10095;</div>
+    </div>
+  </div>
+</div>
+{% endblock help %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function(){
+    if($(window).scrollTop() == $(document).height() - $(window).height()){
+      $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+      $('#section01 a span').css("transform","rotate(135deg)");
+      $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+      $('#section01 a span').css("animation","sdb02 2s infinite");
+    }
+  });
+
+  $(function () {
+    $('a[href="#section02"]').on('click', function (e) {
+      if($(window).scrollTop() == $(document).height() - $(window).height()){
+        $('html, body').animate({
+          scrollTop: 0
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(-45deg)");
+        $('#section01 a span').css("transform","rotate(-45deg)");
+        $('#section01 a span').css("-webkit-animation","sdb01 2s infinite");
+        $('#section01 a span').css("animation","sdb01 2s infinite");
+        return false;
+      }
+      else{
+        $('html, body').animate({
+          scrollTop: $("#section02").offset().top
+          }, 500);
+        $('#section01 a span').css("-webkit-transform","rotate(135deg)");
+        $('#section01 a span').css("transform","rotate(135deg)");
+        $('#section01 a span').css("-webkit-animation","sdb02 2s infinite");
+        $('#section01 a span').css("animation","sdb02 2s infinite");
+        return false;
+      }
+    });
+  });
+
+  $(document).ready(function(){
+    $('.nextButton').attr("disabled",true);
+    $("*").on('click',function(){
+      var optimizer_check=$(':radio[name="Optimizer"]:checked').val();
+      var rate_check=$(':text[name="Learning Rate"]').val();
+      var epoch_check=$(':text[name="Optimization Epoch"]').val();
+      if(optimizer_check && rate_check && epoch_check)
+        $('.nextButton').attr("disabled",false);
+      else
+        $('.nextButton').attr("disabled",true);
+    });
+  });
+
+  var interval = undefined;
+  $(document).ready(function () {
+    interval = setInterval(getFirst, 2000);// milliseconds
+    getNext();
+    $('#nextSlide').on('click', getNext);
+    $('#prevSlide').on('click', getPrev);
+  });
+
+  function getFirst() {
+    var $curr = $('.slideshow img:visible').first();
+    $curr.css('z-index', 1);
+  }
+
+  function getNext() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.next('img').length) ? $curr.next() : $('.slideshow img').first();
+    transition($curr, $next);
+  }
+
+  function getPrev() {
+    var $curr = $('.slideshow img:visible'),
+        $next = ($curr.prev('img').length) ? $curr.prev() : $('.slideshow img').last();
+    transition($curr, $next);
+  }
+
+  function transition($curr, $next) {
+    clearInterval(interval);
+    $next.css('z-index', 2).fadeIn('slow', function () {
+      $curr.hide().css('z-index', 0);
+      $next.css('z-index', 1);
+    });
+    $('.w3-ul li').css("font-weight","normal");
+    if(0<=$next.index() && $next.index()<5)
+      $('.w3-ul li:eq(1)').css("font-weight","Bold");
+    else if(5<=$next.index() && $next.index()<8)
+      $('.w3-ul li:eq(2)').css("font-weight","Bold");
+    else if(8<=$next.index() && $next.index()<9)
+      $('.w3-ul li:eq(3)').css("font-weight","Bold");
+    else
+      $('.w3-ul li:eq(4)').css("font-weight","Bold");
+  }
+
+  function getIndex(index) {
+    var $curr = $('.slideshow img:visible'),
+        $next = $('.slideshow img:eq('+index+')');
+    if($curr[0]!=$next[0])
+      transition($curr, $next);
+  }
+
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('#training-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
+    $('#training-1').parent().next().children().css('font-weight','Bold');
+    $('#training-1').parent().next().children().css('font-size','17px');
+  });
+</script>
+{% endblock scripts %}

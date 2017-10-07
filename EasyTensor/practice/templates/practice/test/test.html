@@ -1,0 +1,151 @@
+{% extends 'practice/base_test.html' %}
+{% load staticfiles %}
+
+{% block frame %}
+<br>
+<h3>Using Test Data</h3>
+<br>
+<div id="controls" style="overflow:auto;">
+  <button disabled id="btReStart" onclick="buttonRestart()" class="w3-btn w3-round-xlarge">
+    <i class="material-icons">replay</i>
+  </button>
+  <button id="btControl" onclick="buttonControl()" class="w3-btn w3-round-xlarge">
+    <i class="material-icons">pause</i>
+  </button>
+  <button disabled id="btNext" onclick="next()" class="w3-btn w3-round-xlarge">
+    <i class="material-icons">skip_next</i>
+  </button>
+  Use the buttons to navigate the test data.
+</div>
+<br>
+<div id="testResult"></div>
+<button onclick="location.href='/{{ practice_name }}/test/draw'" class="nextButton w3-btn w3-dark-gray">Next</button>
+<p id="div_section"></p>
+{% endblock frame %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script src="{% static 'practice/js/convnetjs/convnet.js' %}"></script>
+<script src="{% static 'practice/js/convnetjs/util.js' %}"></script>
+<script src="{% static 'practice/js/datasets/mnist/mnist_labels.js' %}"></script>
+<script src="{% static 'practice/js/dataset.js' %}"></script>
+<script src="{% static 'practice/js/convnet.js' %}"></script>
+<script src="{% static 'practice/js/visualize_data.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    $('.data-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.algorithm-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.training-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('.training-end').attr('src','{% static 'practice/images/end_check.png' %}');
+    $('.test-middle').attr('src','{% static 'practice/images/middle_check.png' %}');
+    $('#test-1').attr('src','{% static 'practice/images/middle_exec.png' %}');
+    $('#test-1').parent().next().children().css('font-weight','Bold');
+    $('#test-1').parent().next().children().css('font-size','17px');
+    $('#section01').css('height', win_height+300);
+  });
+  var dataset;
+  var convnet;
+  var ready = false;
+  var paused = false;
+  var ix = 0;
+  var iy = 0;
+  var matrix_x = 50;
+  var matrix_y = 180;
+  var matrix_w = 480;
+  var matrix_h = 480;
+  var labelImage;
+  var arrowImage;
+  function setup() {
+    var mCanvas = createCanvas(1000, 800);
+    mCanvas.parent('testResult');
+    labelImage = loadImage("{% static 'practice/images/label.png' %}");
+    arrowImage = loadImage("{% static 'practice/images/arrow.png' %}");
+    dataset = new Dataset();
+    dataset.loadMNIST(true);
+    var accuracy = localStorage.getItem('latest_accuracy');
+    console.log('latest_accuracy : ' + accuracy);
+    var snapshots = [60, 72, 78, 82, 85, 88, 92, 95];
+    var fileName;
+    for (var i = snapshots.length - 1; i >= 0; i--) {
+      if(accuracy > snapshots[i]) {
+        fileName = '/static/practice/js/datasets/mnist/mnist_snapshot_'+snapshots[i]+'.json';
+        break;
+      }
+    }
+    $.getJSON(fileName, function(json) {
+      convnet = new convnet(dataset);
+      convnet.load_from_json(json);
+      ready = true;
+      next();
+    });
+  }
+  function draw() {
+    if (!ready || paused) {
+      return;
+    }
+    next();
+  }
+  function mouseMoved() {
+    var x = matrix_x;
+    var y = matrix_y;
+    var w = matrix_w;
+    var h = matrix_h;
+    var inside = mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h;
+    if (!inside || !ready) return;
+    var n = convnet.get_dataset().get_classes().length;
+    var cell_size = {w: w/n, h: h/n};
+    var ix_ = constrain(floor((mouseX - x) / cell_size.w), 0, n-1);
+    var iy_ = constrain(floor((mouseY - y) / cell_size.h), 0, n-1);
+    if (ix_ != ix || iy_ != iy) {
+      ix = ix_;
+      iy = iy_;
+      draw_frame();
+    }
+  }
+  function draw_frame() {
+    push();
+    noStroke();
+    fill(255);
+    rect(0, 0, width, height);
+    pop();
+    draw_current_data(convnet, 0, 0, 280, 120);
+    draw_confusion(convnet, matrix_x, matrix_y, matrix_w, matrix_h, iy, ix);
+    draw_confusion_samples(convnet, matrix_x + 580, matrix_y, 280, 600, iy, ix);
+  }
+  // For Buttons
+  function next() {
+    var tested = convnet.test_next();
+    if (tested) {
+      draw_frame();
+    }
+    if (dataset.finished_testing()) {
+      $("#btReStart").attr("disabled", false);
+      $("#btControl").attr("disabled", true);
+      $("#btNext").attr("disabled", true);
+    }
+  }
+  function buttonControl() {
+    if(paused) {
+      paused = false;
+      $("#btControl").find("i").text("pause");
+      $("#btReStart").attr("disabled", true);
+      $("#btNext").attr("disabled", true);
+    } else {
+      paused = true;
+      $("#btControl").find("i").text("play_arrow");
+      $("#btReStart").attr("disabled", false);
+      $("#btNext").attr("disabled", false);
+      draw_frame();
+    }
+  }
+  function buttonRestart() {
+    paused = false;
+    $("#btControl").attr("disabled", false);
+    $("#btControl").find("i").text("pause");
+    $("#btReStart").attr("disabled", true);
+    $("#btNext").attr("disabled", true);
+    convnet.start_over();
+    ready = true;
+  }
+</script>
+{% endblock scripts %}

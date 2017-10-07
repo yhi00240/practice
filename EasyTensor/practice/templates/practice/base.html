@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+  <title>EasyTensor</title>
+  <META HTTP-EQUIV="page-exit" content="BlendTrans(Duration=0.1)">
+  <META HTTP-EQUIV="page-enter" content="BlendTrans(Duration=0.1)">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="{% static 'practice/images/logo2.png'%}" sizes="16x16">
+  <link rel="icon" type="image/png" href="{% static 'practice/images/logo2.png'%}" sizes="32x32">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="{% static 'practice/css/base.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div id = "header">
+    <div id="branding">
+      <li><img src="{% static 'practice/images/logo3.png' %}" id="logo"></li>
+    </div>
+    <div id="main_nav">
+      <ul>
+        <li><a href="/main"><p>Home</p></a></li>
+        <li><a href="https://github.com/Tenice/EasyTensor"><p>GitHub</p></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class=" w3-sidenav w3-center" id="menu">
+    {% if practice_name %}
+      <ul class="step">{{ practice_name }}</ul>
+    {% else %}
+      <ul class="step">Practice</ul>
+    {% endif %}
+    <ul class="mainmenu">
+      <li><i class="material-icons icon">folder_open</i><p>Data</p></li>
+      <ul id="data" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="data-1" src="{% static 'practice/images/end.png' %}" class="step-image data-end"></div>
+          <div class="submenu_name"><span>Load</span></div>
+        </li>
+      </ul>
+      <li><i class="material-icons icon">multiline_chart</i><p>Algorithm</p></li>
+      <ul id="algorithm" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="algorithm-1" src="{% static 'practice/images/end.png' %}" class="step-image algorithm-end"></div>
+          <div class="submenu_name"><span>Setting</span></div>
+        </li>
+      </ul>
+      <li ><i class="material-icons icon">settings_applications</i><p>Training</p></li>
+      <ul id="training" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="training-1" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Setting</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-2" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Check</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-3" src="{% static 'practice/images/middle.png' %}" class="step-image training-middle"></div>
+          <div class="submenu_name"><span>Run</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="training-4" src="{% static 'practice/images/end.png' %}" class="step-image training-end"></div>
+          <div class="submenu_name"><span>Result</span></div>
+        </li>
+      </ul>
+      <li><i class="material-icons icon">create</i><p>Test</p></li>
+      <ul id="test" class="submenu">
+        <li>
+          <div class="submenu_image"><img id="test-1" src="{% static 'practice/images/middle.png' %}" class="step-image test-middle"></div>
+          <div class="submenu_name"><span>Test Data</span></div>
+        </li>
+        <li>
+          <div class="submenu_image"><img id="test-2" src="{% static 'practice/images/end.png' %}" class="step-image test-end"></div>
+          <div class="submenu_name"><span>Draw</span></div>
+        </li>
+      </ul>
+    </ul>
+  </div>
+  <div class="col-sm-8" id="main">
+    <section id="section01" class="main demo">
+      {% block content %}
+      {% endblock content %}
+    </section>
+    <section id="section02" class="help demo">
+      {% block help %}
+      {% endblock help %}
+    </section>
+  </div>
+
+</body>
+{% block scripts %}
+{% endblock scripts %}
+<script>
+  var win_height =  $(window).height();
+  $('#section01').css('height',win_height-100);
+  $('.row').css('height',win_height-210);
+  $('#help_row').css('height',win_height-170);
+</script>
+<script src="{% static 'practice/js/base.js' %}"></script>
+</html>
